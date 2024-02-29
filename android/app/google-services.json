@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "264919661146",
+    "project_id": "ptma-33d33",
+    "storage_bucket": "ptma-33d33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264919661146:android:7524adf80b333570fd3663",
+        "android_client_info": {
+          "package_name": "com.example.ptma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9UpVkZFD-NaFT29WwOda8XXyZ0TYnNRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
