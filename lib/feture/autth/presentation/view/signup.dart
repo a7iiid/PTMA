@@ -42,37 +42,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: SafeArea(
           child: BlocProvider(
             create: (context) => AuthAppCubit(),
-            child: BlocBuilder<AuthAppCubit, AuthState>(
-              builder: (context, state) {
-                print(state);
-                return form(
-                  emailControlar: emailControlar,
-                  pasControlar: pasControlar,
-                  formKey: key,
-                );
-              },
+            child: form(
+              emailControlar: emailControlar,
+              pasControlar: pasControlar,
+              formKey: key,
             ),
           ),
         ),
       ),
     );
-  }
-
-  void creatAcaunte(BuildContext context) {
-    try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailControlar.text, password: pasControlar.text);
-
-      GoRouter.of(context).pushReplacement(routes.kSigninScreen);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 }
 
@@ -93,93 +71,95 @@ class form extends StatelessWidget {
   bool isEmail = false;
   bool isPass = false;
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset(
-            Assets.imagesSignup,
-          ),
-          const SizedBox(
-            height: 130,
-          ),
-          const Text('Sign up', style: AppStyle.bold28blak),
-          const SizedBox(
-            height: 33,
-          ),
-          TextFormField(
-            controller: emailControlar,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'pleas Enter email';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-                hintText: 'Email Address',
-                suffix: isEmail ? preficon : null,
-                label: const Text('Email'),
-                enabledBorder: const UnderlineInputBorder()),
-            onChanged: (value) {
-              if (RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value)) {
-                isEmail = true;
-              } else {
-                isEmail = false;
-              }
-              print(isEmail);
-              AuthAppCubit.get(context).inputfilde();
-            },
-          ),
-          TextFormField(
-            controller: pasControlar,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'pleas Enter Passwored';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-                hintText: 'Passwored',
-                suffix: isPass == true ? preficon : null,
-                label: const Text('Passwored'),
-                enabledBorder: const UnderlineInputBorder()),
-            onChanged: (value) {
-              if (value.length >= 8) {
-                isPass = true;
-              } else {
-                isPass = false;
-              }
-              print(isPass);
+    return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SvgPicture.asset(
+              Assets.imagesSignup,
+            ),
+            const SizedBox(
+              height: 130,
+            ),
+            const Text('Sign up', style: AppStyle.bold28blak),
+            const SizedBox(
+              height: 33,
+            ),
+            TextFormField(
+              controller: emailControlar,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'pleas Enter email';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                  hintText: 'Email Address',
+                  suffix: isEmail ? preficon : null,
+                  label: const Text('Email'),
+                  enabledBorder: const UnderlineInputBorder()),
+              onChanged: (value) {
+                if (RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value)) {
+                  isEmail = true;
+                } else {
+                  isEmail = false;
+                }
+                print(isEmail);
+                AuthAppCubit.get(context).inputfilde();
+              },
+            ),
+            TextFormField(
+              controller: pasControlar,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'pleas Enter Passwored';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                  hintText: 'Passwored',
+                  suffix: isPass == true ? preficon : null,
+                  label: const Text('Passwored'),
+                  enabledBorder: const UnderlineInputBorder()),
+              onChanged: (value) {
+                if (value.length >= 8) {
+                  isPass = true;
+                } else {
+                  isPass = false;
+                }
+                print(isPass);
 
-              AuthAppCubit.get(context).inputfilde();
-            },
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          CustomButton(
-            title: 'Sign up',
-            backgraondColor: const Color(0xFF2743FB),
-            textStyle: AppStyle.reguler20white,
-            iconcolor: Colors.white,
-            function: () {
-              if (formKey.currentState!.validate()) {
-                AuthAppCubit.get(context).creatAcaunte(
-                    emailControlar.text, pasControlar.text, context);
-              }
-            },
-          ),
-          const SizedBox(
-            height: 60,
-          ),
-          const Align(
-              alignment: Alignment.center,
-              child: const Text('or using social '))
-        ],
-      ),
-    );
+                AuthAppCubit.get(context).inputfilde();
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CustomButton(
+              title: 'Sign up',
+              backgraondColor: const Color(0xFF2743FB),
+              textStyle: AppStyle.reguler20white,
+              iconcolor: Colors.white,
+              function: () {
+                if (formKey.currentState!.validate()) {
+                  AuthAppCubit.get(context).creatAcaunte(
+                      emailControlar.text, pasControlar.text, context);
+                }
+              },
+            ),
+            const SizedBox(
+              height: 60,
+            ),
+            const Align(
+                alignment: Alignment.center,
+                child: const Text('or using social '))
+          ],
+        ),
+      );
+    });
   }
 }
