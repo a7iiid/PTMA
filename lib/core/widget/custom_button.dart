@@ -4,7 +4,7 @@ import 'package:ptma/core/utils/Style.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
-      {required this.title,
+      {super.key, required this.title,
       this.backgraondColor = const Color(0xff4960F9),
       this.textStyle = AppStyle.reguler20prime,
       this.iconcolor = Colors.white,
@@ -18,14 +18,14 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         width: double.infinity,
         height: 72,
         child: ElevatedButton(
           onPressed: function,
           style: ButtonStyle(
             padding: MaterialStateProperty.all(EdgeInsets.zero),
-            backgroundColor: MaterialStatePropertyAll(Colors.transparent),
+            backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
           ),
           child: Ink(
             decoration: BoxDecoration(
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: Container(
-              constraints: BoxConstraints.expand(),
+              constraints: const BoxConstraints.expand(),
               child: Row(
                 children: [
                   const SizedBox(
@@ -44,7 +44,7 @@ class CustomButton extends StatelessWidget {
                     title,
                     style: textStyle,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Transform.rotate(
                     angle: pi,
                     child: Icon(

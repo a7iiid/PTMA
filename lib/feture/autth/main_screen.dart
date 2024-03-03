@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
@@ -18,7 +16,7 @@ class MainScreen extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(
             child: CustomPaint(
-              size: Size(375, 572),
+              size: const Size(375, 572),
               painter: RPSCustomPainter(),
             ),
           ),
@@ -29,12 +27,11 @@ class MainScreen extends StatelessWidget {
               children: [
                 const Expanded(child: SizedBox()),
                 Padding(
-                  padding: EdgeInsets.only(right: 21, left: 21),
+                  padding: const EdgeInsets.only(right: 21, left: 21),
                   child: CustomButton(
                     title: 'Sign in',
                     function: () {
-                      GoRouter.of(context)
-                          .pushReplacement(routes.kSigninScreen);
+                      GoRouter.of(context).push(routes.kSigninScreen);
                     },
                   ),
                 ),
@@ -47,10 +44,9 @@ class MainScreen extends StatelessWidget {
                     title: 'Sign up',
                     backgraondColor: Colors.white,
                     textStyle: AppStyle.reguler20white,
-                    iconcolor: Color(0xFF2743FB),
+                    iconcolor: const Color(0xFF2743FB),
                     function: () {
-                      GoRouter.of(context)
-                          .pushReplacement(routes.kSigninScreen);
+                      GoRouter.of(context).push(routes.kSignUpScreen);
                     },
                   ),
                 ),

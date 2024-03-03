@@ -15,4 +15,11 @@ class AppStyle {
     fontWeight: FontWeight.w400,
     height: 0,
   );
+  static const TextStyle bold28blak = TextStyle(
+    color: Color(0xFF3A3A3A),
+    fontSize: 28,
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w700,
+    height: 0,
+  );
 }
