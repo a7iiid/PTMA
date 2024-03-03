@@ -15,3 +15,5 @@ final class Filur extends AuthState {
 }
 
 final class success extends AuthState {}
+
+final class Loginstat extends AuthState {}

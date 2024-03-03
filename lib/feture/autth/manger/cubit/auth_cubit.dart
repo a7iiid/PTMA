@@ -18,7 +18,7 @@ class AuthAppCubit extends Cubit<AuthState> {
           .createUserWithEmailAndPassword(email: email, password: pass);
       emit(success());
 
-      GoRouter.of(ctx).pushNamed(routes.kSigninScreen);
+      GoRouter.of(ctx).pushReplacement(routes.kSigninScreen);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -26,6 +26,23 @@ class AuthAppCubit extends Cubit<AuthState> {
         print('The account already exists for that email.');
       }
       emit(Filur(e.code));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> login(email, passwored, ctx) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: passwored);
+
+      GoRouter.of(ctx).pushReplacement(routes.kHomePage);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
     } catch (e) {
       print(e);
     }
