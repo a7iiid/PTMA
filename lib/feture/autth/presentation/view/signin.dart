@@ -1,17 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
-import 'package:ptma/core/utils/rout.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 
 import '../../manger/cubit/auth_cubit.dart';
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -75,6 +72,7 @@ class form extends StatelessWidget {
 
   bool isEmail = false;
   bool isPass = false;
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
       return SingleChildScrollView(
@@ -161,7 +159,7 @@ class form extends StatelessWidget {
             ),
             const Align(
                 alignment: Alignment.center,
-                child: const Text('or using social '))
+                child: Text('or using social '))
           ],
         ),
       );

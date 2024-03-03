@@ -27,7 +27,7 @@ abstract class routes {
     GoRoute(
       path: kSigninScreen,
       builder: (context, state) {
-        return SignInScreen();
+        return const SignInScreen();
       },
     ),
     GoRoute(

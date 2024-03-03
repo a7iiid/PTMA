@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/feture/autth/manger/cubit/auth_cubit.dart';
-import 'package:bloc/bloc.dart';
-
 import '../../../../core/widget/custom_button.dart';
-
-import 'package:ptma/core/utils/rout.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -70,6 +64,7 @@ class form extends StatelessWidget {
 
   bool isEmail = false;
   bool isPass = false;
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
       return SingleChildScrollView(
@@ -155,8 +150,7 @@ class form extends StatelessWidget {
               height: 60,
             ),
             const Align(
-                alignment: Alignment.center,
-                child: const Text('or using social '))
+                alignment: Alignment.center, child: Text('or using social '))
           ],
         ),
       );
