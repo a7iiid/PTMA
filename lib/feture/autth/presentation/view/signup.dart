@@ -90,6 +90,7 @@ class form extends StatelessWidget {
                 }
                 return null;
               },
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                   hintText: 'Email Address',
                   suffix: isEmail ? preficon : null,

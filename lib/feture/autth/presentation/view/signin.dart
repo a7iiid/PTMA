@@ -86,7 +86,7 @@ class form extends StatelessWidget {
             const SizedBox(
               height: 130,
             ),
-            const Text('Sign up', style: AppStyle.bold28blak),
+            const Text('Login', style: AppStyle.bold28blak),
             const SizedBox(
               height: 33,
             ),
@@ -98,6 +98,7 @@ class form extends StatelessWidget {
                 }
                 return null;
               },
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                   hintText: 'Email Address',
                   suffix: isEmail ? preficon : null,
@@ -134,7 +135,6 @@ class form extends StatelessWidget {
                 } else {
                   isPass = false;
                 }
-                print(isPass);
 
                 AuthAppCubit.get(context).inputfilde();
               },
@@ -143,7 +143,7 @@ class form extends StatelessWidget {
               height: 30,
             ),
             CustomButton(
-              title: 'Sign up',
+              title: 'Login',
               backgraondColor: const Color(0xFF2743FB),
               textStyle: AppStyle.reguler20white,
               iconcolor: Colors.white,
@@ -158,8 +158,7 @@ class form extends StatelessWidget {
               height: 60,
             ),
             const Align(
-                alignment: Alignment.center,
-                child: Text('or using social '))
+                alignment: Alignment.center, child: Text('or using social '))
           ],
         ),
       );

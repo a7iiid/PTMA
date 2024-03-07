@@ -9,6 +9,14 @@ class Assets {
   /// assets/images/mainScreen.svg
   static const String imagesMainScreen = "assets/images/mainScreen.svg";
 
+  /// Assets for imagesMenuIcon
+  /// assets/images/menuIcon.svg
+  static const String imagesMenuIcon = "assets/images/menuIcon.svg";
+
+  /// Assets for imagesRectangle
+  /// assets/images/Rectangle.svg
+  static const String imagesRectangle = "assets/images/Rectangle.svg";
+
   /// Assets for imagesShapes
   /// assets/images/Shapes.svg
   static const String imagesShapes = "assets/images/Shapes.svg";

@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ptma/feture/autth/main_screen.dart';
 import 'package:ptma/feture/autth/presentation/view/signin.dart';
 import 'package:ptma/feture/autth/presentation/view/signup.dart';
-import 'package:ptma/feture/home/presentation/view/home_page.dart';
+import 'package:ptma/feture/home/presentation/home_page.dart';
 import 'package:ptma/splash/splash.dart';
 
 abstract class routes {
@@ -15,7 +15,7 @@ abstract class routes {
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return const SplashView();
+        return SplashView();
       },
     ),
     GoRoute(
@@ -39,7 +39,7 @@ abstract class routes {
     GoRoute(
       path: kHomePage,
       builder: (context, state) {
-        return const HomePage();
+        return HomePage();
       },
     ),
   ]);
