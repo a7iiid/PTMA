@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
+import '../../../manger/method.dart';
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -16,14 +18,7 @@ class _MapPageState extends State<MapPage> {
   GoogleMapController? gmc;
   StreamSubscription<Position>? positionStream;
   StreamSubscription<ServiceStatus>? serviceStatusStream;
-  List<Marker> marker = [
-    const Marker(
-        markerId: MarkerId("1"), position: LatLng(32.411080, 35.282381)),
-    const Marker(
-      markerId: MarkerId("2"),
-      position: LatLng(32.461049, 35.298274),
-    )
-  ];
+  Set<Marker> markers = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -106,15 +101,22 @@ class _MapPageState extends State<MapPage> {
   }
 
   @override
+  void didChangeDependencies() async {
+    markers.addAll(await initMarkers());
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GoogleMap(
+      zoomControlsEnabled: false,
       mapType: MapType.normal,
       initialCameraPosition:
           CameraPosition(target: LatLng(32.409161, 35.279642), zoom: 15),
       onMapCreated: (controller) {
         gmc = controller;
       },
-      markers: marker.toSet(),
+      markers: markers,
       polylines: Set<Polyline>.of(polylines.values),
     );
   }

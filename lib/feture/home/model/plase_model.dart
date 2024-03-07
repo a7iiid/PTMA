@@ -1,7 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PlaseModel {
-  final int id;
+  final String id;
   final String name;
   final LatLng latLng;
 
