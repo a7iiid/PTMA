@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:location/location.dart';
 
 import '../../../manger/method.dart';
 
@@ -16,18 +16,20 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   GoogleMapController? gmc;
-  StreamSubscription<Position>? positionStream;
-  StreamSubscription<ServiceStatus>? serviceStatusStream;
+  // StreamSubscription<Position>? positionStream;
+  // StreamSubscription<ServiceStatus>? serviceStatusStream;
   Set<Marker> markers = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+  late Location location;
   void makeLines() async {
     await polylinePoints
         .getRouteBetweenCoordinates(
       'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
       PointLatLng(32.411080, 35.282381), //Starting LATLANG
       PointLatLng(32.461049, 35.298274), //End LATLANG
+
       travelMode: TravelMode.driving,
     )
         .then((value) {
@@ -42,62 +44,76 @@ class _MapPageState extends State<MapPage> {
   addPolyLine() {
     PolylineId id = PolylineId("poly");
     Polyline polyline = Polyline(
-        polylineId: id, color: Colors.green, points: polylineCoordinates);
+        polylineId: id,
+        color: Colors.green,
+        points: polylineCoordinates,
+        startCap: Cap.roundCap,
+        width: 5);
     polylines[id] = polyline;
     setState(() {});
   }
 
-  _determinePosition() async {
+  Future checkServiceEnabled() async {
     bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        //TODO: SHOW ERROR BAR
+      }
     }
+  }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+  Future<bool> checkParmission() async {
+    var permissionStutas = await location.hasPermission();
+
+    if (permissionStutas == PermissionStatus.denied) {
+      permissionStutas = await location.requestPermission();
+      if (permissionStutas != PermissionStatus.granted) {
+        return false;
       }
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+    return true;
+  }
+
+  void getUserLocation() {
+    location.changeSettings(distanceFilter: 3);
+    var positionStream = Location.instance.onLocationChanged.listen((position) {
+      gmc?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(position.latitude!, position.longitude!),
+              zoom: 15),
+        ),
+      );
+      markers.add(Marker(
+          markerId: MarkerId('user location'),
+          position: LatLng(position.latitude!, position.longitude!)));
+      setState(() {});
+    });
+  }
+
+  void mapServiceApp() async {
+    await checkServiceEnabled();
+    if (await checkParmission()) {
+      getUserLocation();
     }
-
-    if (permission == LocationPermission.whileInUse) {
-      positionStream =
-          Geolocator.getPositionStream().listen((Position? position) {
-        // marker.add(Marker(
-        //     markerId: MarkerId('3'),
-        //     position: LatLng(position!.latitude, position!.longitude)));
-
-        setState(() {});
-
-        // print(position == null
-        //     ? 'Unknown'
-        //     : '${position.latitude.toString()}, ${position.longitude.toString()}');
-      });
-    }
-    setState(() {});
   }
 
   @override
   void initState() {
+    location = Location();
     makeLines();
-    // TODO: implement initState
+
     super.initState();
-    _determinePosition();
+    getUserLocation();
   }
 
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    positionStream!.cancel();
+    gmc?.dispose();
   }
 
   @override
