@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
+import 'package:ptma/feture/home/manger/map_service.dart';
 
 import '../../../manger/method.dart';
 
@@ -16,13 +17,12 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   GoogleMapController? gmc;
-  // StreamSubscription<Position>? positionStream;
-  // StreamSubscription<ServiceStatus>? serviceStatusStream;
+
   Set<Marker> markers = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
-  late Location location;
+  late MapService mapService;
   void makeLines() async {
     await polylinePoints
         .getRouteBetweenCoordinates(
@@ -53,61 +53,37 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-  Future checkServiceEnabled() async {
-    bool serviceEnabled;
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        //TODO: SHOW ERROR BAR
-      }
-    }
-  }
-
-  Future<bool> checkParmission() async {
-    var permissionStutas = await location.hasPermission();
-
-    if (permissionStutas == PermissionStatus.denied) {
-      permissionStutas = await location.requestPermission();
-      if (permissionStutas != PermissionStatus.granted) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  void getUserLocation() {
-    location.changeSettings(distanceFilter: 3);
-    var positionStream = Location.instance.onLocationChanged.listen((position) {
-      gmc?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(position.latitude!, position.longitude!),
-              zoom: 15),
-        ),
-      );
-      markers.add(Marker(
-          markerId: MarkerId('user location'),
-          position: LatLng(position.latitude!, position.longitude!)));
-      setState(() {});
-    });
-  }
-
   void mapServiceApp() async {
-    await checkServiceEnabled();
-    if (await checkParmission()) {
-      getUserLocation();
+    mapService.checkServiceEnabled();
+    if (await mapService.checkParmission()) {
+      mapService.getUserLocation((position) {
+        gmc?.animateCamera(
+          CameraUpdate.newLatLng(
+            LatLng(position.latitude!, position.longitude!),
+          ),
+        );
+        setUserMarker(position);
+      });
     }
+  }
+
+  void setUserMarker(LocationData position) {
+    markers.add(
+      Marker(
+        markerId: MarkerId('user location'),
+        position: LatLng(position.latitude!, position.longitude!),
+      ),
+    );
+    setState(() {});
   }
 
   @override
   void initState() {
-    location = Location();
+    mapService = MapService();
     makeLines();
 
     super.initState();
-    getUserLocation();
+    mapServiceApp();
   }
 
   void dispose() {
