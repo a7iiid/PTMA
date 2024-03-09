@@ -54,9 +54,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   void mapServiceApp() async {
-    mapService.checkServiceEnabled();
-    if (await mapService.checkParmission()) {
-      mapService.getUserLocation((position) {
+    try {
+      mapService.getUserRealTimeLocation((position) {
         gmc?.animateCamera(
           CameraUpdate.newLatLng(
             LatLng(position.latitude!, position.longitude!),
@@ -64,6 +63,12 @@ class _MapPageState extends State<MapPage> {
         );
         setUserMarker(position);
       });
+    } on ServiceEnabelExption catch (e) {
+      // TODO
+    } on PermissionExption catch (e) {
+      // TODO
+    } on Exception catch (e) {
+      //TODO :
     }
   }
 

@@ -4,7 +4,8 @@ import 'package:ptma/core/utils/Style.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
-      {super.key, required this.title,
+      {super.key,
+      required this.title,
       this.backgraondColor = const Color(0xff4960F9),
       this.textStyle = AppStyle.reguler20prime,
       this.iconcolor = Colors.white,

@@ -1,6 +1,6 @@
 class Assets {
   Assets._();
-  
+
   /// Assets for imagesIsTrue
   /// assets/images/isTrue.svg
   static const String imagesIsTrue = "assets/images/isTrue.svg";
@@ -33,4 +33,3 @@ class Assets {
   /// assets/images/splash.jpg
   static const String imagesSplash = "assets/images/splash.jpg";
 }
-
