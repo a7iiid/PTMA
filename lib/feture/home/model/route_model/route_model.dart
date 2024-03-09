@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'route.dart';
 
-class RouteModel {
+class RoutesModel {
   List<Route>? routes;
 
-  RouteModel({this.routes});
+  RoutesModel({this.routes});
 
-  factory RouteModel.fromMap(Map<String, dynamic> data) => RouteModel(
+  factory RoutesModel.fromMap(Map<String, dynamic> data) => RoutesModel(
         routes: (data['routes'] as List<dynamic>?)
             ?.map((e) => Route.fromMap(e as Map<String, dynamic>))
             .toList(),
@@ -19,13 +19,13 @@ class RouteModel {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [RouteModel].
-  factory RouteModel.fromJson(String data) {
-    return RouteModel.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [RoutesModel].
+  factory RoutesModel.fromJson(String data) {
+    return RoutesModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [RouteModel] to a JSON string.
+  /// Converts [RoutesModel] to a JSON string.
   String toJson() => json.encode(toMap());
 }
