@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'polyline.dart';
 
-class Route {
+class RouteModel {
   int? distanceMeters;
   String? duration;
   Polyline? polyline;
 
-  Route({this.distanceMeters, this.duration, this.polyline});
+  RouteModel({this.distanceMeters, this.duration, this.polyline});
 
-  factory Route.fromMap(Map<String, dynamic> data) => Route(
+  factory RouteModel.fromMap(Map<String, dynamic> data) => RouteModel(
         distanceMeters: data['distanceMeters'] as int?,
         duration: data['duration'] as String?,
         polyline: data['polyline'] == null
@@ -25,13 +25,13 @@ class Route {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [Route].
-  factory Route.fromJson(String data) {
-    return Route.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [RouteModel].
+  factory RouteModel.fromJson(String data) {
+    return RouteModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [Route] to a JSON string.
+  /// Converts [RouteModel] to a JSON string.
   String toJson() => json.encode(toMap());
 }

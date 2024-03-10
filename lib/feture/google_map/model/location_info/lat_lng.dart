@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class LatLng {
+class LatLngModel {
   double? latitude;
   double? longitude;
 
-  LatLng({this.latitude, this.longitude});
+  LatLngModel({this.latitude, this.longitude});
 
-  factory LatLng.fromMap(Map<String, dynamic> data) => LatLng(
+  factory LatLngModel.fromMap(Map<String, dynamic> data) => LatLngModel(
         latitude: (data['latitude'] as num?)?.toDouble(),
         longitude: (data['longitude'] as num?)?.toDouble(),
       );
@@ -18,13 +18,13 @@ class LatLng {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [LatLng].
-  factory LatLng.fromJson(String data) {
-    return LatLng.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [LatLngModel].
+  factory LatLngModel.fromJson(String data) {
+    return LatLngModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [LatLng] to a JSON string.
+  /// Converts [LatLngModel] to a JSON string.
   String toJson() => json.encode(toMap());
 }

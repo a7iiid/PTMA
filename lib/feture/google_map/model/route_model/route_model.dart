@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'route.dart';
 
 class RoutesModel {
-  List<Route>? routes;
+  List<RouteModel>? routes;
 
   RoutesModel({this.routes});
 
   factory RoutesModel.fromMap(Map<String, dynamic> data) => RoutesModel(
         routes: (data['routes'] as List<dynamic>?)
-            ?.map((e) => Route.fromMap(e as Map<String, dynamic>))
+            ?.map((e) => RouteModel.fromMap(e as Map<String, dynamic>))
             .toList(),
       );
 

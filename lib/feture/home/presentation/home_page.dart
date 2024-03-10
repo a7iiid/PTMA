@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
-import 'package:ptma/feture/home/presentation/view/maps/homemap.dart';
+import 'package:ptma/feture/google_map/view/homemap.dart';
 import 'package:ptma/shapes/home_screen.dart';
 
 import 'widget/head_home_page.dart';
