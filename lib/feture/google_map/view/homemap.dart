@@ -8,6 +8,10 @@ import 'package:ptma/feture/google_map/manegar/map_service.dart';
 import 'package:ptma/feture/google_map/manegar/routes_service.dart';
 
 import '../../../core/utils/manger/method.dart';
+import '../model/location_info/lat_lng.dart';
+import '../model/location_info/location.dart';
+import '../model/location_info/location_info.dart';
+import '../model/route_model/route_model.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -43,6 +47,7 @@ class _MapPageState extends State<MapPage> {
         .then((value) {
       value.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        routesService.destans(userDestnationData, userLocationData);
       });
     }).then((value) {
       addPolyLine();
@@ -104,6 +109,7 @@ class _MapPageState extends State<MapPage> {
     mapServiceApp();
   }
 
+  @override
   void dispose() {
     super.dispose();
     googleMapController?.dispose();
@@ -137,33 +143,33 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  // Future<List<LatLng>> getRouteData() async {
-  //   LocationInfoModel origindata = LocationInfoModel(
-  //     location: LocationModel(
-  //       latLng: LatLngModel(
-  //           latitude: userLocationData.latitude,
-  //           longitude: userLocationData.longitude),
-  //     ),
-  //   );
-  //   LocationInfoModel destinationData = LocationInfoModel(
-  //     location: LocationModel(
-  //       latLng: LatLngModel(
-  //           latitude: userDestnationData.latitude,
-  //           longitude: userDestnationData.longitude),
-  //     ),
-  //   );
-  //   RoutesModel route = await routesService.fechRoutes(
-  //       origindata: origindata, destinationData: destinationData);
-  //   List<PointLatLng> result = polylinePoints
-  //       .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
-  //   List<LatLng> pointes =
-  //       result.map((e) => LatLng(e.latitude, e.longitude)).toList();
-  //   return pointes;
-  // }
+  Future<List<LatLng>> getRouteData() async {
+    LocationInfoModel origindata = LocationInfoModel(
+      location: LocationModel(
+        latLng: LatLngModel(
+            latitude: userLocationData.latitude,
+            longitude: userLocationData.longitude),
+      ),
+    );
+    LocationInfoModel destinationData = LocationInfoModel(
+      location: LocationModel(
+        latLng: LatLngModel(
+            latitude: userDestnationData.latitude,
+            longitude: userDestnationData.longitude),
+      ),
+    );
+    RoutesModel route = await routesService.fetchRoutes(
+        origindata: origindata, destinationData: destinationData);
+    List<PointLatLng> result = polylinePoints
+        .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
+    List<LatLng> pointes =
+        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return pointes;
+  }
 
-  // void displayPoint(List<LatLng> point) {
-  //   Polyline route = Polyline(polylineId: PolylineId('route'), points: point);
-  //   polylinepoint.add(route);
-  //   setState(() {});
-  // }
+  void displayPoint(List<LatLng> point) {
+    Polyline route = Polyline(polylineId: PolylineId('route'), points: point);
+    polylinepoint.add(route);
+    setState(() {});
+  }
 }

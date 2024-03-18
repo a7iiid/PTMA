@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
-import 'package:ptma/shapes/home_screen.dart';
+import 'package:ptma/core/utils/shapes/home_screen.dart';
 
 import 'widget/head_home_page.dart';
 
@@ -16,36 +16,74 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Stack(clipBehavior: Clip.none, children: [
-              const HeadHomePage(),
-              Padding(
-                padding: const EdgeInsets.only(top: 50, left: 20),
-                child: SvgPicture.asset(Assets.imagesMenuIcon),
+        body: MainHomePage(),
+        bottomNavigationBar:
+            BottomNavigationBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.black,
               ),
-              Positioned(
-                bottom: -MediaQuery.sizeOf(context).height * .15,
-                left: 40,
-                right: 40,
-                child: Container(
-                  decoration: const ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      color: Colors.amber),
-                  height: MediaQuery.sizeOf(context).height * .45,
-                  width: MediaQuery.sizeOf(context).width * .7,
-                  child: MapPage(),
-                ),
+              label: 'Location'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.qr_code_scanner_outlined,
+                color: Colors.black,
               ),
-            ]),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * .244,
-            ),
-            CustomButton(title: 'select rout', function: () {})
-          ],
-        ),
+              label: 'Location'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.history,
+                color: Colors.black,
+              ),
+              label: 'Location'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+              label: 'Location'),
+        ]),
       ),
+    );
+  }
+}
+
+class MainHomePage extends StatelessWidget {
+  const MainHomePage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Stack(clipBehavior: Clip.none, children: [
+          const HeadHomePage(),
+          Padding(
+            padding: const EdgeInsets.only(top: 50, left: 20),
+            child: SvgPicture.asset(Assets.imagesMenuIcon),
+          ),
+          Positioned(
+            bottom: -MediaQuery.sizeOf(context).height * .15,
+            left: 40,
+            right: 40,
+            child: Container(
+              decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  color: Colors.amber),
+              height: MediaQuery.sizeOf(context).height * .45,
+              width: MediaQuery.sizeOf(context).width * .7,
+              child: MapPage(),
+            ),
+          ),
+        ]),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * .244,
+        ),
+        CustomButton(title: 'select rout', function: () {})
+      ],
     );
   }
 }

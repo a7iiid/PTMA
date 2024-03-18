@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ptma/shapes/home_screen.dart';
+import 'package:ptma/core/utils/shapes/home_screen.dart';
 
 class HeadHomePage extends StatelessWidget {
   const HeadHomePage({

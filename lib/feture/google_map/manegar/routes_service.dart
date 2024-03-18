@@ -26,36 +26,49 @@ class RoutesService {
     }
   }
 
-  // Future<RoutesModel> fechRoutes(
-  //     {required LocationInfoModel origindata,
-  //     required LocationInfoModel destinationData,
-  //     RouteConfigers? routeConfigers}) async {
-  //   Uri uri = Uri.parse(baseUrldirections);
-  //   Map<String, String> headers = {
-  //     'Content-Type': 'application/json',
-  //     'X-Goog-Api-Key': 'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
-  //     'X-Goog-FieldMask':
-  //         'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline'
-  //   };
+  Future<RoutesModel> fetchRoutes({
+    required LocationInfoModel origindata,
+    required LocationInfoModel destinationData,
+    RouteConfigers? routeConfigers,
+  }) async {
+    final dio = Dio();
+    const String baseUrl =
+        'https://routes.googleapis.com/directions/v2:computeRoutes';
+    const String apiKey = 'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo';
 
-  //   Map<String, dynamic> body = {
-  //     "origin": origindata.toJson(),
-  //     "destination": destinationData.toJson(),
-  //     "travelMode": "DRIVE",
-  //     "routingPreference": "TRAFFIC_AWARE",
-  //     "routeModifiers": routeConfigers != null
-  //         ? routeConfigers.toJson()
-  //         : RouteConfigers().toJson(),
-  //     "languageCode": "en-US",
-  //     "units": "IMPERIAL"
-  //   };
+    Map<String, dynamic> body = {
+      "origin": origindata.toJson(),
+      "destination": destinationData.toJson(),
+      "travelMode": "DRIVE",
+      "routingPreference": "TRAFFIC_AWARE",
+      "routeModifiers": routeConfigers != null
+          ? routeConfigers.toJson()
+          : RouteConfigers().toJson(),
+      "languageCode": "en-US",
+      "units": "IMPERIAL"
+    };
 
-  //   var respons =
-  //       await http.post(uri, headers: headers, body: jsonEncode(body));
-  //   if (respons.statusCode == 200) {
-  //     return RoutesModel.fromJson(jsonDecode(respons.body));
-  //   } else {
-  //     throw 'Route Not Found${respons.statusCode}';
-  //   }
-  // }
+    try {
+      final response = await dio.post(
+        baseUrl,
+        queryParameters: {'key': apiKey},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-FieldMask':
+                'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline'
+          },
+        ),
+        data: body,
+      );
+
+      if (response.statusCode == 200) {
+        return RoutesModel.fromJson(response.data);
+      } else {
+        throw 'Route Not Found ${response.statusCode}';
+      }
+    } catch (e) {
+      throw 'Failed to fetch routes: $e';
+    }
+  }
 }

@@ -3,7 +3,7 @@ import 'package:ptma/feture/autth/main_screen.dart';
 import 'package:ptma/feture/autth/presentation/view/signin.dart';
 import 'package:ptma/feture/autth/presentation/view/signup.dart';
 import 'package:ptma/feture/home/presentation/home_page.dart';
-import 'package:ptma/splash/splash.dart';
+import 'package:ptma/core/utils/splash/splash.dart';
 
 abstract class routes {
   static const kMainScreen = '/mainScreen';
