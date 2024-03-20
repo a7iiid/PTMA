@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:location/location.dart';
 
 class MapService {
   Location location = Location();
+  StreamSubscription<LocationData>? positionStream;
+
   Future<void> checkServiceEnabled() async {
     bool serviceEnabled;
     serviceEnabled = await location.serviceEnabled();
@@ -31,13 +35,17 @@ class MapService {
     await checkServiceEnabled();
     await checkParmission();
     location.changeSettings(distanceFilter: 3);
-    var positionStream = Location.instance.onLocationChanged.listen(onData);
+    positionStream = Location.instance.onLocationChanged.listen(onData);
   }
 
   Future<LocationData> getLucation() async {
     await checkServiceEnabled();
     await checkParmission();
     return await location.getLocation();
+  }
+
+  void endMap() {
+    positionStream!.cancel();
   }
 }
 
