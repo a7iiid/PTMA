@@ -70,6 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '869932988389',
     projectId: 'ptma-9c13f',
     storageBucket: 'ptma-9c13f.appspot.com',
+    androidClientId: '869932988389-unne8vkfmta5u39ub8b05q5jqli6fgcr.apps.googleusercontent.com',
+    iosClientId: '869932988389-i4olqqrntk0913dtfoqch6rrvohevfsp.apps.googleusercontent.com',
     iosBundleId: 'com.example.ptma',
   );
 }
