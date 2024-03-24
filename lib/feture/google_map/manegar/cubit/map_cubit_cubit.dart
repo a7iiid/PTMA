@@ -9,8 +9,10 @@ import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/utils/manger/method.dart';
+import '../../model/routes_model/routes_model.dart';
 import '../map_service.dart';
 import '../routes_service.dart';
+import 'package:dio/dio.dart';
 
 part 'map_cubit_state.dart';
 
@@ -18,6 +20,7 @@ class MapCubit extends Cubit<MapState> {
   MapCubit() : super(MapInitial());
   static get(context) => BlocProvider.of<MapCubit>(context);
   GoogleMapController? googleMapController;
+  final String apiKey = 'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo';
 
   List<LatLng> polylineCoordinates = [];
   Set<Polyline> polylines = {};
@@ -26,6 +29,9 @@ class MapCubit extends Cubit<MapState> {
   late LatLng userDestnationData;
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
+  PolylinePoints polylinePoints = PolylinePoints();
+
+  Dio dio = Dio();
 
   void mapServiceApp() async {
     try {
@@ -59,7 +65,7 @@ class MapCubit extends Cubit<MapState> {
       ),
     );
     if (polylineCoordinates.isNotEmpty) {
-      routesService.destans(userDestnationData, userLocationData);
+      //routesService.destans(userDestnationData, userLocationData);
     }
   }
 
@@ -79,55 +85,88 @@ class MapCubit extends Cubit<MapState> {
     markers.addAll(myMarker);
   }
 
-  Future<void> makeLines({LatLng? start, LatLng? end}) async {
-    emit(MapSetLine());
-    await PolylinePoints()
-        .getRouteBetweenCoordinates(
-      'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
-      PointLatLng(userLocationData.latitude,
-          userLocationData.longitude), //Starting LATLANG
-      PointLatLng(userDestnationData.latitude,
-          userDestnationData.longitude), //End LATLANG
-
-      travelMode: TravelMode.driving,
-    )
-        .then((value) {
-      value.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-        // routesService.destans(userDestnationData, userLocationData);
-      });
-    }).then((value) {
-      addPolyLine();
-    });
-    if (start != null && end != null) {
-      await PolylinePoints()
-          .getRouteBetweenCoordinates(
-        'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
-        PointLatLng(start.latitude, start.longitude), //Starting LATLANG
-        PointLatLng(end.latitude, end.longitude), //End LATLANG
-
-        travelMode: TravelMode.driving,
-      )
-          .then((value) {
-        value.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-          // routesService.destans(userDestnationData, userLocationData);
-        });
-      }).then((value) {
-        addPolyLine();
-      });
+  Future<void> destans(LatLng destination, LatLng start) async {
+    String baseUrlDistanceMatrix =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=$apiKey';
+    try {
+      Response response = await dio.get(baseUrlDistanceMatrix);
+      print(response);
+    } on Exception catch (e) {
+      // TODO
     }
   }
 
-  addPolyLine() {
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-        polylineId: id,
+  Future<List<LatLng>> getRouteData() async {
+    RoutesModel route = await routesService.fetchRoutes(
+        origindata: userLocationData, destinationData: userDestnationData);
+
+    print(route.routes!.first.polyline!.encodedPolyline!);
+    List<PointLatLng> result = polylinePoints
+        .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
+    List<LatLng> pointes =
+        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return pointes;
+  }
+
+  void displayPoint(List<LatLng> point) {
+    Polyline route = Polyline(
+        polylineId: PolylineId('route'),
+        points: point,
         color: Colors.green,
-        points: polylineCoordinates,
         startCap: Cap.roundCap,
         width: 4);
-    polylines.add(polyline);
-    emit(MapSuccess());
+    polylines.add(route);
+    emit(MapSetLine());
   }
 }
+//  Future<void> makeLines({LatLng? start, LatLng? end}) async {
+//     emit(MapSetLine());
+//     await PolylinePoints()
+//         .getRouteBetweenCoordinates(
+//       'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
+//       PointLatLng(userLocationData.latitude,
+//           userLocationData.longitude), //Starting LATLANG
+//       PointLatLng(userDestnationData.latitude,
+//           userDestnationData.longitude), //End LATLANG
+
+//       travelMode: TravelMode.driving,
+//     )
+//         .then((value) {
+//       value.points.forEach((PointLatLng point) {
+//         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//         // routesService.destans(userDestnationData, userLocationData);
+//       });
+//     }).then((value) {
+//       addPolyLine();
+//     });
+//     if (start != null && end != null) {
+//       await PolylinePoints()
+//           .getRouteBetweenCoordinates(
+//         'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
+//         PointLatLng(start.latitude, start.longitude), //Starting LATLANG
+//         PointLatLng(end.latitude, end.longitude), //End LATLANG
+
+//         travelMode: TravelMode.driving,
+//       )
+//           .then((value) {
+//         value.points.forEach((PointLatLng point) {
+//           polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//           // routesService.destans(userDestnationData, userLocationData);
+//         });
+//       }).then((value) {
+//         addPolyLine();
+//       });
+//     }
+//   }
+
+//   addPolyLine() {
+//     PolylineId id = PolylineId("poly");
+//     Polyline polyline = Polyline(
+//         polylineId: id,
+//         color: Colors.green,
+//         points: polylineCoordinates,
+//         startCap: Cap.roundCap,
+//         width: 4);
+//     polylines.add(polyline);
+//     emit(MapSuccess());
+//   }

@@ -137,7 +137,8 @@ class MapPage extends StatelessWidget {
 
               MapCubit.get(context).userDestnationData =
                   LatLng(destnation.latitude, destnation.longitude);
-              await MapCubit.get(context).makeLines();
+              MapCubit.get(context)
+                  .displayPoint(await MapCubit.get(context).getRouteData());
             },
             markers: MapCubit.get(context).markers,
             polylines: MapCubit.get(context).polylines,

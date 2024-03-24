@@ -5,10 +5,7 @@ class RouteConfigers {
   bool? avoidHighways;
   bool? avoidFerries;
 
-  RouteConfigers(
-      {this.avoidTolls = false,
-      this.avoidHighways = false,
-      this.avoidFerries = false});
+  RouteConfigers({this.avoidTolls, this.avoidHighways, this.avoidFerries});
 
   factory RouteConfigers.fromMap(Map<String, dynamic> data) {
     return RouteConfigers(

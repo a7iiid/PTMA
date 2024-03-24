@@ -5,7 +5,7 @@ import 'polyline.dart';
 class RouteModel {
   int? distanceMeters;
   String? duration;
-  Polyline? polyline;
+  PolylineModel? polyline;
 
   RouteModel({this.distanceMeters, this.duration, this.polyline});
 
@@ -14,7 +14,7 @@ class RouteModel {
         duration: data['duration'] as String?,
         polyline: data['polyline'] == null
             ? null
-            : Polyline.fromMap(data['polyline'] as Map<String, dynamic>),
+            : PolylineModel.fromMap(data['polyline'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toMap() => {
