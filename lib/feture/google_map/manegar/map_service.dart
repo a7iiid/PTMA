@@ -4,7 +4,7 @@ import 'package:location/location.dart';
 
 class MapService {
   Location location = Location();
-  StreamSubscription<LocationData>? positionStream;
+  static StreamSubscription<LocationData>? positionStream;
 
   Future<void> checkServiceEnabled() async {
     bool serviceEnabled;

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
-import 'package:ptma/feture/home/presentation/widget/head_home_page.dart';
+import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
 
 class MainHomePage extends StatelessWidget {
   const MainHomePage({

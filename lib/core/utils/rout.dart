@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ptma/feture/autth/main_screen.dart';
 import 'package:ptma/feture/autth/presentation/view/signin.dart';
 import 'package:ptma/feture/autth/presentation/view/signup.dart';
-import 'package:ptma/home_page.dart';
+import 'package:ptma/feture/home/presentation/view/home_page.dart';
 import 'package:ptma/core/utils/splash/splash.dart';
 
 abstract class routes {

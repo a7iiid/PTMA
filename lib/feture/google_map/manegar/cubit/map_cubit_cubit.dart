@@ -72,8 +72,10 @@ class MapCubit extends Cubit<MapState> {
   void setStation() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('station').get();
+
     var customMarkerIcone = BitmapDescriptor.fromBytes(
         await getImageFromRowData('assets/images/marker.jpg', 50));
+
     var myMarker = querySnapshot.docs
         .map((plasemodel) => Marker(
             icon: customMarkerIcone,
@@ -100,7 +102,6 @@ class MapCubit extends Cubit<MapState> {
     RoutesModel route = await routesService.fetchRoutes(
         origindata: userLocationData, destinationData: userDestnationData);
 
-    print(route.routes!.first.polyline!.encodedPolyline!);
     List<PointLatLng> result = polylinePoints
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
     List<LatLng> pointes =
