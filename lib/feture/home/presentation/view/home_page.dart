@@ -28,15 +28,16 @@ class HomePage extends StatelessWidget {
           },
           builder: (context, state) {
             return Scaffold(
-              body: state is AppChangeScreen
-                  ? AppCubit.get(context).pages[state.activeTab]
-                  : AppCubit.get(context).pages[0],
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: AppCubit.get(context).selectedPage,
-                onTap: (value) => AppCubit.get(context).onTapNav(value),
-                items: AppCubit.get(context).bottomItems,
-              ),
-            );
+                body: AppCubit.get(context)
+                    .pages[AppCubit.get(context).selectedPage],
+                bottomNavigationBar: BottomNavigationBar(
+                  items: AppCubit.get(context).bottomItems,
+                  currentIndex: AppCubit.get(context).selectedPage,
+                  onTap: (index) {
+                    AppCubit.get(context).onTapNav(index);
+                  },
+                  selectedItemColor: Colors.blue,
+                ));
           },
         ),
       ),

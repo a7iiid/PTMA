@@ -17,33 +17,6 @@ class AppCubit extends Cubit<AppState> {
   static get(context) => BlocProvider.of<AppCubit>(context);
   int selectedPage = 0;
 
-  List<BottomNavigationBarItem> bottomItems = [
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.home,
-          // color: selectedPage == 0 ? Colors.blue : Colors.black,
-        ),
-        label: 'Location'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.qr_code_scanner_outlined,
-          // color: selectedPage == 1 ? Colors.blue : Colors.black,
-        ),
-        label: 'Location'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.history,
-          // color: selectedPage == 2 ? Colors.blue : Colors.black,
-        ),
-        label: 'Location'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.person,
-          // color: selectedPage == 3 ? Colors.blue : Colors.black,
-        ),
-        label: 'Location'),
-  ];
-
   List<Widget> pages = const [
     MainHomePage(),
     QrCodePage(),
@@ -51,11 +24,66 @@ class AppCubit extends Cubit<AppState> {
     ProfilePage()
   ];
 
+  List<BottomNavigationBarItem> bottomItems = [
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.home,
+          color: Colors.blue,
+        ),
+        label: 'Home'),
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.qr_code_scanner_outlined,
+          color: Colors.black,
+        ),
+        label: 'Pey'),
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.history,
+          color: Colors.black,
+        ),
+        label: 'History'),
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.person,
+          color: Colors.black,
+        ),
+        label: 'Profile'),
+  ];
+
   Widget onTapNav(int index) {
     if (index != 0) {
       MapService.positionStream?.cancel();
     }
+
     selectedPage = index;
+    bottomItems = [
+      BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home,
+            color: selectedPage == 0 ? Colors.blue : Colors.black,
+          ),
+          label: 'Home'),
+      BottomNavigationBarItem(
+          icon: Icon(
+            Icons.qr_code_scanner_outlined,
+            color: selectedPage == 1 ? Colors.blue : Colors.black,
+          ),
+          label: 'Pey'),
+      BottomNavigationBarItem(
+          icon: Icon(
+            Icons.history,
+            color: selectedPage == 2 ? Colors.blue : Colors.black,
+          ),
+          label: 'History'),
+      BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            color: selectedPage == 3 ? Colors.blue : Colors.black,
+          ),
+          label: 'Profile'),
+    ];
+
     emit(AppChangeScreen(activeTab: index));
     return pages[index];
   }
