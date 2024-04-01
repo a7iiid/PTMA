@@ -9,9 +9,9 @@ import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/utils/manger/method.dart';
-import '../../model/routes_model/routes_model.dart';
-import '../map_service.dart';
-import '../routes_service.dart';
+import '../../data/model/routes_model/routes_model.dart';
+import '../../../../core/utils/ApiServes/map_service.dart';
+import '../../../../core/utils/ApiServes/routes_service.dart';
 import 'package:dio/dio.dart';
 
 part 'map_cubit_state.dart';

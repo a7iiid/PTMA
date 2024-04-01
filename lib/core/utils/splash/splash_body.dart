@@ -64,9 +64,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
       // Get.to(const HomeView(),
       // transition: Transition.downToUp, duration: TransitionDuretion);
       if (FirebaseAuth.instance.currentUser == null) {
-        GoRouter.of(context).push(routes.kMainScreen);
+        GoRouter.of(context).push(Routes.kMainScreen);
       } else {
-        GoRouter.of(context).push(routes.kHomePage);
+        GoRouter.of(context).push(Routes.kHomePage);
       }
     });
   }

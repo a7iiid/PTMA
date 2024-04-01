@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../model/route_configers.dart';
+import '../../../feture/google_map/data/model/route_configers.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/routes_model/routes_model.dart';
+import '../../../feture/google_map/data/model/routes_model/routes_model.dart';
 
 class RoutesService {
   // Dio dio = new Dio();

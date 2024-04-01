@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ptma/feture/google_map/model/plase_model.dart';
+import 'package:ptma/feture/google_map/data/model/plase_model.dart';
 
 List<PlaseModel> marker = [
   PlaseModel(

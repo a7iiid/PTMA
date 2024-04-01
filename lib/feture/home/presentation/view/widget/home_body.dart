@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
 import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
+
+import '../../../../../core/utils/rout.dart';
 
 class MainHomePage extends StatelessWidget {
   const MainHomePage({
@@ -42,7 +45,11 @@ class MainHomePage extends StatelessWidget {
         SizedBox(
           height: MediaQuery.sizeOf(context).height * .30,
         ),
-        CustomButton(title: 'select rout', function: () {})
+        CustomButton(
+            title: 'select rout',
+            function: () {
+              GoRouter.of(context).push(Routes.kSelectRouts);
+            })
       ],
     );
   }

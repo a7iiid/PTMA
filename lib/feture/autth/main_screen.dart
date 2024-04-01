@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
                   child: CustomButton(
                     title: 'Sign in',
                     function: () {
-                      GoRouter.of(context).push(routes.kSigninScreen);
+                      GoRouter.of(context).push(Routes.kSigninScreen);
                     },
                   ),
                 ),
@@ -46,7 +46,7 @@ class MainScreen extends StatelessWidget {
                     textStyle: AppStyle.reguler20white,
                     iconcolor: const Color(0xFF2743FB),
                     function: () {
-                      GoRouter.of(context).push(routes.kSignUpScreen);
+                      GoRouter.of(context).push(Routes.kSignUpScreen);
                     },
                   ),
                 ),

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:ptma/feture/google_map/manegar/map_service.dart';
+import 'package:ptma/core/utils/ApiServes/map_service.dart';
 
 import '../../../../google_map/manegar/cubit/map_cubit_cubit.dart';
 import '../../../../history/history_page.dart';
