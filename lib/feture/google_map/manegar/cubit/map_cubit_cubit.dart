@@ -7,6 +7,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:meta/meta.dart';
+import 'package:ptma/core/utils/apiKey.dart';
 
 import '../../../../core/utils/manger/method.dart';
 import '../../data/model/routes_model/routes_model.dart';
@@ -22,7 +23,6 @@ class MapCubit extends Cubit<MapState> {
   MapCubit() : super(MapInitial());
   static get(context) => BlocProvider.of<MapCubit>(context);
   GoogleMapController? googleMapController;
-  final String apiKey = 'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo';
 
   List<LatLng> polylineCoordinates = [];
   Set<Polyline> polylines = {};
@@ -92,7 +92,7 @@ class MapCubit extends Cubit<MapState> {
 
   Future<void> destans(LatLng destination, LatLng start) async {
     String baseUrlDistanceMatrix =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=$apiKey';
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=${ApiKey.mapApiKey}';
     try {
       Response response = await dio.get(baseUrlDistanceMatrix);
       print(response);
@@ -127,7 +127,7 @@ class MapCubit extends Cubit<MapState> {
 //     emit(MapSetLine());
 //     await PolylinePoints()
 //         .getRouteBetweenCoordinates(
-//       'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo',
+//       apikey,
 //       PointLatLng(userLocationData.latitude,
 //           userLocationData.longitude), //Starting LATLANG
 //       PointLatLng(userDestnationData.latitude,
