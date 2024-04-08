@@ -3,24 +3,24 @@ class PaymentInputIntantModel {
   final String currency;
   final String customerId;
 
-  PaymentInputIntantModel(
-      {required this.customerId, required this.amount, required this.currency});
+  PaymentInputIntantModel({
+    required this.customerId,
+    required String amount,
+    required this.currency,
+  }) : amount = amount.asAmount;
 
   toJson() {
-    return {
-      'amount': amount.asAmount as String,
-      'currency': currency,
-      'customer': customerId
-    };
+    return {'amount': amount, 'currency': currency, 'customer': customerId};
   }
 }
 
-extension on String {
+extension amauntPrice on String {
   String get asAmount {
-    int? parsedValue = int.tryParse(this);
+    String parsedValue = (double.parse(this) * 100).toString();
     if (parsedValue == null) {
       throw FormatException('Invalid amount format');
     }
-    return (parsedValue * 100).toString();
+    var value = parsedValue.split(RegExp(r'\.'));
+    return ((value[0]));
   }
 }
