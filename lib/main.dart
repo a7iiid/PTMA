@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/them_app.dart';
 import 'firebase_options.dart';
 import 'core/utils/rout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = ApiKey.publishableKey;
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

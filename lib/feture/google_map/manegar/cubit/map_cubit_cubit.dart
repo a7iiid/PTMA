@@ -14,6 +14,8 @@ import '../../../../core/utils/ApiServes/map_service.dart';
 import '../../../../core/utils/ApiServes/routes_service.dart';
 import 'package:dio/dio.dart';
 
+import '../../data/model/station_model.dart';
+
 part 'map_cubit_state.dart';
 
 class MapCubit extends Cubit<MapState> {
@@ -77,12 +79,13 @@ class MapCubit extends Cubit<MapState> {
         await getImageFromRowData('assets/images/marker.jpg', 50));
 
     var myMarker = querySnapshot.docs
-        .map((plasemodel) => Marker(
-            icon: customMarkerIcone,
-            markerId: MarkerId(plasemodel.id),
-            position: LatLng(plasemodel['latitude'] as double,
-                plasemodel['longitude'] as double),
-            infoWindow: InfoWindow(title: plasemodel['name'])))
+        .map((doc) => StationModel.fromJson(doc.data() as Map<String, dynamic>))
+        .map((station) => Marker(
+              icon: customMarkerIcone,
+              markerId: MarkerId(station.name),
+              position: LatLng(station.latitude, station.longitude),
+              infoWindow: InfoWindow(title: station.name),
+            ))
         .toSet();
     markers.addAll(myMarker);
   }

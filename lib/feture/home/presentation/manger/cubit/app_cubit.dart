@@ -6,7 +6,7 @@ import 'package:ptma/core/utils/ApiServes/map_service.dart';
 
 import '../../../../google_map/manegar/cubit/map_cubit_cubit.dart';
 import '../../../../history/history_page.dart';
-import '../../../../payment/qr_pymant.dart';
+import '../../../../payment/view/paymant_details_view.dart';
 import '../../../../user_profile/profile_page.dart';
 import '../../view/widget/home_body.dart';
 
@@ -19,7 +19,7 @@ class AppCubit extends Cubit<AppState> {
 
   List<Widget> pages = const [
     MainHomePage(),
-    QrCodePage(),
+    PaymentDetails(),
     TripHistoryPage(),
     ProfilePage()
   ];
