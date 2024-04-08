@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../model/paymant_model.dart';
+import '../../../stripe/model/paymant_model.dart';
 
 class PymantItemSelected extends StatelessWidget {
   PymantItemSelected({

@@ -7,9 +7,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../data/models/payment_input_intint_model.dart';
-import '../data/repo/checkout_repo_implemantation.dart';
-import '../manger/cubit/payment_cubit.dart';
+import '../stripe/data/models/payment_input_intint_model.dart';
+import '../stripe/data/repo/checkout_repo_implemantation.dart';
+import '../stripe/cubit/payment_cubit.dart';
 import 'thank_you_view.dart';
 import 'widget/custom_bottom.dart';
 

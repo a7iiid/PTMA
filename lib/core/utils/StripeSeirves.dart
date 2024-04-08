@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 
-import '../../feture/payment/data/models/payment_input_intint_model.dart';
-import '../../feture/payment/data/models/payment_intint_model/payment_intint_model.dart';
+import '../../feture/payment/stripe/data/models/payment_input_intint_model.dart';
+import '../../feture/payment/stripe/data/models/payment_intint_model/payment_intint_model.dart';
 import 'ApiServes/payment_api.dart';
 
 class StripeSeirves {
