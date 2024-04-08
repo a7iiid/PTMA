@@ -22,6 +22,19 @@ class StripeSeirves {
     return paymentInintModel;
   }
 
+//TODO:
+  Future<PaymentIntintModel> createCustomerIntint(
+      PaymentInputIntantModel paymentInputIntantModel) async {
+    var response = await apiSeirves.post(
+      url: 'https://api.stripe.com/v1/customers',
+      body: paymentInputIntantModel.toJson(),
+      token: ApiKey.secretKeyStripe,
+      contentType: Headers.formUrlEncodedContentType,
+    );
+    var paymentInintModel = PaymentIntintModel.fromJson(response.data);
+    return paymentInintModel;
+  }
+
   Future initPaymentSheet({required String paymentIntintClintSecret}) async {
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(

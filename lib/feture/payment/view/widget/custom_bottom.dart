@@ -14,17 +14,19 @@ class customBottom extends StatefulWidget {
 class _customBottomState extends State<customBottom> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 73,
-      decoration: ShapeDecoration(
-        color: Color(0xFF34A853),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        width: double.infinity,
+        height: 73,
+        decoration: ShapeDecoration(
+          color: Color(0xFF34A853),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
         ),
+        child: const Center(child: Text("Submit")),
       ),
-      child: GestureDetector(
-          onTap: widget.onTap, child: const Center(child: Text("Submit"))),
     );
   }
 }

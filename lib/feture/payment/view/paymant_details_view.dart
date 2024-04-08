@@ -55,8 +55,12 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         formKey: formKey,
                         onTap: () {
                           BlocProvider.of<PaymentCubit>(context).makePayment(
-                              paymentInputIntantModel: PaymentInputIntantModel(
-                                  amount: '1000', currency: 'USD'));
+                            paymentInputIntantModel: PaymentInputIntantModel(
+                              amount: '1000',
+                              currency: 'USD',
+                              customerId: 'cus_Pss0Twau6295ml',
+                            ),
+                          );
                         },
                       ),
                     ),
