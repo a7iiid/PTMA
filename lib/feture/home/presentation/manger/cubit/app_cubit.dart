@@ -24,7 +24,7 @@ class AppCubit extends Cubit<AppState> {
     ProfilePage()
   ];
 
-  List<BottomNavigationBarItem> bottomItems = [
+  List<BottomNavigationBarItem> bottomItems = const [
     BottomNavigationBarItem(
         icon: Icon(
           Icons.home,

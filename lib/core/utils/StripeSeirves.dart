@@ -6,6 +6,7 @@ import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/feture/payment/stripe/data/models/ephemeral_key_model/ephemeral_key_model.dart';
 import 'package:ptma/feture/payment/stripe/data/models/init_payment_sheet_input_model.dart';
 
+import '../../feture/payment/stripe/data/models/customer_intint_model/customer_intint_model.dart';
 import '../../feture/payment/stripe/data/models/payment_input_intint_model.dart';
 import '../../feture/payment/stripe/data/models/payment_intint_model/payment_intint_model.dart';
 import 'ApiServes/payment_api.dart';
@@ -75,15 +76,14 @@ class StripeSeirves {
   }
 
 //TODO:
-  // Future<PaymentIntintModel> createCustomerIntint(
-  //     PaymentInputIntantModel paymentInputIntantModel) async {
-  //   var response = await apiSeirves.post(
-  //     url: 'https://api.stripe.com/v1/customers',
-  //     body: paymentInputIntantModel.toJson(),
-  //     token: ApiKey.secretKeyStripe,
-  //     contentType: Headers.formUrlEncodedContentType,
-  //   );
-  //   var paymentInintModel = PaymentIntintModel.fromJson(response.data);
-  //   return paymentInintModel;
-  // }
+  Future<String> createCustomerIntint() async {
+    var response = await apiSeirves.post(
+      url: 'https://api.stripe.com/v1/customers',
+      body: {'name': 'ahmad', 'email': 'naz131681@gmail.com'},
+      token: ApiKey.secretKeyStripe,
+      contentType: Headers.formUrlEncodedContentType,
+    );
+    var customerIntintModel = CustomerIntintModel.fromJson(response.data);
+    return customerIntintModel.id!;
+  }
 }

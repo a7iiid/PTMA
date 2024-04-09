@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/them_app.dart';
+import 'core/utils/cach/cach_helpar.dart';
 import 'firebase_options.dart';
 import 'core/utils/rout.dart';
 
@@ -13,6 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await CachHelper.init();
+
   runApp(const MyApp());
 }
 
