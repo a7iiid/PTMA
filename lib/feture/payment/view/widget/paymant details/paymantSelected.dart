@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ptma/feture/payment/stripe/cubit/payment_cubit.dart';
 
 import '../../../../../core/utils/images.dart';
 import '../../../stripe/model/paymant_model.dart';
 import '../../paymant_details_view.dart';
 import 'pymant_item_selected.dart';
 
-class PymantSelected extends StatefulWidget {
+class PymantSelected extends StatelessWidget {
   const PymantSelected({
     super.key,
   });
-
-  @override
-  State<PymantSelected> createState() => _PymantSelectedState();
-}
-
-class _PymantSelectedState extends State<PymantSelected> {
-  int selectindex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +20,30 @@ class _PymantSelectedState extends State<PymantSelected> {
       PaymantMethodModel(isActiv: false, image: Assets.imagesApplePay),
     ];
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: paymantList.asMap().entries.map((e) {
-        return Expanded(
-            child: GestureDetector(
-          onTap: () => changeSelect(e.key),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: PymantItemSelected(
-              isActive: selectindex == e.key ? true : false,
-              paymantModel: e.value,
-            ),
-          ),
-        ));
-      }).toList(),
+    return BlocBuilder<PaymentCubit, PaymentState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: paymantList.asMap().entries.map((e) {
+            return Expanded(
+                child: GestureDetector(
+              onTap: () =>
+                  BlocProvider.of<PaymentCubit>(context).changeSelect(e.key),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: PymantItemSelected(
+                  isActive:
+                      BlocProvider.of<PaymentCubit>(context).selectindex ==
+                              e.key
+                          ? true
+                          : false,
+                  paymantModel: e.value,
+                ),
+              ),
+            ));
+          }).toList(),
+        );
+      },
     );
-  }
-
-  changeSelect(int index) {
-    setState(() {
-      selectindex = index;
-    });
   }
 }

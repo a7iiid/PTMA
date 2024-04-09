@@ -12,6 +12,7 @@ import '../stripe/data/repo/checkout_repo_implemantation.dart';
 import '../stripe/cubit/payment_cubit.dart';
 import 'thank_you_view.dart';
 import 'widget/custom_bottom.dart';
+import 'widget/paymant details/paymantSelected.dart';
 
 class PaymentDetails extends StatefulWidget {
   const PaymentDetails({super.key});
@@ -44,6 +45,19 @@ class _PaymentDetailsState extends State<PaymentDetails> {
             builder: (context, state) => CustomScrollView(
               physics: NeverScrollableScrollPhysics(),
               slivers: [
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        PymantSelected()
+                      ],
+                    ),
+                  ),
+                ),
                 SliverFillRemaining(
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -54,13 +68,17 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         title: "Payment",
                         formKey: formKey,
                         onTap: () {
-                          BlocProvider.of<PaymentCubit>(context).makePayment(
-                            paymentInputIntantModel: PaymentInputIntantModel(
-                              amount: '10.99',
-                              currency: 'USD',
-                              customerId: 'cus_Pss0Twau6295ml',
-                            ),
-                          );
+                          if (BlocProvider.of<PaymentCubit>(context)
+                                  .selectindex ==
+                              0) {
+                            BlocProvider.of<PaymentCubit>(context).makePayment(
+                              paymentInputIntantModel: PaymentInputIntantModel(
+                                amount: '10.99',
+                                currency: 'USD',
+                                customerId: 'cus_Pss0Twau6295ml',
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

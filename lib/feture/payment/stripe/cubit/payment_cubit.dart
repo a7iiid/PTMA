@@ -11,6 +11,9 @@ class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit({required this.checkoutRepo}) : super(PaymentInitial());
   static get(context) => BlocProvider.of<PaymentCubit>(context);
   final CheckoutRepo checkoutRepo;
+
+  int selectindex = 0;
+
   Future makePayment(
       {required PaymentInputIntantModel paymentInputIntantModel}) async {
     emit(PaymentLoding());
@@ -20,5 +23,10 @@ class PaymentCubit extends Cubit<PaymentState> {
     data.fold(
         (failuer) => emit(PaymentFailuer(messageError: failuer.messageError)),
         (success) => emit(PaymentSuccess()));
+  }
+
+  changeSelect(int index) {
+    emit(ChangePaymentMethod());
+    selectindex = index;
   }
 }
