@@ -68,22 +68,19 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         title: "Payment",
                         formKey: formKey,
                         onTap: () async {
-                          String customerid =
-                              await BlocProvider.of<PaymentCubit>(context)
-                                  .getCusomerId();
-                          print(customerid);
-
-                          // if (BlocProvider.of<PaymentCubit>(context)
-                          //         .selectindex ==
-                          //     0) {
-                          //   BlocProvider.of<PaymentCubit>(context).makePayment(
-                          //     paymentInputIntantModel: PaymentInputIntantModel(
-                          //       amount: '10.99',
-                          //       currency: 'USD',
-                          //       customerId: 'cus_Pss0Twau6295ml',
-                          //     ),
-                          //   );
-                          // }
+                          if (BlocProvider.of<PaymentCubit>(context)
+                                  .selectindex ==
+                              0) {
+                            BlocProvider.of<PaymentCubit>(context).makePayment(
+                              paymentInputIntantModel: PaymentInputIntantModel(
+                                amount: '10.99',
+                                currency: 'USD',
+                                customerId:
+                                    await BlocProvider.of<PaymentCubit>(context)
+                                        .getCusomerId(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

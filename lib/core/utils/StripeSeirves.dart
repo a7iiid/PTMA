@@ -10,6 +10,7 @@ import '../../feture/payment/stripe/data/models/customer_intint_model/customer_i
 import '../../feture/payment/stripe/data/models/payment_input_intint_model.dart';
 import '../../feture/payment/stripe/data/models/payment_intint_model/payment_intint_model.dart';
 import 'ApiServes/payment_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StripeSeirves {
   final PaymentApiService apiSeirves = PaymentApiService();
@@ -75,11 +76,13 @@ class StripeSeirves {
     await displayPaymentSheet();
   }
 
-//TODO:
   Future<String> createCustomerIntint() async {
     var response = await apiSeirves.post(
       url: 'https://api.stripe.com/v1/customers',
-      body: {'name': 'ahmad', 'email': 'naz131681@gmail.com'},
+      body: {
+        'name': FirebaseAuth.instance.currentUser!.displayName,
+        'email': FirebaseAuth.instance.currentUser!.email
+      },
       token: ApiKey.secretKeyStripe,
       contentType: Headers.formUrlEncodedContentType,
     );
