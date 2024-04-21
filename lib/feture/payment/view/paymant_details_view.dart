@@ -58,6 +58,12 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     ),
                   ),
                 ),
+                SliverToBoxAdapter(
+                  child: ElevatedButton(
+                      onPressed: () =>
+                          BlocProvider.of<PaymentCubit>(context).scanQR(),
+                      child: Text('Start QR scan')),
+                ),
                 SliverFillRemaining(
                   child: Padding(
                     padding: const EdgeInsets.only(
