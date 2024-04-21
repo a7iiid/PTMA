@@ -12,24 +12,9 @@ import '../../../../../core/widget/custom_button.dart';
 import '../../../../google_map/data/model/station_model.dart';
 import 'head_home_page.dart';
 
-enum IconLabel {
-  smile('Smile', Icons.sentiment_satisfied_outlined),
-  cloud(
-    'Cloud',
-    Icons.cloud_outlined,
-  ),
-  brush('Brush', Icons.brush_outlined),
-  heart('Heart', Icons.favorite);
-
-  const IconLabel(this.label, this.icon);
-  final String label;
-  final IconData icon;
-}
-
 class SelectRouts extends StatelessWidget {
   SelectRouts({super.key});
   final TextEditingController iconController = TextEditingController();
-  IconLabel? selectedIcon;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
