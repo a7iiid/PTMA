@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,9 +23,14 @@ class MainHomePage extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             const HeadHomePage(),
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 20),
-              child: SvgPicture.asset(Assets.imagesMenuIcon),
+            GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, left: 20),
+                child: SvgPicture.asset(Assets.imagesMenuIcon),
+              ),
             ),
             Positioned(
               bottom: -MediaQuery.sizeOf(context).height * .22,

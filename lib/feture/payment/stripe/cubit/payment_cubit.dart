@@ -6,6 +6,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/StripeSeirves.dart';
+import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
 
 import '../../../../core/utils/cach/cach_helpar.dart';
 import '../data/models/payment_input_intint_model.dart';
@@ -47,7 +48,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     selectindex = index;
   }
 
-  Future<void> scanQR() async {
+  Future<QrCodeModel> scanQR() async {
     emit(ScanneQRCodeInit());
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -65,5 +66,8 @@ class PaymentCubit extends Cubit<PaymentState> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     emit(ScanQRSuccess());
+    List<String> detels = barcodeScanRes.split(',');
+    return QrCodeModel(
+        prise: detels[0], trip: detels[1], dateTime: DateTime.now());
   }
 }

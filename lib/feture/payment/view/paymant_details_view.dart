@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
 
 import '../stripe/data/models/payment_input_intint_model.dart';
 import '../stripe/data/repo/checkout_repo_implemantation.dart';
@@ -23,7 +24,7 @@ class PaymentDetails extends StatefulWidget {
 
 class _PaymentDetailsState extends State<PaymentDetails> {
   GlobalKey<FormState> formKey = GlobalKey();
-
+  late QrCodeModel qrCodeModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +61,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 ),
                 SliverToBoxAdapter(
                   child: ElevatedButton(
-                      onPressed: () =>
-                          BlocProvider.of<PaymentCubit>(context).scanQR(),
+                      onPressed: () async => qrCodeModel =
+                          await BlocProvider.of<PaymentCubit>(context).scanQR(),
                       child: Text('Start QR scan')),
                 ),
                 SliverFillRemaining(
@@ -79,7 +80,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               0) {
                             BlocProvider.of<PaymentCubit>(context).makePayment(
                               paymentInputIntantModel: PaymentInputIntantModel(
-                                amount: '10.99',
+                                amount: qrCodeModel.prise,
                                 currency: 'USD',
                                 customerId:
                                     await BlocProvider.of<PaymentCubit>(context)
