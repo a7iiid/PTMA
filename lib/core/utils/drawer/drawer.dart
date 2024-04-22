@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../widget/user_image.dart';
 import '../rout.dart';
 
 class CustomeDrawer extends StatelessWidget {
@@ -27,21 +28,7 @@ class CustomeDrawer extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Container(
-                  width: 128.0,
-                  height: 128.0,
-                  margin: const EdgeInsets.only(
-                    top: 24.0,
-                    bottom: 64.0,
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.network(
-                      FirebaseAuth.instance.currentUser!.photoURL!),
-                ),
+                UserImage(),
                 ListTile(
                   onTap: () {},
                   leading: Icon(Icons.account_circle_rounded),
@@ -60,7 +47,7 @@ class CustomeDrawer extends StatelessWidget {
 
                     await FirebaseAuth.instance.signOut().then((value) =>
                         GoRouter.of(context)
-                            .pushReplacement(Routes.kSigninScreen));
+                            .pushReplacement(Routes.kMainScreen));
                   },
                 ),
                 Spacer(),
