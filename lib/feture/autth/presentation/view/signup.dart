@@ -104,7 +104,6 @@ class form extends StatelessWidget {
                 } else {
                   isEmail = false;
                 }
-                print(isEmail);
                 AuthAppCubit.get(context).inputfilde();
               },
             ),
@@ -127,7 +126,6 @@ class form extends StatelessWidget {
                 } else {
                   isPass = false;
                 }
-                print(isPass);
 
                 AuthAppCubit.get(context).inputfilde();
               },

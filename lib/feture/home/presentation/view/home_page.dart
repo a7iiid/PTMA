@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ptma/drawer/drawer.dart';
+import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 
 class HomePage extends StatelessWidget {

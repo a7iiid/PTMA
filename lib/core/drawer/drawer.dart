@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/utils/rout.dart';
+import '../utils/rout.dart';
 
 class CustomeDrawer extends StatelessWidget {
   const CustomeDrawer({super.key});
@@ -13,17 +13,17 @@ class CustomeDrawer extends StatelessWidget {
     return Drawer(
       child: SafeArea(
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             // Add a background color or gradient
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xff667eea), Color(0xff64b6ff)],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft,
+              colors: [Color(0xff1937FE).withOpacity(1), Colors.white],
             ),
           ),
           child: ListTileTheme(
-            textColor: Colors.white,
-            iconColor: Colors.white,
+            textColor: Color(0xff1937FE).withOpacity(1),
+            iconColor: Color(0xff4960F9).withOpacity(1),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -54,9 +54,11 @@ class CustomeDrawer extends StatelessWidget {
                   title: Text("Sign Out"),
                   leading: Icon(Icons.output_outlined),
                   onTap: () async {
-                    FirebaseAuth.instance.currentUser ??
-                        await FirebaseAuth.instance.signOut().then((value) =>
-                            GoRouter.of(context).push(Routes.kSigninScreen));
+                    print(FirebaseAuth.instance.currentUser);
+
+                    await FirebaseAuth.instance.signOut().then((value) =>
+                        GoRouter.of(context)
+                            .pushReplacement(Routes.kSigninScreen));
                   },
                 ),
                 Spacer(),

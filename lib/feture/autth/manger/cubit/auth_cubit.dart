@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
+import 'package:ptma/core/utils/image_picker/image_picer.dart';
 import 'package:ptma/core/utils/rout.dart';
 
 part 'auth_state.dart';
@@ -10,12 +11,21 @@ class AuthAppCubit extends Cubit<AuthState> {
   AuthAppCubit() : super(changstat());
 
   static get(context) => BlocProvider.of<AuthAppCubit>(context);
+  PickImageServes pickImageServes = PickImageServes();
 
-  void creatAcaunte(email, pass, ctx) {
+  void creatAcaunte(email, pass, ctx) async {
     emit(createAcunte());
     try {
-      FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
+      //   User? user = userCredential.user;
+      //   await user?.updateProfile(
+      //   displayName: _displayNameController.text,
+      //   photoURL: _photoURLController.text,
+      // );
       emit(success());
 
       GoRouter.of(ctx).pushReplacement(Routes.kSigninScreen);
