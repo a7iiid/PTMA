@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/ApiServes/map_service.dart';
@@ -16,9 +17,12 @@ class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
   static get(context) => BlocProvider.of<AppCubit>(context);
   int selectedPage = 0;
+  bool isDisposed = false;
+  AdvancedDrawerController advancedDrawerController =
+      AdvancedDrawerController();
 
-  List<Widget> pages = const [
-    MainHomePage(),
+  List<Widget> pages = [
+    HomeBody(),
     PaymentDetails(),
     TripHistoryPage(),
     ProfilePage()
@@ -52,8 +56,13 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   Widget onTapNav(int index) {
-    if (index != 0) {
+    if (index != 0 && !isDisposed) {
       MapService.positionStream?.cancel();
+      advancedDrawerController.dispose();
+      isDisposed = !isDisposed;
+    } else if (index == 0) {
+      advancedDrawerController = AdvancedDrawerController();
+      isDisposed = false;
     }
 
     selectedPage = index;
