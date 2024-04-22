@@ -13,7 +13,7 @@ class AuthAppCubit extends Cubit<AuthState> {
   static get(context) => BlocProvider.of<AuthAppCubit>(context);
   PickImageServes pickImageServes = PickImageServes();
 
-  void creatAcaunte(email, pass, ctx) async {
+  void creatAcaunte(String email, String pass, String name, ctx) async {
     emit(createAcunte());
     try {
       UserCredential userCredential =
@@ -21,11 +21,11 @@ class AuthAppCubit extends Cubit<AuthState> {
         email: email,
         password: pass,
       );
-      //   User? user = userCredential.user;
-      //   await user?.updateProfile(
-      //   displayName: _displayNameController.text,
-      //   photoURL: _photoURLController.text,
-      // );
+      User? user = userCredential.user;
+      String url = await pickImageServes.getImageFromGallery();
+      await user?.updatePhotoURL(url);
+      await user?.updateDisplayName(name);
+
       emit(success());
 
       GoRouter.of(ctx).pushReplacement(Routes.kSigninScreen);

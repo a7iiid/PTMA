@@ -20,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailControlar = TextEditingController();
 
   final pasControlar = TextEditingController();
+  final nameControlar = TextEditingController();
 
   @override
   void dispose() {
@@ -39,6 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: form(
               emailControlar: emailControlar,
               pasControlar: pasControlar,
+              nameControlar: nameControlar,
               formKey: key,
             ),
           ),
@@ -53,10 +55,12 @@ class form extends StatelessWidget {
       {super.key,
       this.emailControlar,
       this.pasControlar,
+      this.nameControlar,
       required this.formKey});
 
   @override
   final emailControlar;
+  final nameControlar;
 
   final pasControlar;
   GlobalKey<FormState> formKey;
@@ -70,17 +74,41 @@ class form extends StatelessWidget {
       return SingleChildScrollView(
         padding: const EdgeInsets.all(30),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              Assets.imagesSignup,
-            ),
-            const SizedBox(
-              height: 130,
-            ),
+            // const SizedBox(
+            //   height: 130,
+            // ),
             const Text('Sign up', style: AppStyle.bold28blak),
             const SizedBox(
               height: 33,
+            ),
+            Container(
+              width: 128.0,
+              height: 128.0,
+              margin: const EdgeInsets.only(
+                top: 24.0,
+                bottom: 32.0,
+              ),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                shape: BoxShape.circle,
+              ),
+            ),
+            TextFormField(
+              controller: nameControlar,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'pleas Enter name';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                  hintText: 'Full name',
+                  suffix: isEmail ? preficon : null,
+                  label: const Text('Full name'),
+                  enabledBorder: const UnderlineInputBorder()),
             ),
             TextFormField(
               controller: emailControlar,
@@ -140,8 +168,8 @@ class form extends StatelessWidget {
               iconcolor: Colors.white,
               function: () {
                 if (formKey.currentState!.validate()) {
-                  AuthAppCubit.get(context).creatAcaunte(
-                      emailControlar.text, pasControlar.text, context);
+                  AuthAppCubit.get(context).creatAcaunte(emailControlar.text,
+                      pasControlar.text, nameControlar.text, context);
                 }
               },
             ),
