@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
@@ -12,6 +16,7 @@ import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
 
 import '../../../../../core/utils/rout.dart';
+import 'greetingslogin.dart';
 
 class HomeBody extends StatelessWidget {
   HomeBody({
@@ -26,17 +31,22 @@ class HomeBody extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             const HeadHomePage(),
-            GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, left: 20),
-                child: SvgPicture.asset(Assets.imagesMenuIcon),
-              ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50, left: 20),
+                    child: SvgPicture.asset(Assets.imagesMenuIcon),
+                  ),
+                ),
+                const Greetingslogin(),
+              ],
             ),
             Positioned(
-              bottom: -MediaQuery.sizeOf(context).height * .22,
+              bottom: -MediaQuery.sizeOf(context).height * .28,
               left: 40,
               right: 40,
               child: Container(
