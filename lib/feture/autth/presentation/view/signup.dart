@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/feture/autth/manger/cubit/auth_cubit.dart';
+import '../../../../core/utils/image_picker/image_picer.dart';
 import '../../../../core/widget/custom_button.dart';
+import '../../../../core/widget/custom_teaxt_form_field.dart';
+import '../widget/set_user_image.dart';
+import '../widget/user_name_input.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -35,14 +42,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       key: key,
       child: Scaffold(
         body: SafeArea(
-          child: BlocProvider(
-            create: (context) => AuthAppCubit(),
-            child: form(
-              emailControlar: emailControlar,
-              pasControlar: pasControlar,
-              nameControlar: nameControlar,
-              formKey: key,
-            ),
+          child: form(
+            emailControlar: emailControlar,
+            pasControlar: pasControlar,
+            nameControlar: nameControlar,
+            formKey: key,
           ),
         ),
       ),
@@ -66,121 +70,71 @@ class form extends StatelessWidget {
   GlobalKey<FormState> formKey;
   Widget preficon = SvgPicture.asset(Assets.imagesIsTrue);
 
-  bool isEmail = false;
-  bool isPass = false;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          children: [
-            // const SizedBox(
-            //   height: 130,
-            // ),
-            const Text('Sign up', style: AppStyle.bold28blak),
-            const SizedBox(
-              height: 33,
-            ),
-            Container(
-              width: 128.0,
-              height: 128.0,
-              margin: const EdgeInsets.only(
-                top: 24.0,
-                bottom: 32.0,
+    return BlocProvider(
+      create: (context) => AuthAppCubit(),
+      child: BlocConsumer<AuthAppCubit, AuthState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Row(
+                    children: [
+                      Text('Sign up', style: AppStyle.bold28blak),
+                      Spacer()
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 33,
+                  ),
+                  SetUserImage(),
+                  UserNameInput(nameControlar: nameControlar),
+                  CustomTeaxtFormField(
+                    controlar: emailControlar,
+                    validatText: 'pleas Enter email',
+                    hintText: 'Email',
+                    labelText: 'Email',
+                  ),
+                  CustomTeaxtFormField(
+                    controlar: pasControlar,
+                    validatText: "pleas Enter Passwored",
+                    hintText: 'Passwored',
+                    labelText: 'Passwored',
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  CustomButton(
+                    title: 'Sign up',
+                    backgraondColor: const Color(0xFF2743FB),
+                    textStyle: AppStyle.reguler20white,
+                    iconcolor: Colors.white,
+                    function: () {
+                      if (formKey.currentState!.validate()) {
+                        AuthAppCubit.get(context).creatAcaunte(
+                            emailControlar.text,
+                            pasControlar.text,
+                            nameControlar.text,
+                            context);
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  const Align(
+                      alignment: Alignment.center,
+                      child: Text('or using social '))
+                ],
               ),
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: Colors.black26,
-                shape: BoxShape.circle,
-              ),
-            ),
-            TextFormField(
-              controller: nameControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter name';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  hintText: 'Full name',
-                  suffix: isEmail ? preficon : null,
-                  label: const Text('Full name'),
-                  enabledBorder: const UnderlineInputBorder()),
-            ),
-            TextFormField(
-              controller: emailControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter email';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  hintText: 'Email Address',
-                  suffix: isEmail ? preficon : null,
-                  label: const Text('Email'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-                  isEmail = true;
-                } else {
-                  isEmail = false;
-                }
-                AuthAppCubit.get(context).inputfilde();
-              },
-            ),
-            TextFormField(
-              controller: pasControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter Passwored';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                  hintText: 'Passwored',
-                  suffix: isPass == true ? preficon : null,
-                  label: const Text('Passwored'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (value.length >= 8) {
-                  isPass = true;
-                } else {
-                  isPass = false;
-                }
-
-                AuthAppCubit.get(context).inputfilde();
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CustomButton(
-              title: 'Sign up',
-              backgraondColor: const Color(0xFF2743FB),
-              textStyle: AppStyle.reguler20white,
-              iconcolor: Colors.white,
-              function: () {
-                if (formKey.currentState!.validate()) {
-                  AuthAppCubit.get(context).creatAcaunte(emailControlar.text,
-                      pasControlar.text, nameControlar.text, context);
-                }
-              },
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            const Align(
-                alignment: Alignment.center, child: Text('or using social '))
-          ],
-        ),
-      );
-    });
+            );
+          }),
+    );
   }
 }

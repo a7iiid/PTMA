@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../utils/images.dart';
 
 class UserImage extends StatelessWidget {
   const UserImage({
@@ -12,7 +15,7 @@ class UserImage extends StatelessWidget {
       width: 128.0,
       height: 128.0,
       margin: const EdgeInsets.only(
-        top: 24.0,
+        top: 34.0,
         bottom: 64.0,
       ),
       clipBehavior: Clip.antiAlias,
@@ -20,7 +23,9 @@ class UserImage extends StatelessWidget {
         color: Colors.black26,
         shape: BoxShape.circle,
       ),
-      child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!),
+      child: FirebaseAuth.instance.currentUser!.photoURL == null
+          ? SvgPicture.asset(Assets.imagesUserProfilSvg)
+          : Image.network(FirebaseAuth.instance.currentUser!.photoURL!),
     );
   }
 }

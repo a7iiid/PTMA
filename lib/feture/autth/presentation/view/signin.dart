@@ -5,6 +5,7 @@ import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 
+import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../../manger/cubit/auth_cubit.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -90,54 +91,17 @@ class form extends StatelessWidget {
             const SizedBox(
               height: 33,
             ),
-            TextFormField(
-              controller: emailControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter email';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  hintText: 'Email Address',
-                  suffix: isEmail ? preficon : null,
-                  label: const Text('Email'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-                  isEmail = true;
-                } else {
-                  isEmail = false;
-                }
-                print(isEmail);
-                AuthAppCubit.get(context).inputfilde();
-              },
+            CustomTeaxtFormField(
+              controlar: emailControlar,
+              validatText: 'pleas Enter email',
+              hintText: 'Email',
+              labelText: 'Email',
             ),
-            TextFormField(
-              controller: pasControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter Passwored';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                  hintText: 'Passwored',
-                  suffix: isPass == true ? preficon : null,
-                  label: const Text('Passwored'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (value.length >= 8) {
-                  isPass = true;
-                } else {
-                  isPass = false;
-                }
-
-                AuthAppCubit.get(context).inputfilde();
-              },
+            CustomTeaxtFormField(
+              controlar: pasControlar,
+              validatText: "pleas Enter Passwored",
+              hintText: 'Passwored',
+              labelText: 'Passwored',
             ),
             const SizedBox(
               height: 30,

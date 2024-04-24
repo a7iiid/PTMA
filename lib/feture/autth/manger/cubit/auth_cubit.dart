@@ -10,8 +10,20 @@ part 'auth_state.dart';
 class AuthAppCubit extends Cubit<AuthState> {
   AuthAppCubit() : super(changstat());
 
-  static get(context) => BlocProvider.of<AuthAppCubit>(context);
-  PickImageServes pickImageServes = PickImageServes();
+  static AuthAppCubit get(context) => BlocProvider.of<AuthAppCubit>(context);
+
+  PickImageServes pickImageServes = PickImageServes.get();
+
+  Future<void> SetUserPictur() async {
+    emit(ChangeUserPictiurLoding());
+
+    try {
+      await pickImageServes.getImageFromGallery();
+      emit(ChangeUserPictiurSuccess());
+    } catch (e) {
+      emit(ChangeUserPictiurFilur());
+    }
+  }
 
   void creatAcaunte(String email, String pass, String name, ctx) async {
     emit(createAcunte());
@@ -22,8 +34,12 @@ class AuthAppCubit extends Cubit<AuthState> {
         password: pass,
       );
       User? user = userCredential.user;
-      String url = await pickImageServes.getImageFromGallery();
-      await user?.updatePhotoURL(url);
+
+      if (pickImageServes.file != null) {
+        await pickImageServes.Uplode();
+
+        await user?.updatePhotoURL(pickImageServes.url);
+      }
       await user?.updateDisplayName(name);
 
       emit(success());
@@ -56,9 +72,5 @@ class AuthAppCubit extends Cubit<AuthState> {
     } catch (e) {
       print(e);
     }
-  }
-
-  void inputfilde() {
-    emit(changstat());
   }
 }

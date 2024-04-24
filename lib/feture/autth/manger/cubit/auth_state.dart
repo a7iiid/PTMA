@@ -17,3 +17,9 @@ final class Filur extends AuthState {
 final class success extends AuthState {}
 
 final class Loginstat extends AuthState {}
+
+final class ChangeUserPictiurSuccess extends AuthState {}
+
+final class ChangeUserPictiurFilur extends AuthState {}
+
+final class ChangeUserPictiurLoding extends AuthState {}

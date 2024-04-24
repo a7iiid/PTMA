@@ -7,6 +7,8 @@ import 'package:path/path.dart';
 class PickImageServes {
   File? file;
   String? url;
+  late var imagename;
+  static PickImageServes get() => PickImageServes();
 
   Future<String> getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
@@ -15,7 +17,7 @@ class PickImageServes {
       file = File(photo!.path);
       var imagename = basename(photo!.path);
 
-      var uplode = FirebaseStorage.instance.ref('/category/$imagename');
+      var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
       await uplode.putFile(file!);
       url = await uplode.getDownloadURL();
       return url!;
@@ -24,19 +26,24 @@ class PickImageServes {
     }
   }
 
-  Future<String> getImageFromGallery() async {
+  Future<void> getImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       file = File(image!.path);
-      var imagename = basename(image!.path);
+      imagename = basename(image!.path);
 
-      var uplode = FirebaseStorage.instance.ref('/category/$imagename');
-      await uplode.putFile(file!);
-      url = await uplode.getDownloadURL();
-      return url!;
+      // var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
+      // await uplode.putFile(file!);
+      // url = await uplode.getDownloadURL();
     } else {
-      return 'no image';
+      return;
     }
+  }
+
+  Future<void> Uplode() async {
+    var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
+    await uplode.putFile(file!);
+    url = await uplode.getDownloadURL();
   }
 }
