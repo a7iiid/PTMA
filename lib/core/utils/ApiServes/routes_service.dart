@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../feture/google_map/data/model/route_configers.dart';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../feture/google_map/data/model/routes_model/routes_model.dart';

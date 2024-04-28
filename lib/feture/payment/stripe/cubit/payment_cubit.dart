@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/StripeSeirves.dart';
 import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
@@ -50,13 +51,22 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   Future<QrCodeModel> scanQR() async {
     emit(ScanneQRCodeInit());
-    String barcodeScanRes;
+    String barcodeScanRes = "";
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       emit(ScanQRLoding());
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      print(barcodeScanRes);
+      AiBarcodeScanner(
+        controller: MobileScannerController(
+          detectionSpeed: DetectionSpeed.noDuplicates,
+        ),
+        onScan: (String value) {
+          barcodeScanRes = value;
+          print(value);
+        },
+        onDetect: (BarcodeCapture barcodeCapture) {
+          print(barcodeCapture);
+        },
+      );
     } on PlatformException {
       emit(ScanQRFailuer());
       barcodeScanRes = 'Failed to get platform version.';

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,20 +18,20 @@ class CustomeDrawer extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.bottomRight,
               end: Alignment.topLeft,
-              colors: [Color(0xff1937FE).withOpacity(1), Colors.white],
+              colors: [const Color(0xff1937FE).withOpacity(1), Colors.white],
             ),
           ),
           child: ListTileTheme(
-            textColor: Color(0xff1937FE).withOpacity(1),
-            iconColor: Color(0xff4960F9).withOpacity(1),
+            textColor: const Color(0xff1937FE).withOpacity(1),
+            iconColor: const Color(0xff4960F9).withOpacity(1),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                UserImage(),
+                const UserImage(),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.account_circle_rounded),
-                  title: Text('Profile'),
+                  leading: const Icon(Icons.account_circle_rounded),
+                  title: const Text('Profile'),
                 ),
                 ListTile(
                   onTap: () {},

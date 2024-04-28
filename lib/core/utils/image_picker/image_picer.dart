@@ -14,8 +14,8 @@ class PickImageServes {
     final ImagePicker picker = ImagePicker();
     final XFile? photo = await picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      file = File(photo!.path);
-      var imagename = basename(photo!.path);
+      file = File(photo.path);
+      var imagename = basename(photo.path);
 
       var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
       await uplode.putFile(file!);
@@ -30,8 +30,8 @@ class PickImageServes {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      file = File(image!.path);
-      imagename = basename(image!.path);
+      file = File(image.path);
+      imagename = basename(image.path);
 
       // var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
       // await uplode.putFile(file!);
@@ -41,7 +41,7 @@ class PickImageServes {
     }
   }
 
-  Future<void> Uplode() async {
+  Future<void> uplode() async {
     var uplode = FirebaseStorage.instance.ref('/user_pictiors/$imagename');
     await uplode.putFile(file!);
     url = await uplode.getDownloadURL();

@@ -36,7 +36,7 @@ class AuthAppCubit extends Cubit<AuthState> {
       User? user = userCredential.user;
 
       if (pickImageServes.file != null) {
-        await pickImageServes.Uplode();
+        await pickImageServes.uplode();
 
         await user?.updatePhotoURL(pickImageServes.url);
       }

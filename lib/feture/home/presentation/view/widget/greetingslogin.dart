@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ptma/core/utils/Style.dart';
 
@@ -15,7 +14,7 @@ class Greetingslogin extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'Good ${DateTime.now().hour < 12 ? 'morning' : 'evening'}, ${FirebaseAuth.instance.currentUser!.displayName ?? ''}  ',
+            'Good ${DateTime.now().hour < 12 ? 'morning' : 'evening'}, ${FirebaseAuth.instance.currentUser!.displayName ?? ''} ',
             style: AppStyle.normal24,
           ),
           if (DateTime.now().hour < 12)
@@ -25,8 +24,9 @@ class Greetingslogin extends StatelessWidget {
             )
           else
             const Icon(
-              Icons.nightlight_round,
+              Icons.nightlight_round_outlined,
               color: Colors.white,
+              size: 25,
             ),
         ],
       ),

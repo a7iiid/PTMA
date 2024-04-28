@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -60,11 +61,27 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: ElevatedButton(
-                      onPressed: () async => qrCodeModel =
-                          await BlocProvider.of<PaymentCubit>(context).scanQR(),
-                      child: Text('Start QR scan')),
+                  child: SizedBox(
+                    height: 30,
+                  ),
                 ),
+                SliverToBoxAdapter(
+                    child: Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: AiBarcodeScanner(
+                    controller: MobileScannerController(
+                      detectionSpeed: DetectionSpeed.noDuplicates,
+                    ),
+                    onScan: (String value) {
+                      //barcodeScanRes = value;
+                      print(value);
+                    },
+                    onDetect: (BarcodeCapture barcodeCapture) {
+                      print(barcodeCapture);
+                    },
+                  ),
+                )),
                 SliverFillRemaining(
                   child: Padding(
                     padding: const EdgeInsets.only(

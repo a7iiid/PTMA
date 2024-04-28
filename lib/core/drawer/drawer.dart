@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,12 +17,12 @@ class CustomeDrawer extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.bottomRight,
               end: Alignment.topLeft,
-              colors: [Color(0xff1937FE).withOpacity(1), Colors.white],
+              colors: [const Color(0xff1937FE).withOpacity(1), Colors.white],
             ),
           ),
           child: ListTileTheme(
-            textColor: Color(0xff1937FE).withOpacity(1),
-            iconColor: Color(0xff4960F9).withOpacity(1),
+            textColor: const Color(0xff1937FE).withOpacity(1),
+            iconColor: const Color(0xff4960F9).withOpacity(1),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -35,35 +34,33 @@ class CustomeDrawer extends StatelessWidget {
                     bottom: 64.0,
                   ),
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.black26,
                     shape: BoxShape.circle,
                   ),
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.account_circle_rounded),
-                  title: Text('Profile'),
+                  leading: const Icon(Icons.account_circle_rounded),
+                  title: const Text('Profile'),
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  leading: const Icon(Icons.settings),
+                  title: const Text('Settings'),
                 ),
                 ListTile(
-                  title: Text("Sign Out"),
-                  leading: Icon(Icons.output_outlined),
+                  title: const Text("Sign Out"),
+                  leading: const Icon(Icons.output_outlined),
                   onTap: () async {
-                    print(FirebaseAuth.instance.currentUser);
-
                     await FirebaseAuth.instance.signOut().then((value) =>
                         GoRouter.of(context)
                             .pushReplacement(Routes.kSigninScreen));
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 DefaultTextStyle(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white54,
                   ),
@@ -71,7 +68,7 @@ class CustomeDrawer extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(
                       vertical: 16.0,
                     ),
-                    child: Text('Terms of Service | Privacy Policy'),
+                    child: const Text('Terms of Service | Privacy Policy'),
                   ),
                 ),
               ],
