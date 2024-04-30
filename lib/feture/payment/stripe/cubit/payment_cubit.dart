@@ -17,7 +17,7 @@ part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit({required this.checkoutRepo}) : super(PaymentInitial());
-  static get(context) => BlocProvider.of<PaymentCubit>(context);
+  static PaymentCubit get(context) => BlocProvider.of<PaymentCubit>(context);
   final CheckoutRepo checkoutRepo;
 
   int selectindex = 0;
@@ -49,35 +49,23 @@ class PaymentCubit extends Cubit<PaymentState> {
     selectindex = index;
   }
 
-  Future<QrCodeModel> scanQR() async {
+  QrCodeModel scanQRData(String data) {
     emit(ScanneQRCodeInit());
-    String barcodeScanRes = "";
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      emit(ScanQRLoding());
-      AiBarcodeScanner(
-        controller: MobileScannerController(
-          detectionSpeed: DetectionSpeed.noDuplicates,
-        ),
-        onScan: (String value) {
-          barcodeScanRes = value;
-          print(value);
-        },
-        onDetect: (BarcodeCapture barcodeCapture) {
-          print(barcodeCapture);
-        },
-      );
-    } on PlatformException {
-      emit(ScanQRFailuer());
-      barcodeScanRes = 'Failed to get platform version.';
-    }
+      List<String> barcodeScanRes = data.split(',');
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    emit(ScanQRSuccess());
-    List<String> detels = barcodeScanRes.split(',');
-    return QrCodeModel(
-        prise: detels[0], trip: detels[1], dateTime: DateTime.now());
+      if (barcodeScanRes.length == 2) {
+        emit(ScanQRSuccess());
+        return QrCodeModel(
+            prise: barcodeScanRes[0],
+            trip: barcodeScanRes[1],
+            dateTime: DateTime.now());
+      }
+      emit(ScanQRFailuer());
+      return QrCodeModel(prise: '0', trip: '0', dateTime: DateTime.now());
+    } catch (e) {
+      emit(ScanQRFailuer());
+      return QrCodeModel(prise: '0', trip: '0', dateTime: DateTime.now());
+    }
   }
 }

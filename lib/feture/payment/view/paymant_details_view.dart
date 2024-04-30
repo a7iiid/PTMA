@@ -53,7 +53,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 20,
+                          height: 50,
                         ),
                         PymantSelected()
                       ],
@@ -62,24 +62,26 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 ),
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: 30,
+                    height: MediaQuery.sizeOf(context).height * .12,
                   ),
                 ),
                 SliverToBoxAdapter(
                     child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   height: 300,
                   width: double.infinity,
                   child: AiBarcodeScanner(
+                    fit: BoxFit.fitWidth,
                     controller: MobileScannerController(
                       detectionSpeed: DetectionSpeed.noDuplicates,
                     ),
                     onScan: (String value) {
-                      //barcodeScanRes = value;
-                      print(value);
+                      QrCodeModel qrCodeModel =
+                          PaymentCubit.get(context).scanQRData(value);
                     },
-                    onDetect: (BarcodeCapture barcodeCapture) {
-                      print(barcodeCapture);
-                    },
+
+                    bottomBar: null, // Set this to null to hide the bottom bar
+                    appBar: null,
                   ),
                 )),
                 SliverFillRemaining(
