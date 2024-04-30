@@ -10,3 +10,5 @@ final class AppChangeScreen extends AppState {
 
   AppChangeScreen({required this.activeTab});
 }
+
+class Languegchang extends AppState {}

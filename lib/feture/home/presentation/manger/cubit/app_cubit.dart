@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/ApiServes/map_service.dart';
 
+import '../../../../../core/utils/cach/cach_helpar.dart';
 import '../../../../google_map/manegar/cubit/map_cubit_cubit.dart';
 import '../../../../history/history_page.dart';
 import '../../../../payment/view/paymant_details_view.dart';
@@ -18,8 +19,7 @@ class AppCubit extends Cubit<AppState> {
   static get(context) => BlocProvider.of<AppCubit>(context);
   int selectedPage = 0;
   bool isDisposed = false;
-  AdvancedDrawerController advancedDrawerController =
-      AdvancedDrawerController();
+  bool isArabic = false;
 
   List<Widget> pages = [
     HomeBody(),
@@ -58,10 +58,8 @@ class AppCubit extends Cubit<AppState> {
   Widget onTapNav(int index) {
     if (index != 0 && !isDisposed) {
       MapService.positionStream?.cancel();
-      advancedDrawerController.dispose();
       isDisposed = !isDisposed;
     } else if (index == 0) {
-      advancedDrawerController = AdvancedDrawerController();
       isDisposed = false;
     }
 
@@ -95,5 +93,21 @@ class AppCubit extends Cubit<AppState> {
 
     emit(AppChangeScreen(activeTab: index));
     return pages[index];
+  }
+
+  void changeLang(bool lang) {
+    if (lang != null) {
+      isArabic = lang;
+      CachHelper.langPutData('isChick', isArabic);
+      print('not null ${CachHelper.langGetData('isChick')}');
+      emit(Languegchang());
+    } else {
+      print(' null $lang');
+
+      isArabic = !isArabic;
+
+      CachHelper.langPutData('isChick', isArabic)
+          .then((value) => emit(Languegchang()));
+    }
   }
 }
