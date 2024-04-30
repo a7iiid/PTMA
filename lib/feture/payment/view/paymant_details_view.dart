@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
 
 import '../stripe/data/models/payment_input_intint_model.dart';
@@ -35,8 +36,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
           child: BlocConsumer<PaymentCubit, PaymentState>(
             listener: (context, state) {
               if (state is PaymentSuccess) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Success')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Success'.tr(context))));
               }
               if (state is PaymentFailuer) {
                 log(state.messageError);
@@ -91,7 +92,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: customBottom(
-                        title: "Payment",
+                        title: "Payment".tr(context),
                         formKey: formKey,
                         onTap: () async {
                           if (BlocProvider.of<PaymentCubit>(context)

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ptma/core/utils/Style.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 class Greetingslogin extends StatelessWidget {
   const Greetingslogin({
@@ -10,11 +11,16 @@ class Greetingslogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 120, left: 20),
+      padding: const EdgeInsets.only(top: 120),
       child: Row(
         children: [
+          const SizedBox(
+            width: 20,
+          ),
           Text(
-            'Good ${DateTime.now().hour < 12 ? 'morning' : 'evening'}, ${FirebaseAuth.instance.currentUser!.displayName ?? ''} ',
+            DateTime.now().hour < 12
+                ? " ${'Good morning '.tr(context)} ${FirebaseAuth.instance.currentUser!.displayName ?? ''}"
+                : "${"Good evening".tr(context)} ${FirebaseAuth.instance.currentUser!.displayName ?? ''}",
             style: AppStyle.normal24,
           ),
           if (DateTime.now().hour < 12)

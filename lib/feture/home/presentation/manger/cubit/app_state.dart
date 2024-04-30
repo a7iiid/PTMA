@@ -12,3 +12,9 @@ final class AppChangeScreen extends AppState {
 }
 
 class Languegchang extends AppState {}
+
+class ChangeUserPictiurLoding extends AppState {}
+
+class ChangeUserPictiurSuccess extends AppState {}
+
+class ChangeUserPictiurFilur extends AppState {}

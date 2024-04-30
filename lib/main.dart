@@ -39,24 +39,24 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp.router(
           routerConfig: Routes.router,
-          // locale: Locale('en'),
-          // supportedLocales: const [Locale('en'), Locale('ar')],
-          // localizationsDelegates: const [
-          //   AppLocalizations.delegate,
-          //   GlobalMaterialLocalizations.delegate,
-          //   GlobalWidgetsLocalizations.delegate,
-          //   GlobalCupertinoLocalizations.delegate
-          // ],
-          // localeResolutionCallback: (deviceLocale, supportedLocales) {
-          //   for (var locale in supportedLocales) {
-          //     if (deviceLocale != null &&
-          //         deviceLocale.languageCode == locale.languageCode) {
-          //       return deviceLocale;
-          //     }
-          //   }
+          locale: Locale('ar'),
+          supportedLocales: const [Locale('en'), Locale('ar')],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          localeResolutionCallback: (deviceLocale, supportedLocales) {
+            for (var locale in supportedLocales) {
+              if (deviceLocale != null &&
+                  deviceLocale.languageCode == locale.languageCode) {
+                return deviceLocale;
+              }
+            }
 
-          //   return supportedLocales.first;
-          // },
+            return supportedLocales.first;
+          },
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.themeapplight,
         ));

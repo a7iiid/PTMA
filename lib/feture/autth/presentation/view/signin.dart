@@ -7,6 +7,7 @@ import 'package:ptma/core/widget/custom_button.dart';
 
 import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../../manger/cubit/auth_cubit.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -75,57 +76,63 @@ class form extends StatelessWidget {
   bool isPass = false;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              Assets.imagesSignup,
+    return BlocProvider(
+      create: (context) => AuthAppCubit(),
+      child: BlocBuilder<AuthAppCubit, AuthState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  Assets.imagesSignup,
+                ),
+                const SizedBox(
+                  height: 130,
+                ),
+                Text("Login".tr(context), style: AppStyle.bold28blak),
+                const SizedBox(
+                  height: 33,
+                ),
+                CustomTeaxtFormField(
+                  controlar: emailControlar,
+                  validatText: 'pleas Enter email'.tr(context),
+                  hintText: 'Email'.tr(context),
+                  labelText: 'Email'.tr(context),
+                ),
+                CustomTeaxtFormField(
+                  controlar: pasControlar,
+                  validatText: "pleas Enter Passwored".tr(context),
+                  hintText: 'Password'.tr(context),
+                  labelText: 'Password'.tr(context),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                CustomButton(
+                  title: 'Login'.tr(context),
+                  backgraondColor: const Color(0xFF2743FB),
+                  textStyle: AppStyle.reguler20white,
+                  iconcolor: Colors.white,
+                  function: () {
+                    if (formKey.currentState!.validate()) {
+                      AuthAppCubit.get(context).login(
+                          emailControlar.text, pasControlar.text, context);
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text('or using social '.tr(context)))
+              ],
             ),
-            const SizedBox(
-              height: 130,
-            ),
-            const Text('Login', style: AppStyle.bold28blak),
-            const SizedBox(
-              height: 33,
-            ),
-            CustomTeaxtFormField(
-              controlar: emailControlar,
-              validatText: 'pleas Enter email',
-              hintText: 'Email',
-              labelText: 'Email',
-            ),
-            CustomTeaxtFormField(
-              controlar: pasControlar,
-              validatText: "pleas Enter Passwored",
-              hintText: 'Passwored',
-              labelText: 'Passwored',
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CustomButton(
-              title: 'Login',
-              backgraondColor: const Color(0xFF2743FB),
-              textStyle: AppStyle.reguler20white,
-              iconcolor: Colors.white,
-              function: () {
-                if (formKey.currentState!.validate()) {
-                  AuthAppCubit.get(context)
-                      .login(emailControlar.text, pasControlar.text, context);
-                }
-              },
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            const Align(
-                alignment: Alignment.center, child: Text('or using social '))
-          ],
-        ),
-      );
-    });
+          );
+        },
+      ),
+    );
   }
 }

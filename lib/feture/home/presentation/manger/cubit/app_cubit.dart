@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/ApiServes/map_service.dart';
 
 import '../../../../../core/utils/cach/cach_helpar.dart';
+import '../../../../../core/utils/image_picker/image_picer.dart';
 import '../../../../google_map/manegar/cubit/map_cubit_cubit.dart';
 import '../../../../history/history_page.dart';
 import '../../../../payment/view/paymant_details_view.dart';
@@ -16,10 +17,22 @@ part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
-  static get(context) => BlocProvider.of<AppCubit>(context);
+  static AppCubit get(context) => BlocProvider.of<AppCubit>(context);
   int selectedPage = 0;
   bool isDisposed = false;
   bool isArabic = false;
+  PickImageServes pickImageServes = PickImageServes.get();
+
+  Future<void> SetUserPictur() async {
+    emit(ChangeUserPictiurLoding());
+
+    try {
+      await pickImageServes.getImageFromGallery();
+      emit(ChangeUserPictiurSuccess());
+    } catch (e) {
+      emit(ChangeUserPictiurFilur());
+    }
+  }
 
   List<Widget> pages = [
     HomeBody(),

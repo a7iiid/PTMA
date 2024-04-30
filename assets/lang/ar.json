@@ -1,3 +1,21 @@
 {
-    
+    "Login":"تسجيل الدخول",
+    "pleas Enter email": "الرجاء إدخال البريد الإلكتروني",
+    "pleas Enter password": "الرجاء إدخال كلمة المرور",
+    "Email":"البريد الإلكتروني",
+    "Password":"كلمة المرور",
+    "pleas Enter Passwored":"الرجاء إدخال كلمة المرور",
+    "or using social":"أو باستخدام وسائل التواصل الاجتماعي",
+    "Sign up":"إنشاء حساب",
+    "select rout":"اختر المسار",
+    "morning":"الصباح",
+    "evening":"المساء",
+    "Success":"النجاح",
+    "Payment":"الدفع",
+    "Profile":"الملف الشخصي",
+    "Settings":"الإعدادات",
+    "Sign Out":"تسجيل الخروج",
+    "Good morning":"صباح الخير", "Good evening":"مساء الخير"
+
+
 }

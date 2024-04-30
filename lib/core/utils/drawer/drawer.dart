@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 import '../../widget/user_image.dart';
 import '../rout.dart';
@@ -31,12 +32,12 @@ class CustomeDrawer extends StatelessWidget {
                 ListTile(
                   onTap: () {},
                   leading: const Icon(Icons.account_circle_rounded),
-                  title: const Text('Profile'),
+                  title: Text('Profile'.tr(context)),
                 ),
                 ListTile(
                   onTap: () {},
                   leading: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  title: Text('Settings'.tr(context)),
                 ),
                 ListTile(
                   title: Text("Sign Out"),

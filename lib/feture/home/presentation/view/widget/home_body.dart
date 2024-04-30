@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
@@ -38,15 +39,24 @@ class HomeBody extends StatelessWidget {
                     Scaffold.of(context).openDrawer();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 50, left: 20),
-                    child: SvgPicture.asset(Assets.imagesMenuIcon),
+                    padding: const EdgeInsets.only(
+                      top: 50,
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        SvgPicture.asset(Assets.imagesMenuIcon),
+                      ],
+                    ),
                   ),
                 ),
                 const Greetingslogin(),
               ],
             ),
             Positioned(
-              bottom: -MediaQuery.sizeOf(context).height * .28,
+              bottom: -MediaQuery.sizeOf(context).height * .29,
               left: 40,
               right: 40,
               child: Container(
@@ -62,10 +72,10 @@ class HomeBody extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: MediaQuery.sizeOf(context).height * .30,
+          height: MediaQuery.sizeOf(context).height * .31,
         ),
         CustomButton(
-            title: 'select rout',
+            title: 'select rout'.tr(context),
             function: () {
               GoRouter.of(context).push(Routes.kSelectRouts);
             })

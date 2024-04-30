@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/autth/manger/cubit/auth_cubit.dart';
 import '../../../../core/utils/image_picker/image_picer.dart';
 import '../../../../core/widget/custom_button.dart';
@@ -84,9 +85,9 @@ class form extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      Text('Sign up', style: AppStyle.bold28blak),
+                      Text('Sign up'.tr(context), style: AppStyle.bold28blak),
                       Spacer()
                     ],
                   ),
@@ -103,15 +104,15 @@ class form extends StatelessWidget {
                   ),
                   CustomTeaxtFormField(
                     controlar: pasControlar,
-                    validatText: "pleas Enter Passwored",
-                    hintText: 'Passwored',
-                    labelText: 'Passwored',
+                    validatText: "pleas Enter Passwored".tr(context),
+                    hintText: 'Password'.tr(context),
+                    labelText: 'Password'.tr(context),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   CustomButton(
-                    title: 'Sign up',
+                    title: 'Sign up'.tr(context),
                     backgraondColor: const Color(0xFF2743FB),
                     textStyle: AppStyle.reguler20white,
                     iconcolor: Colors.white,
@@ -128,9 +129,9 @@ class form extends StatelessWidget {
                   const SizedBox(
                     height: 60,
                   ),
-                  const Align(
+                  Align(
                       alignment: Alignment.center,
-                      child: Text('or using social '))
+                      child: Text('or using social '.tr(context)))
                 ],
               ),
             );

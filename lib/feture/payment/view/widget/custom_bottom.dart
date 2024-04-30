@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class customBottom extends StatefulWidget {
   customBottom(
@@ -25,7 +26,7 @@ class _customBottomState extends State<customBottom> {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        child: const Center(child: Text("Submit")),
+        child: Center(child: Text(widget.title)),
       ),
     );
   }
