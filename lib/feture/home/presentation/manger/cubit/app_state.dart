@@ -18,3 +18,7 @@ class ChangeUserPictiurLoding extends AppState {}
 class ChangeUserPictiurSuccess extends AppState {}
 
 class ChangeUserPictiurFilur extends AppState {}
+
+class EditProfileSuccess extends AppState {}
+
+class EditProfileFaiur extends AppState {}

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomTeaxtFormField extends StatelessWidget {
-  const CustomTeaxtFormField({
+  CustomTeaxtFormField({
     super.key,
     required this.controlar,
     required this.hintText,
     required this.labelText,
     required this.validatText,
+    this.initValue,
     this.keyboardType,
   });
 
@@ -15,6 +16,7 @@ class CustomTeaxtFormField extends StatelessWidget {
   final String hintText;
   final String labelText;
   final String validatText;
+  final String? initValue;
 
   @override
   Widget build(BuildContext context) {

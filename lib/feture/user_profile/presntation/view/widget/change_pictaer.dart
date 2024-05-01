@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
@@ -33,22 +35,33 @@ class ChangePicturs extends StatelessWidget {
             // Wrap the container with Align
             alignment: Alignment.center, // Add this line
             child: Container(
-              width: 128.0,
-              height: 128.0,
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.circle,
-              ),
-              child: AppCubit.get(context).pickImageServes.file == null
-                  ? SvgPicture.asset(Assets.imagesUserProfilSvg)
-                  : CircleAvatar(
-                      backgroundImage: FileImage(
-                          AppCubit.get(context).pickImageServes.file!)),
-            ),
+                width: 128.0,
+                height: 128.0,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: FirebaseAuth.instance.currentUser!.photoURL == null &&
+                        AppCubit.get(context).pickImageServes.file == null
+                    ? SvgPicture.asset(Assets.imagesUserProfilSvg)
+                    : FirebaseAuth.instance.currentUser!.photoURL != null &&
+                            AppCubit.get(context).pickImageServes.file != null
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(
+                                AppCubit.get(context).pickImageServes.file!),
+                          )
+                        : FirebaseAuth.instance.currentUser!.photoURL != null &&
+                                AppCubit.get(context).pickImageServes.file ==
+                                    null
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage(FirebaseAuth
+                                    .instance.currentUser!.photoURL!),
+                              )
+                            : SvgPicture.asset(Assets.imagesUserProfilSvg)),
           ),
           Positioned(
             bottom: 5,
-            left: 120,
+            left: 150,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(

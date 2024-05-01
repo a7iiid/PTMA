@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +24,7 @@ class AppCubit extends Cubit<AppState> {
   int selectedPage = 0;
   bool isDisposed = false;
   bool isArabic = false;
+  late AuthCredential credential;
   PickImageServes pickImageServes = PickImageServes.get();
 
   Future<void> SetUserPictur() async {
@@ -122,5 +126,32 @@ class AppCubit extends Cubit<AppState> {
       CachHelper.langPutData('isChick', isArabic)
           .then((value) => emit(Languegchang()));
     }
+  }
+
+  Future<AuthCredential> confirmConiction(String pass) async {
+    User user = FirebaseAuth.instance.currentUser!;
+
+    credential =
+        EmailAuthProvider.credential(email: user.email!, password: pass);
+    return credential;
+  }
+
+  Future<void> editProfile(String newName, String newEmail, String pass) async {
+    User user = FirebaseAuth.instance.currentUser!;
+
+    await user.reauthenticateWithCredential(credential).then((value) async {
+      await user.updateDisplayName(newName); //change new name
+      await user.verifyBeforeUpdateEmail(newEmail); //
+      //uplode new image
+      if (pickImageServes.file != null) {
+        await pickImageServes.uplode();
+
+        await user.updatePhotoURL(pickImageServes.url);
+      }
+      emit(EditProfileSuccess());
+    }).catchError((error) {
+      print(error.toString());
+      emit(EditProfileFaiur());
+    });
   }
 }
