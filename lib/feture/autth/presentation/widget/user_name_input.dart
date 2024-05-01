@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 class UserNameInput extends StatelessWidget {
   const UserNameInput({
@@ -14,13 +15,13 @@ class UserNameInput extends StatelessWidget {
       controller: nameControlar,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'pleas Enter name';
+          return 'pleas Enter name'.tr(context);
         }
         return null;
       },
-      decoration: const InputDecoration(
-          hintText: 'Full name',
-          label: Text('Full name'),
+      decoration: InputDecoration(
+          hintText: "Full name".tr(context),
+          label: Text("Full name".tr(context)),
           enabledBorder: UnderlineInputBorder()),
     );
   }

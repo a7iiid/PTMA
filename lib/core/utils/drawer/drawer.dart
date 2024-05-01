@@ -40,11 +40,9 @@ class CustomeDrawer extends StatelessWidget {
                   title: Text('Settings'.tr(context)),
                 ),
                 ListTile(
-                  title: Text("Sign Out"),
+                  title: Text("Sign Out".tr(context)),
                   leading: Icon(Icons.output_outlined),
                   onTap: () async {
-                    print(FirebaseAuth.instance.currentUser);
-
                     await FirebaseAuth.instance.signOut().then((value) =>
                         GoRouter.of(context)
                             .pushReplacement(Routes.kMainScreen));
@@ -52,7 +50,7 @@ class CustomeDrawer extends StatelessWidget {
                 ),
                 Spacer(),
                 DefaultTextStyle(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white54,
                   ),
@@ -60,7 +58,8 @@ class CustomeDrawer extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(
                       vertical: 16.0,
                     ),
-                    child: Text('Terms of Service | Privacy Policy'),
+                    child:
+                        Text('Terms of Service | Privacy Policy'.tr(context)),
                   ),
                 ),
               ],

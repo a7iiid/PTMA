@@ -1,21 +1,23 @@
 {
     "Login":"تسجيل الدخول",
-    "pleas Enter email": "الرجاء إدخال البريد الإلكتروني",
-    "pleas Enter password": "الرجاء إدخال كلمة المرور",
-    "Email":"البريد الإلكتروني",
+    "pleas Enter email": "من فضلك ادخل البريد الالكتروني",
+    "pleas Enter password": "من فضلك ادخل كلمة المرور",
+    "Email":"البريد الالكتروني",
     "Password":"كلمة المرور",
-    "pleas Enter Passwored":"الرجاء إدخال كلمة المرور",
+    "pleas Enter Passwored":"من فضلك ادخل كلمة المرور",
     "or using social":"أو باستخدام وسائل التواصل الاجتماعي",
-    "Sign up":"إنشاء حساب",
+    "Sign up":"تسجيل",
     "select rout":"اختر المسار",
-    "morning":"الصباح",
-    "evening":"المساء",
-    "Success":"النجاح",
-    "Payment":"الدفع",
+    "morning":"صباح",
+    "evening":"مساء",
+    "Success":"نجاح",
+    "Payment":"دفع",
     "Profile":"الملف الشخصي",
     "Settings":"الإعدادات",
-    "Sign Out":"تسجيل الخروج",
-    "Good morning":"صباح الخير", "Good evening":"مساء الخير"
-
-
+    "Sign Out":"خروج",
+    "Good morning":"صباح الخير",
+    "Good evening":"مساء الخير",
+    "Full name":"الاسم الكامل",
+    "pleas Enter name":"من فضلك ادخل الاسم",
+    "Sign in":"تسجيل الدخول"
 }

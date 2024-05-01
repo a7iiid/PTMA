@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ptma/core/widget/user_image.dart';
-import 'package:ptma/feture/user_profile/view/widget/change_pictaer.dart';
+import 'package:ptma/feture/user_profile/presntation/view/widget/change_pictaer.dart';
 
-import '../../../autth/presentation/widget/set_user_image.dart';
+import '../../../../autth/presentation/widget/set_user_image.dart';
 
 class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});

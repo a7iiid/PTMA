@@ -10,7 +10,7 @@ import '../../../../../core/utils/image_picker/image_picer.dart';
 import '../../../../google_map/manegar/cubit/map_cubit_cubit.dart';
 import '../../../../history/history_page.dart';
 import '../../../../payment/view/paymant_details_view.dart';
-import '../../../../user_profile/view/profile_page.dart';
+import '../../../../user_profile/presntation/view/profile_page.dart';
 import '../../view/widget/home_body.dart';
 
 part 'app_state.dart';

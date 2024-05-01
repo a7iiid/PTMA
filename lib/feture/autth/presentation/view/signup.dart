@@ -95,12 +95,17 @@ class form extends StatelessWidget {
                     height: 33,
                   ),
                   SetUserImage(),
-                  UserNameInput(nameControlar: nameControlar),
+                  CustomTeaxtFormField(
+                    controlar: nameControlar,
+                    validatText: 'pleas Enter name'.tr(context),
+                    hintText: 'Full name'.tr(context),
+                    labelText: 'Full name'.tr(context),
+                  ),
                   CustomTeaxtFormField(
                     controlar: emailControlar,
-                    validatText: 'pleas Enter email',
-                    hintText: 'Email',
-                    labelText: 'Email',
+                    validatText: 'pleas Enter email'.tr(context),
+                    hintText: 'Email'.tr(context),
+                    labelText: 'Email'.tr(context),
                   ),
                   CustomTeaxtFormField(
                     controlar: pasControlar,

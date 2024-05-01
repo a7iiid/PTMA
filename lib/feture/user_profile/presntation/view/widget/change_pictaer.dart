@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 
-import '../../../../core/utils/images.dart';
+import '../../../../../core/utils/images.dart';
 
 class ChangePicturs extends StatelessWidget {
   const ChangePicturs({super.key});
