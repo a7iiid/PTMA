@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
 
+import '../../../core/utils/images.dart';
 import '../stripe/data/models/payment_input_intint_model.dart';
 import '../stripe/data/repo/checkout_repo_implemantation.dart';
 import '../stripe/cubit/payment_cubit.dart';
@@ -26,7 +27,7 @@ class PaymentDetails extends StatefulWidget {
 
 class _PaymentDetailsState extends State<PaymentDetails> {
   GlobalKey<FormState> formKey = GlobalKey();
-  late QrCodeModel qrCodeModel;
+  QrCodeModel qrCodeModel = QrCodeModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,23 +68,46 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  height: 300,
-                  width: double.infinity,
-                  child: AiBarcodeScanner(
-                    fit: BoxFit.fitWidth,
-                    controller: MobileScannerController(
-                      detectionSpeed: DetectionSpeed.noDuplicates,
-                    ),
-                    onScan: (String value) {
-                      QrCodeModel qrCodeModel =
-                          PaymentCubit.get(context).scanQRData(value);
-                    },
+                    child: BlocConsumer<PaymentCubit, PaymentState>(
+                  listener: (context, state) {
+                    if (state is ScanQRFailuer) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Confirm Qr Code ".tr(context))));
+                    }
+                  },
+                  builder: (context, state) {
+                    return state is ScanQRSuccess
+                        ? Container(
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Color(0xff34A853),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SvgPicture.asset(Assets.imagesSuccess),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            height: 300,
+                            width: double.infinity,
+                            child: AiBarcodeScanner(
+                              canPop: false,
+                              fit: BoxFit.fitWidth,
+                              controller: MobileScannerController(
+                                detectionSpeed: DetectionSpeed.noDuplicates,
+                              ),
+                              onScan: (String value) {
+                                qrCodeModel =
+                                    PaymentCubit.get(context).scanQRData(value);
+                              },
 
-                    bottomBar: null, // Set this to null to hide the bottom bar
-                    appBar: null,
-                  ),
+                              bottomBar:
+                                  null, // Set this to null to hide the bottom bar
+                              appBar: null,
+                            ),
+                          );
+                  },
                 )),
                 SliverFillRemaining(
                   child: Padding(
@@ -92,21 +116,24 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: customBottom(
+                        isEnabled: state is ScanQRSuccess,
                         title: "Payment".tr(context),
                         formKey: formKey,
                         onTap: () async {
                           if (BlocProvider.of<PaymentCubit>(context)
                                   .selectindex ==
                               0) {
-                            BlocProvider.of<PaymentCubit>(context).makePayment(
+                            await BlocProvider.of<PaymentCubit>(context)
+                                .makePayment(
                               paymentInputIntantModel: PaymentInputIntantModel(
-                                amount: qrCodeModel.prise,
+                                amount: qrCodeModel.prise!,
                                 currency: 'USD',
                                 customerId:
                                     await BlocProvider.of<PaymentCubit>(context)
                                         .getCusomerId(),
                               ),
                             );
+                            qrCodeModel = QrCodeModel();
                           }
                         },
                       ),

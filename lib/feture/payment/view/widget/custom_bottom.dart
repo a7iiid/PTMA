@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 
 class customBottom extends StatefulWidget {
   customBottom(
-      {super.key, this.formKey, required this.title, required this.onTap});
+      {super.key,
+      this.formKey,
+      required this.title,
+      required this.onTap,
+      this.isEnabled = true});
 
   final GlobalKey<FormState>? formKey;
   String title;
+  bool isEnabled;
+
   final void Function()? onTap;
   @override
   State<customBottom> createState() => _customBottomState();
@@ -16,7 +22,7 @@ class _customBottomState extends State<customBottom> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: widget.isEnabled ? widget.onTap : () {},
       child: Container(
         width: double.infinity,
         height: 73,

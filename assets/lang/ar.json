@@ -10,7 +10,7 @@
     "select rout":"اختر المسار",
     "morning":"صباح",
     "evening":"مساء",
-    "Success":"نجاح",
+    "Success":" تمت العملية بنجاح",
     "Payment":"دفع",
     "Profile":"الملف الشخصي",
     "Settings":"الإعدادات",
@@ -20,6 +20,8 @@
     "Full name":"الاسم الكامل",
     "pleas Enter name":"من فضلك ادخل الاسم",
     "Sign in":"تسجيل الدخول",
-    "Save":"حفظ"
+    "Save":"حفظ",
+    "Confirm Qr Code ":"يرجا التاكد من الرمز "
+
 
 }

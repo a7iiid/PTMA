@@ -17,10 +17,6 @@ class Assets {
   /// assets/images/mainScreen.svg
   static const String imagesMainScreen = "assets/images/mainScreen.svg";
 
-  /// Assets for imagesMapStyleMapStyle
-  /// assets/images/map_style/mapStyle.json
-  static const String imagesMapStyleMapStyle = "assets/images/map_style/mapStyle.json";
-
   /// Assets for imagesMarker
   /// assets/images/marker.jpg
   static const String imagesMarker = "assets/images/marker.jpg";
@@ -32,6 +28,10 @@ class Assets {
   /// Assets for imagesMenuIcon
   /// assets/images/menuIcon.svg
   static const String imagesMenuIcon = "assets/images/menuIcon.svg";
+
+  /// Assets for imagesPaymentSuccess
+  /// assets/images/paymentSuccess.svg
+  static const String imagesPaymentSuccess = "assets/images/paymentSuccess.svg";
 
   /// Assets for imagesPaypal
   /// assets/images/paypal.svg
