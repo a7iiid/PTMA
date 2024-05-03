@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +12,7 @@ import '../../../../../core/utils/images.dart';
 import '../../../../../core/utils/rout.dart';
 import '../../../../../core/widget/custom_button.dart';
 import '../../../../google_map/data/model/station_model.dart';
+import '../../../../google_map/view/homemap.dart';
 import 'head_home_page.dart';
 
 class SelectRouts extends StatelessWidget {
@@ -42,6 +45,7 @@ class SelectRouts extends StatelessWidget {
                           color: Colors.amber),
                       height: MediaQuery.sizeOf(context).height * .45,
                       width: MediaQuery.sizeOf(context).width * .7,
+                      child: MapPage(),
                     ),
                   ),
                 ],
@@ -49,12 +53,12 @@ class SelectRouts extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * .30,
               ),
-              StationDropdown(
-                stations: MapCubit().markers.toList(),
-                onChanged: (Marker station) {
-                  // Do something with the selected station
-                },
-              )
+              // StationDropdown(
+              //   stations: MapCubit().markers.toList(),
+              //   onChanged: (Marker station) {
+              //     // Do something with the selected station
+              //   },
+              // )
             ],
           ),
         ),

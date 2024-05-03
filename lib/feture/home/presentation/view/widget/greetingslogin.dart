@@ -19,7 +19,7 @@ class Greetingslogin extends StatelessWidget {
           ),
           Text(
             DateTime.now().hour < 12
-                ? " ${'Good morning '.tr(context)} ${FirebaseAuth.instance.currentUser!.displayName ?? ''}"
+                ? " ${"Good morning".tr(context)} ${FirebaseAuth.instance.currentUser!.displayName ?? ''}"
                 : "${"Good evening".tr(context)} ${FirebaseAuth.instance.currentUser!.displayName ?? ''}",
             style: AppStyle.normal24,
           ),
