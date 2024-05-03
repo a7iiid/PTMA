@@ -4,6 +4,7 @@ import 'package:ptma/feture/autth/presentation/view/signin.dart';
 import 'package:ptma/feture/autth/presentation/view/signup.dart';
 import 'package:ptma/feture/home/presentation/view/home_page.dart';
 import 'package:ptma/core/utils/splash/splash.dart';
+import 'package:ptma/feture/settings/view/settings.dart';
 
 import '../../feture/home/presentation/view/widget/selcted_routs.dart';
 
@@ -13,6 +14,7 @@ abstract class Routes {
   static const kSignUpScreen = '/signupscreen';
   static const kHomePage = '/homepage';
   static const kSelectRouts = '/selectrout';
+  static const kSettings = '/settings';
 
   static final router = GoRouter(routes: [
     GoRoute(
@@ -49,6 +51,12 @@ abstract class Routes {
       path: kSelectRouts,
       builder: (context, state) {
         return SelectRouts();
+      },
+    ),
+    GoRoute(
+      path: kSettings,
+      builder: (context, state) {
+        return Settings();
       },
     ),
   ]);

@@ -16,7 +16,7 @@ class UserImage extends StatelessWidget {
       height: 128.0,
       margin: const EdgeInsets.only(
         top: 34.0,
-        bottom: 64.0,
+        bottom: 42,
       ),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(

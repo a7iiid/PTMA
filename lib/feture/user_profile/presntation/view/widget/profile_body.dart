@@ -12,6 +12,7 @@ import '../../../../../core/utils/Style.dart';
 import '../../../../../core/widget/custom_button.dart';
 import '../../../../autth/manger/cubit/auth_cubit.dart';
 import '../../../../autth/presentation/widget/set_user_image.dart';
+import 'build_dialog.dart';
 
 class ProfileBody extends StatefulWidget {
   ProfileBody({super.key});
@@ -41,91 +42,57 @@ class _ProfileBodyState extends State<ProfileBody> {
     return Form(
       key: key,
       child: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * .25,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * .25,
+                ),
+                BlocBuilder<AppCubit, AppState>(
+                  builder: (context, state) {
+                    return ChangePicturs();
+                  },
+                ),
+                CustomTeaxtFormField(
+                  controlar: nameController,
+                  validatText: 'pleas Enter name'.tr(context),
+                  hintText: 'Full name'.tr(context),
+                  labelText: 'Full name'.tr(context),
+                ),
+                CustomTeaxtFormField(
+                  controlar: emailController,
+                  validatText: 'pleas Enter email'.tr(context),
+                  hintText: 'Email'.tr(context),
+                  labelText: 'Email'.tr(context),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                CustomButton(
+                  title: 'Save'.tr(context),
+                  backgraondColor: const Color(0xFF2743FB),
+                  textStyle: AppStyle.reguler20white,
+                  iconcolor: Colors.white,
+                  function: () async {
+                    if (key.currentState!.validate()) {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return buildDialog(context);
+                        },
+                      );
+                      AppCubit.get(context).editProfile(nameController.text,
+                          emailController.text, passController.text);
+                    }
+                  },
+                ),
+              ],
             ),
-            BlocBuilder<AppCubit, AppState>(
-              builder: (context, state) {
-                return ChangePicturs();
-              },
-            ),
-            CustomTeaxtFormField(
-              controlar: nameController,
-              validatText: 'pleas Enter name'.tr(context),
-              hintText: 'Full name'.tr(context),
-              labelText: 'Full name'.tr(context),
-            ),
-            CustomTeaxtFormField(
-              controlar: emailController,
-              validatText: 'pleas Enter email'.tr(context),
-              hintText: 'Email'.tr(context),
-              labelText: 'Email'.tr(context),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            CustomButton(
-              title: 'Save'.tr(context),
-              backgraondColor: const Color(0xFF2743FB),
-              textStyle: AppStyle.reguler20white,
-              iconcolor: Colors.white,
-              function: () async {
-                if (key.currentState!.validate()) {
-                  await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return buildDialog(context);
-                    },
-                  );
-                  AppCubit.get(context).editProfile(nameController.text,
-                      emailController.text, passController.text);
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
-
-Widget buildDialog(BuildContext context) {
-  GlobalKey<FormState> key = GlobalKey<FormState>();
-  TextEditingController passController = TextEditingController();
-
-  return AlertDialog(
-    title: Text("Confirm password ".tr(context)),
-    content: Form(
-      key: key,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text("pleas Enter Passwored".tr(context)),
-          TextFormField(
-            controller: passController,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "pleas Enter Passwored".tr(context);
-              }
-              return null;
-            },
-          )
-        ],
-      ),
-    ),
-    actions: <Widget>[
-      TextButton(
-        child: Text('OK'),
-        onPressed: () async {
-          if (key.currentState!.validate()) {
-            await AppCubit.get(context).confirmConiction(passController.text);
-            Navigator.of(context).pop();
-          }
-        },
-      ),
-    ],
-  );
 }

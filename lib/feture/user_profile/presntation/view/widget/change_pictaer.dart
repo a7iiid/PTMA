@@ -61,7 +61,7 @@ class ChangePicturs extends StatelessWidget {
           ),
           Positioned(
             bottom: 5,
-            left: 150,
+            left: 120,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(
