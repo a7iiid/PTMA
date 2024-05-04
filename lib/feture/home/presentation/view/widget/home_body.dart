@@ -17,6 +17,7 @@ import 'package:ptma/feture/google_map/view/homemap.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/drawer_bottom.dart';
 import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
+import 'package:ptma/feture/home/presentation/view/widget/map_route_bus.dart';
 
 import '../../../../../core/utils/rout.dart';
 import 'greetingslogin.dart';
@@ -35,32 +36,37 @@ class HomeBody extends StatelessWidget {
           children: [
             const HeadHomePage(),
             const DrawerBottom(),
-            Positioned(
-              bottom: -MediaQuery.sizeOf(context).height * .29,
-              left: 40,
-              right: 40,
-              child: Container(
-                decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    color: Colors.amber),
-                height: MediaQuery.sizeOf(context).height * .45,
-                width: MediaQuery.sizeOf(context).width * .7,
-                child: MapPage(
-                  initialCameraPosition: const LatLng(32.409161, 35.279642),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   bottom: -MediaQuery.sizeOf(context).height * .29,
+            //   left: 40,
+            //   right: 40,
+            //   child: MapPage(
+            //     initialCameraPosition: const LatLng(32.409161, 35.279642),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(
-          height: MediaQuery.sizeOf(context).height * .31,
+          height: MediaQuery.sizeOf(context).height * .1,
+        ),
+        CustomButton(
+            title: 'View map'.tr(context),
+            function: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapRouteBus(),
+                ),
+              );
+            }),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * .1,
         ),
         CustomButton(
             title: 'select rout'.tr(context),
             function: () {
               GoRouter.of(context).push(Routes.kSelectRouts);
-            })
+            }),
       ],
     );
   }

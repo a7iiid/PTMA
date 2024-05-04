@@ -21,4 +21,18 @@ final class SelectRout extends MapState {}
 
 final class FiltringBus extends MapState {}
 
+final class LodeingStation extends MapState {}
+
+final class SuccessLoding extends MapState {}
+
+final class FiluerLoding extends MapState {}
+
+final class SetStationOnMap extends MapState {}
+
+final class SuccessSetStation extends MapState {}
+
+final class SetSelectedBus extends MapState {}
+
 final class MapClear extends MapState {}
+
+final class BusModelsUpdated extends MapState {}

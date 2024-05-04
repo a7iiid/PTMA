@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +13,8 @@ import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
 import 'drawer_bottom.dart';
 
 class MapRouteBus extends StatefulWidget {
-  MapRouteBus({super.key, required this.busModel});
-  BusModel busModel;
+  MapRouteBus({super.key, this.busModel});
+  BusModel? busModel;
 
   @override
   State<MapRouteBus> createState() => _MapRouteBusState();
@@ -28,40 +29,31 @@ class _MapRouteBusState extends State<MapRouteBus> {
         MapCubit.get(context).clear();
       },
       child: Scaffold(
-        body: Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const HeadHomePage(),
-                const DrawerBottom(),
-                Positioned(
-                  bottom: -MediaQuery.sizeOf(context).height * .29,
-                  left: 40,
-                  right: 40,
-                  child: Container(
-                    decoration: const ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                    ),
-                    height: MediaQuery.sizeOf(context).height * .45,
-                    width: MediaQuery.sizeOf(context).width * .7,
-                    child: MapPage(
-                      initialCameraPosition: LatLng(widget.busModel.buslatitude,
-                          widget.busModel.buslongitude),
-                      busModel: widget.busModel,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * .31,
-            ),
-          ],
+        body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('bus')
+              .where('isActive', isEqualTo: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+
+            List<BusModel> busModels = snapshot.data!.docs
+                .map((doc) =>
+                    BusModel.fromJson(doc.data() as Map<String, dynamic>))
+                .toList();
+
+            MapCubit.get(context).updateBusModels(busModels);
+
+            return MapPage(
+              busModel: widget.busModel,
+            );
+          },
         ),
       ),
     );

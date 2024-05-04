@@ -24,7 +24,16 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   Dio dio = Dio();
 
 ////////////////////////////////////
-  Future<void> getBusFromFireBase() async {
+  ///
+  Future<QuerySnapshot> getDataFromFireBase() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('bus')
+        .where('isActive', isEqualTo: true)
+        .get();
+    return querySnapshot;
+  }
+
+  Future<void> MapDataToBusModel() async {
     try {
       emit(LodingBus());
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance

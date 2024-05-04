@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -41,112 +42,109 @@ class SelectRouts extends StatelessWidget {
         return Scaffold(
           drawer: CustomeDrawer(),
           body: SafeArea(
-            child: Column(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const HeadHomePage(),
-                    // Row(
-                    //   children: [
-                    //     Builder(builder: (context) {
-                    //       return GestureDetector(
-                    //         onTap: () {
-                    //           Scaffold.of(context).openDrawer();
-                    //         },
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.only(
-                    //             top: 50,
-                    //           ),
-                    //           child: Row(
-                    //             children: [
-                    //               const SizedBox(
-                    //                 width: 20,
-                    //               ),
-                    //               SvgPicture.asset(Assets.imagesMenuIcon),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       );
-                    //     }),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('bus')
+                    .where('isActive', isEqualTo: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error'),
+                    );
+                  } else if (snapshot.hasData) {
+                    SelectRoutCubit.get(context).busModel = snapshot.data!.docs
+                        .map((doc) => BusModel.fromJson(
+                            doc.data() as Map<String, dynamic>))
+                        .toList();
 
-                    //     //const Greetingslogin(),
-                    //   ],
-                    // ),
-                    Positioned(
-                      top: MediaQuery.sizeOf(context).height * .1,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                    return Column(
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
                           children: [
-                            DropMenuItem(
-                              location: sourseStation,
-                              onChanged: (value) {
-                                sourseStation = value;
+                            const HeadHomePage(),
+                            Positioned(
+                              top: MediaQuery.sizeOf(context).height * .1,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    DropMenuItem(
+                                      location: sourseStation,
+                                      onChanged: (value) {
+                                        sourseStation = value;
 
-                                SelectRoutCubit.get(context)
-                                    .updateSourceStation(value);
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            DropMenuItem(
-                              location: distnationStation,
-                              onChanged: (value) {
-                                distnationStation = value;
+                                        SelectRoutCubit.get(context)
+                                            .updateSourceStation(value);
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    DropMenuItem(
+                                      location: distnationStation,
+                                      onChanged: (value) {
+                                        distnationStation = value;
 
-                                SelectRoutCubit.get(context)
-                                    .updateDistnationStation(value);
-                              },
+                                        SelectRoutCubit.get(context)
+                                            .updateDistnationStation(value);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: cubit.listBusFilter.isEmpty
-                        ? cubit.busModel.length
-                        : cubit.listBusFilter.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ListTile(
-                            title: Text(cubit.listBusFilter.isEmpty
-                                ? cubit.busModel[index].busname
-                                : cubit.listBusFilter[index].busname),
-                            subtitle: Text(cubit.listBusFilter.isEmpty
-                                ? cubit.busModel[index].busnumber
-                                : cubit.listBusFilter[index].busnumber),
-                            // trailing: Text(cubit.busModel[index].bustime,
-                            // ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapRouteBus(
-                                        busModel: cubit.listBusFilter.isEmpty
-                                            ? cubit.busModel[index]
-                                            : cubit.listBusFilter[index])),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: cubit.listBusFilter.isEmpty
+                                ? cubit.busModel.length
+                                : cubit.listBusFilter.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    title: Text(cubit.listBusFilter.isEmpty
+                                        ? cubit.busModel[index].busname
+                                        : cubit.listBusFilter[index].busname),
+                                    subtitle: Text(cubit.listBusFilter.isEmpty
+                                        ? cubit.busModel[index].busnumber
+                                        : cubit.listBusFilter[index].busnumber),
+                                    // trailing: Text(cubit.busModel[index].bustime,
+                                    // ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MapRouteBus(
+                                                busModel: cubit
+                                                        .listBusFilter.isEmpty
+                                                    ? cubit.busModel[index]
+                                                    : cubit
+                                                        .listBusFilter[index])),
+                                      );
+                                    },
+                                  ),
+                                  const Divider()
+                                ],
                               );
                             },
                           ),
-                          const Divider()
-                        ],
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
           ),
         );
       },
