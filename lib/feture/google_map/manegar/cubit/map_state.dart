@@ -20,3 +20,5 @@ final class MapSuccess extends MapState {}
 final class SelectRout extends MapState {}
 
 final class FiltringBus extends MapState {}
+
+final class MapClear extends MapState {}

@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
@@ -14,6 +15,7 @@ import 'package:ptma/core/widget/custom_button.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
+import 'package:ptma/feture/home/presentation/view/widget/drawer_bottom.dart';
 import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
 
 import '../../../../../core/utils/rout.dart';
@@ -32,29 +34,7 @@ class HomeBody extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             const HeadHomePage(),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 50,
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        SvgPicture.asset(Assets.imagesMenuIcon),
-                      ],
-                    ),
-                  ),
-                ),
-                const Greetingslogin(),
-              ],
-            ),
+            const DrawerBottom(),
             Positioned(
               bottom: -MediaQuery.sizeOf(context).height * .29,
               left: 40,
@@ -66,7 +46,9 @@ class HomeBody extends StatelessWidget {
                     color: Colors.amber),
                 height: MediaQuery.sizeOf(context).height * .45,
                 width: MediaQuery.sizeOf(context).width * .7,
-                child: MapPage(),
+                child: MapPage(
+                  initialCameraPosition: const LatLng(32.409161, 35.279642),
+                ),
               ),
             ),
           ],

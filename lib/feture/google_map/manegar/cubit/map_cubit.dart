@@ -29,10 +29,11 @@ class MapCubit extends Cubit<MapState> {
   Set<Polyline> polylines = {};
   MapService mapService = MapService();
   late LatLng userLocationData;
-  late LatLng userDestnationData;
+  LatLng? userDestnationData;
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
   List<StationModel> stationModel = [];
+  LatLng? startStation, endStation;
 
   PolylinePoints polylinePoints = PolylinePoints();
 
@@ -101,9 +102,28 @@ class MapCubit extends Cubit<MapState> {
     markers.addAll(myMarker);
   }
 
-  Future<List<LatLng>> getRouteData() async {
+  Future<void> clearPolyLine() async {
+    polylineCoordinates.clear();
+    polylines.clear();
+    if (startStation != null && endStation != null) {
+      displayBusPoint(await getRouteBusData(startStation!, endStation!));
+    }
+  }
+
+  void clear() {
+    polylineCoordinates.clear();
+    polylines.clear();
+    if (startStation != null && endStation != null) {
+      startStation = null;
+      endStation = null;
+      emit(MapClear());
+    }
+  }
+
+  Future<List<LatLng>> getRouteUserData(
+      {LatLng? startStation, LatLng? endStation}) async {
     RoutesModel route = await routesService.fetchRoutes(
-        origindata: userLocationData, destinationData: userDestnationData);
+        origindata: userLocationData, destinationData: userDestnationData!);
 
     List<PointLatLng> result = polylinePoints
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
@@ -112,9 +132,34 @@ class MapCubit extends Cubit<MapState> {
     return pointes;
   }
 
-  void displayPoint(List<LatLng> point) {
+  void displayUserPoint(List<LatLng> point) {
     Polyline route = Polyline(
-        polylineId: PolylineId('route'),
+        polylineId: PolylineId('userRoute'),
+        points: point,
+        color: Colors.green,
+        startCap: Cap.roundCap,
+        width: 4);
+    polylines.add(route);
+    emit(MapSetLine());
+  }
+
+  Future<List<LatLng>> getRouteBusData(
+      LatLng startStation, LatLng endStation) async {
+    this.startStation = startStation;
+    this.endStation = endStation;
+    RoutesModel route = await routesService.fetchRoutes(
+        origindata: startStation, destinationData: endStation);
+
+    List<PointLatLng> result = polylinePoints
+        .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
+    List<LatLng> pointes =
+        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return pointes;
+  }
+
+  void displayBusPoint(List<LatLng> point) {
+    Polyline route = Polyline(
+        polylineId: PolylineId('busRoute'),
         points: point,
         color: Colors.green,
         startCap: Cap.roundCap,

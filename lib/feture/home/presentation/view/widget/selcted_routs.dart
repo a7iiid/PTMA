@@ -15,6 +15,7 @@ import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
+import 'package:ptma/feture/home/presentation/view/widget/map_route_bus.dart';
 
 import '../../../../../core/utils/images.dart';
 import '../../../../../core/utils/rout.dart';
@@ -46,32 +47,32 @@ class SelectRouts extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     const HeadHomePage(),
-                    Row(
-                      children: [
-                        Builder(builder: (context) {
-                          return GestureDetector(
-                            onTap: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 50,
-                              ),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  SvgPicture.asset(Assets.imagesMenuIcon),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
+                    // Row(
+                    //   children: [
+                    //     Builder(builder: (context) {
+                    //       return GestureDetector(
+                    //         onTap: () {
+                    //           Scaffold.of(context).openDrawer();
+                    //         },
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(
+                    //             top: 50,
+                    //           ),
+                    //           child: Row(
+                    //             children: [
+                    //               const SizedBox(
+                    //                 width: 20,
+                    //               ),
+                    //               SvgPicture.asset(Assets.imagesMenuIcon),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       );
+                    //     }),
 
-                        //const Greetingslogin(),
-                      ],
-                    ),
+                    //     //const Greetingslogin(),
+                    //   ],
+                    // ),
                     Positioned(
                       top: MediaQuery.sizeOf(context).height * .1,
                       child: Padding(
@@ -127,6 +128,16 @@ class SelectRouts extends StatelessWidget {
                                 : cubit.listBusFilter[index].busnumber),
                             // trailing: Text(cubit.busModel[index].bustime,
                             // ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapRouteBus(
+                                        busModel: cubit.listBusFilter.isEmpty
+                                            ? cubit.busModel[index]
+                                            : cubit.listBusFilter[index])),
+                              );
+                            },
                           ),
                           const Divider()
                         ],
