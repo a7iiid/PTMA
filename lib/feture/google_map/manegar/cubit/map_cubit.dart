@@ -33,7 +33,6 @@ class MapCubit extends Cubit<MapState> {
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
   List<StationModel> stationModel = [];
-  List<BusModel> busModel = [];
 
   PolylinePoints polylinePoints = PolylinePoints();
 
@@ -53,7 +52,6 @@ class MapCubit extends Cubit<MapState> {
       });
       await getStationFromFireBase();
       setStation();
-      await getBusFromFireBase();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
       // TODO
@@ -75,19 +73,6 @@ class MapCubit extends Cubit<MapState> {
     if (polylineCoordinates.isNotEmpty) {
       //routesService.destans(userDestnationData, userLocationData);
     }
-  }
-
-  Future<void> getBusFromFireBase() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('bus')
-        .where('isActeve', isEqualTo: true)
-        .get();
-
-    var buses = querySnapshot.docs;
-    var busData = buses
-        .map((doc) => BusModel.fromJson(doc.data() as Map<String, dynamic>))
-        .toList();
-    busModel.addAll(busData);
   }
 
   Future<void> getStationFromFireBase() async {
@@ -114,17 +99,6 @@ class MapCubit extends Cubit<MapState> {
             ))
         .toSet();
     markers.addAll(myMarker);
-  }
-
-  Future<void> destans(LatLng destination, LatLng start) async {
-    String baseUrlDistanceMatrix =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=${ApiKey.mapApiKey}';
-    try {
-      Response response = await dio.get(baseUrlDistanceMatrix);
-      print(response);
-    } on Exception catch (e) {
-      // TODO
-    }
   }
 
   Future<List<LatLng>> getRouteData() async {

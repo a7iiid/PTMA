@@ -7,6 +7,7 @@ import 'package:ptma/core/manger/cubit/loclaization_cubit.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/them_app.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'core/utils/cach/cach_helpar.dart';
 import 'feture/google_map/manegar/cubit/map_cubit.dart';
@@ -49,7 +50,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => MapCubit()..mapServiceApp(),
-          )
+          ),
+          BlocProvider(
+            create: (context) => SelectRoutCubit()..getBusFromFireBase(),
+          ),
         ],
         child: BlocBuilder<LoclaizationCubit, LoclaizationState>(
           builder: (context, state) {

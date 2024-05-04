@@ -16,3 +16,7 @@ final class MapSetMarker extends MapState {}
 final class MapFiluer extends MapState {}
 
 final class MapSuccess extends MapState {}
+
+final class SelectRout extends MapState {}
+
+final class FiltringBus extends MapState {}

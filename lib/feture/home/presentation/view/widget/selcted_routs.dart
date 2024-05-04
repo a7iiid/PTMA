@@ -13,6 +13,7 @@ import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
 
 import '../../../../../core/utils/images.dart';
@@ -26,15 +27,14 @@ import 'station_menue.dart';
 class SelectRouts extends StatelessWidget {
   SelectRouts({super.key});
   final TextEditingController iconController = TextEditingController();
-  StationModel? sourseStation;
-  StationModel? distnationStation;
+
   @override
   Widget build(BuildContext context) {
-    var cubit = MapCubit.get(context);
+    var cubit = SelectRoutCubit.get(context);
     List<BusModel> listbus =
         cubit.busModel.where((element) => element.isActive == true).toList();
 
-    return BlocBuilder<MapCubit, MapState>(
+    return BlocBuilder<SelectRoutCubit, SelectRoutState>(
       builder: (context, state) {
         return Scaffold(
           drawer: CustomeDrawer(),
@@ -78,11 +78,16 @@ class SelectRouts extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            DropMenuItem(location: cubit.stationModel.first),
+                            DropMenuItem(
+                              location: cubit.sourseStation,
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            DropMenuItem(location: cubit.stationModel.last),
+                            DropMenuItem(
+                              location: cubit.distnationStation,
+                              sourcelocation: cubit.sourseStation,
+                            ),
                           ],
                         ),
                       ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/google_map/data/model/station_model.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 
 class DropMenuItem extends StatefulWidget {
-  DropMenuItem({
-    super.key,
-    required this.location,
-  });
+  DropMenuItem({super.key, required this.location, this.sourcelocation});
 
   StationModel? location;
+  StationModel? sourcelocation;
 
   @override
   State<DropMenuItem> createState() => _DropMenuItemState();
@@ -27,7 +27,7 @@ class _DropMenuItemState extends State<DropMenuItem> {
                   .name), // Replace 'name' with the appropriate property of StationModel
             ))
         .toList();
-    widget.location ??= stationModel!.first.value;
+    widget.location ??= stationModel!.first.value!;
 
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
@@ -39,10 +39,15 @@ class _DropMenuItemState extends State<DropMenuItem> {
       items: stationModel,
       value: widget.location,
       onChanged: (value) {
-        setState(() {
-          widget.location = value as StationModel;
-        });
-        // widget.onChanged(_selectedStation!);
+        print(SelectRoutCubit.get(context).busModel.length);
+
+        widget.location = value as StationModel;
+        if (widget.sourcelocation != null) {
+          SelectRoutCubit.get(context).feltaringBus(
+              LatLng(widget.sourcelocation!.latitude,
+                  widget.sourcelocation!.longitude),
+              LatLng(widget.location!.latitude, widget.location!.longitude));
+        }
       },
       decoration: InputDecoration(
         // labelText: 'Select station'.tr(context),
