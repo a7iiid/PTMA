@@ -112,22 +112,6 @@ class AppCubit extends Cubit<AppState> {
     return pages[index];
   }
 
-  void changeLang(bool lang) {
-    if (lang != null) {
-      isArabic = lang;
-      CachHelper.langPutData('isChick', isArabic);
-      print('not null ${CachHelper.langGetData('isChick')}');
-      emit(Languegchang());
-    } else {
-      print(' null $lang');
-
-      isArabic = !isArabic;
-
-      CachHelper.langPutData('isChick', isArabic)
-          .then((value) => emit(Languegchang()));
-    }
-  }
-
   Future<AuthCredential> confirmConiction(String pass) async {
     User user = FirebaseAuth.instance.currentUser!;
 

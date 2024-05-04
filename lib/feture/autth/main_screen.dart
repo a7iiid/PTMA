@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
@@ -16,13 +18,17 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        //  scrollBehavior: ScrollBehavior(),
+        shrinkWrap: true,
         slivers: [
           SliverToBoxAdapter(
-            child: CustomPaint(
-              size: const Size(375, 572),
-              painter: RPSCustomPainter(),
-            ),
-          ),
+              child: CustomPaint(
+            size: Size(
+                MediaQuery.sizeOf(context).width,
+                (MediaQuery.sizeOf(context).width * .4982456140350877)
+                    .toDouble()),
+            painter: RPSCustomPainter(),
+          )),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(

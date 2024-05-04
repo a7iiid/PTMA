@@ -42,8 +42,8 @@ class CustomeDrawer extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const SizedBox(
-                      height: 40,
+                    SizedBox(
+                      height: MediaQuery.sizeOf(context).height * .1,
                     ),
                     const UserImage(),
                     ListTile(
@@ -53,7 +53,7 @@ class CustomeDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       onTap: () {
-                        GoRouter.of(context).pushReplacement(Routes.kSettings);
+                        GoRouter.of(context).push(Routes.kSettings);
                       },
                       leading: Icon(Icons.settings),
                       title: Text('Settings'.tr(context)),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:ptma/core/manger/cubit/loclaization_cubit.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/them_app.dart';
@@ -21,45 +22,60 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CachHelper.init();
+  bool isArabic = CachHelper.langGetData('isArabic');
+  print('ischick = $isArabic');
 
-  runApp(const MyApp());
+  runApp(MyApp(
+    isArabic: isArabic,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key, required this.isArabic});
+  bool isArabic;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (BuildContext context) {
+              return LoclaizationCubit()..changeLang(isArabic);
+            },
+          ),
+          BlocProvider(
+            create: (BuildContext context) {
               return AppCubit();
             },
           )
         ],
-        child: MaterialApp.router(
-          routerConfig: Routes.router,
-          locale: Locale('en'),
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate
-          ],
-          localeResolutionCallback: (deviceLocale, supportedLocales) {
-            for (var locale in supportedLocales) {
-              if (deviceLocale != null &&
-                  deviceLocale.languageCode == locale.languageCode) {
-                return deviceLocale;
-              }
-            }
+        child: BlocBuilder<LoclaizationCubit, LoclaizationState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              routerConfig: Routes.router,
+              locale: LoclaizationCubit.get(context).isArabic
+                  ? Locale('ar')
+                  : Locale('en'),
+              supportedLocales: const [Locale('en'), Locale('ar')],
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+              localeResolutionCallback: (deviceLocale, supportedLocales) {
+                for (var locale in supportedLocales) {
+                  if (deviceLocale != null &&
+                      deviceLocale.languageCode == locale.languageCode) {
+                    return deviceLocale;
+                  }
+                }
 
-            return supportedLocales.first;
+                return supportedLocales.first;
+              },
+              debugShowCheckedModeBanner: false,
+              theme: ThemeApp.themeapplight,
+            );
           },
-          debugShowCheckedModeBanner: false,
-          theme: ThemeApp.themeapplight,
         ));
   }
 }

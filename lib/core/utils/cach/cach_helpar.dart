@@ -21,6 +21,9 @@ class CachHelper {
   }
 
   static langGetData(String key) {
+    final value = sharedpreferences?.getBool(key);
+    if (value == null) return false;
+
     return sharedpreferences!.getBool(key) as bool;
   }
 }

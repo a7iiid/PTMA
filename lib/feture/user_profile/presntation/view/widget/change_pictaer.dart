@@ -61,7 +61,7 @@ class ChangePicturs extends StatelessWidget {
           ),
           Positioned(
             bottom: 5,
-            left: 120,
+            left: MediaQuery.sizeOf(context).width * .36,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(
