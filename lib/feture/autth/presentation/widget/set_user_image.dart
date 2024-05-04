@@ -48,8 +48,8 @@ class SetUserImage extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 5,
-            left: MediaQuery.sizeOf(context).width * .36,
+            bottom: 1,
+            left: MediaQuery.sizeOf(context).width * .30,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Container(

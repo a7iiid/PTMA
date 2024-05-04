@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ptma/core/widget/custom_teaxt_form_field.dart';
 
 import '../../../../../core/widget/user_image.dart';
 import '../../../../home/presentation/view/widget/head_home_page.dart';
@@ -15,9 +16,13 @@ class ProfileBody extends StatelessWidget {
       children: [
         const HeadHomePage(),
         Positioned(
-            left: MediaQuery.sizeOf(context).width * .39,
+            left: MediaQuery.sizeOf(context).width * .347,
             bottom: -MediaQuery.sizeOf(context).height * .12,
-            child: UserImage())
+            child: Column(
+              children: [
+                const UserImage(),
+              ],
+            ))
       ],
     );
   }

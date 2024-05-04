@@ -21,7 +21,7 @@ part 'map_cubit_state.dart';
 
 class MapCubit extends Cubit<MapState> {
   MapCubit() : super(MapInitial());
-  static get(context) => BlocProvider.of<MapCubit>(context);
+  static MapCubit get(context) => BlocProvider.of<MapCubit>(context);
   GoogleMapController? googleMapController;
 
   List<LatLng> polylineCoordinates = [];
@@ -71,15 +71,22 @@ class MapCubit extends Cubit<MapState> {
     }
   }
 
-  void setStation() async {
+  Future<List<StationModel>> getStationFromFireBase() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('station').get();
 
+    var myMarker = querySnapshot.docs;
+    List<StationModel> stationModel = myMarker
+        .map((doc) => StationModel.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+    return stationModel;
+  }
+
+  void setStation() async {
+    List<StationModel> stationModel = await getStationFromFireBase();
     var customMarkerIcone = BitmapDescriptor.fromBytes(
         await getImageFromRowData('assets/images/marker.jpg', 50));
-
-    var myMarker = querySnapshot.docs
-        .map((doc) => StationModel.fromJson(doc.data() as Map<String, dynamic>))
+    var myMarker = stationModel
         .map((station) => Marker(
               icon: customMarkerIcone,
               markerId: MarkerId(station.name),

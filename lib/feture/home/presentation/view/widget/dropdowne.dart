@@ -1,43 +1,60 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/map_cubit_cubit.dart';
 
 class StationDropdown extends StatefulWidget {
   final List<Marker> stations;
-  final Function(Marker) onChanged;
+  final ValueChanged<Marker> onChanged;
 
-  StationDropdown({required this.stations, required this.onChanged});
+  const StationDropdown({
+    Key? key,
+    required this.stations,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   _StationDropdownState createState() => _StationDropdownState();
 }
 
 class _StationDropdownState extends State<StationDropdown> {
-  late Marker _selectedStation;
+  Marker? _selectedStation;
 
   @override
   void initState() {
-    _selectedStation = widget.stations.first;
     super.initState();
+    if (widget.stations.isNotEmpty) {
+      _selectedStation = widget.stations.first;
+    }
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<Marker>(
+    return DropdownButtonFormField<Marker>(
       value: _selectedStation,
       items: widget.stations
           .map((station) => DropdownMenuItem<Marker>(
                 value: station,
-                child: Text('${station.markerId}'),
+                child: Text("${station.markerId.value}"),
               ))
           .toList(),
-      onChanged: (Marker? value) {
-        if (value != null) {
-          setState(() {
-            _selectedStation = value;
-            widget.onChanged(_selectedStation);
-          });
-        }
+      onChanged: (value) {
+        setState(() {
+          _selectedStation = value;
+        });
+        widget.onChanged(_selectedStation!);
       },
+      decoration: const InputDecoration(
+        labelText: 'Select station',
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }

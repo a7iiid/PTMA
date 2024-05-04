@@ -1,10 +1,16 @@
 import 'dart:collection';
+import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ptma/core/utils/drawer/drawer.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
 
@@ -14,55 +20,78 @@ import '../../../../../core/widget/custom_button.dart';
 import '../../../../google_map/data/model/station_model.dart';
 import '../../../../google_map/view/homemap.dart';
 import 'head_home_page.dart';
+import 'station_menue.dart';
 
 class SelectRouts extends StatelessWidget {
   SelectRouts({super.key});
   final TextEditingController iconController = TextEditingController();
+  StationModel? sourseStation;
+  StationModel? distnationStation;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
+    return BlocBuilder<MapCubit, MapState>(
+      builder: (context, state) {
+        return Scaffold(
+          drawer: CustomeDrawer(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  const HeadHomePage(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, left: 20),
-                    child: SvgPicture.asset(Assets.imagesMenuIcon),
-                  ),
-                  Positioned(
-                    bottom: -MediaQuery.sizeOf(context).height * .22,
-                    left: 40,
-                    right: 40,
-                    child: Container(
-                      decoration: const ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          color: Colors.amber),
-                      height: MediaQuery.sizeOf(context).height * .45,
-                      width: MediaQuery.sizeOf(context).width * .7,
-                      child: MapPage(),
-                    ),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      const HeadHomePage(),
+                      Row(
+                        children: [
+                          Builder(builder: (context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 50,
+                                ),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    SvgPicture.asset(Assets.imagesMenuIcon),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+
+                          //const Greetingslogin(),
+                        ],
+                      ),
+                      Positioned(
+                        top: MediaQuery.sizeOf(context).height * .1,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DropMenuItem(
+                                  context: context, location: sourseStation),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              // DropMenuItem(stationModel: stationModel, context: context),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * .30,
-              ),
-              // StationDropdown(
-              //   stations: MapCubit().markers.toList(),
-              //   onChanged: (Marker station) {
-              //     // Do something with the selected station
-              //   },
-              // )
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
