@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
-import 'package:ptma/feture/google_map/manegar/cubit/map_cubit_cubit.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
 
 import '../../../../../core/utils/images.dart';
@@ -74,12 +74,11 @@ class SelectRouts extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              DropMenuItem(
-                                  context: context, location: sourseStation),
+                              DropMenuItem(location: sourseStation),
                               const SizedBox(
                                 height: 10,
                               ),
-                              // DropMenuItem(stationModel: stationModel, context: context),
+                              DropMenuItem(location: distnationStation),
                             ],
                           ),
                         ),

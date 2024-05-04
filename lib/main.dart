@@ -9,7 +9,7 @@ import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/them_app.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'core/utils/cach/cach_helpar.dart';
-import 'feture/google_map/manegar/cubit/map_cubit_cubit.dart';
+import 'feture/google_map/manegar/cubit/map_cubit.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:localization/localization.dart';
@@ -24,7 +24,6 @@ void main() async {
   );
   await CachHelper.init();
   bool isArabic = CachHelper.langGetData('isArabic');
-  print('ischick = $isArabic');
 
   runApp(MyApp(
     isArabic: isArabic,

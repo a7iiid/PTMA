@@ -1,4 +1,4 @@
-part of 'map_cubit_cubit.dart';
+part of 'map_cubit.dart';
 
 @immutable
 sealed class MapState {}

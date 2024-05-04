@@ -17,7 +17,7 @@ import 'package:dio/dio.dart';
 
 import '../../data/model/station_model.dart';
 
-part 'map_cubit_state.dart';
+part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
   MapCubit() : super(MapInitial());
@@ -31,6 +31,7 @@ class MapCubit extends Cubit<MapState> {
   late LatLng userDestnationData;
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
+  List<StationModel> stationModel = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
   Dio dio = Dio();
@@ -47,6 +48,7 @@ class MapCubit extends Cubit<MapState> {
         );
         setUserMarker(position);
       });
+      await getStationFromFireBase();
       setStation();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
@@ -71,19 +73,19 @@ class MapCubit extends Cubit<MapState> {
     }
   }
 
-  Future<List<StationModel>> getStationFromFireBase() async {
+  Future<void> getStationFromFireBase() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('station').get();
 
-    var myMarker = querySnapshot.docs;
-    List<StationModel> stationModel = myMarker
+    var station = querySnapshot.docs;
+    var stationdata = station
         .map((doc) => StationModel.fromJson(doc.data() as Map<String, dynamic>))
         .toList();
-    return stationModel;
+    stationModel.addAll(stationdata);
   }
 
   void setStation() async {
-    List<StationModel> stationModel = await getStationFromFireBase();
+    // List<StationModel> stationModel = await getStationFromFireBase();
     var customMarkerIcone = BitmapDescriptor.fromBytes(
         await getImageFromRowData('assets/images/marker.jpg', 50));
     var myMarker = stationModel
