@@ -19,7 +19,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
 ////////////////////////////////////////
   List<BusModel> busModel = [];
   List<BusModel> listBusFilter = [];
-  StationModel? sourseStation;
+  StationModel? sourceStation;
   StationModel? distnationStation;
   Dio dio = Dio();
 
@@ -44,13 +44,34 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     }
   }
 
+  void updateSourceStation(StationModel? station) {
+    if (station != null) {
+      sourceStation = station;
+      emit(UpdateStation());
+    }
+  }
+
+  void updateDistnationStation(StationModel? station) {
+    if (station != null) {
+      distnationStation = station;
+      feltaringBus(
+          LatLng(distnationStation!.latitude, distnationStation!.longitude),
+          LatLng(sourceStation!.latitude, sourceStation!.longitude));
+      emit(UpdateStation());
+    }
+  }
+
   void feltaringBus(LatLng startStation, LatLng endStation) {
     listBusFilter = [];
     emit(FiltringBus());
     busModel.forEach((element) {
       LatLng busStart = LatLng(element.startlatitude, element.startlongitude);
       LatLng busEnd = LatLng(element.endlatitude, element.endlongitude);
-      if (busStart == startStation && busEnd == endStation) {
+
+      if (busStart.latitude == startStation.latitude &&
+          busStart.longitude == startStation.longitude &&
+          busEnd.latitude == endStation.latitude &&
+          busEnd.longitude == endStation.longitude) {
         listBusFilter.add(element);
       }
     });

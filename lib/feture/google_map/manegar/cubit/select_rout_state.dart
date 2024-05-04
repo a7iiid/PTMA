@@ -12,3 +12,5 @@ final class LodingBus extends SelectRoutState {}
 final class LodingBusSuccess extends SelectRoutState {}
 
 final class LodingBusFiluer extends SelectRoutState {}
+
+final class UpdateStation extends SelectRoutState {}

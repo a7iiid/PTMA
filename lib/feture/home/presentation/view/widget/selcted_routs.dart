@@ -27,7 +27,8 @@ import 'station_menue.dart';
 class SelectRouts extends StatelessWidget {
   SelectRouts({super.key});
   final TextEditingController iconController = TextEditingController();
-
+  StationModel? sourseStation;
+  StationModel? distnationStation;
   @override
   Widget build(BuildContext context) {
     var cubit = SelectRoutCubit.get(context);
@@ -79,14 +80,25 @@ class SelectRouts extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             DropMenuItem(
-                              location: cubit.sourseStation,
+                              location: sourseStation,
+                              onChanged: (value) {
+                                sourseStation = value;
+
+                                SelectRoutCubit.get(context)
+                                    .updateSourceStation(value);
+                              },
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             DropMenuItem(
-                              location: cubit.distnationStation,
-                              sourcelocation: cubit.sourseStation,
+                              location: distnationStation,
+                              onChanged: (value) {
+                                distnationStation = value;
+
+                                SelectRoutCubit.get(context)
+                                    .updateDistnationStation(value);
+                              },
                             ),
                           ],
                         ),
@@ -99,18 +111,20 @@ class SelectRouts extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cubit.busModel.length,
+                    itemCount: cubit.listBusFilter.isEmpty
+                        ? cubit.busModel.length
+                        : cubit.listBusFilter.length,
                     itemBuilder: (context, index) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ListTile(
-                            title: Text(
-                              cubit.busModel[index].busname,
-                            ),
-                            subtitle: Text(
-                              cubit.busModel[index].busnumber,
-                            ),
+                            title: Text(cubit.listBusFilter.isEmpty
+                                ? cubit.busModel[index].busname
+                                : cubit.listBusFilter[index].busname),
+                            subtitle: Text(cubit.listBusFilter.isEmpty
+                                ? cubit.busModel[index].busnumber
+                                : cubit.listBusFilter[index].busnumber),
                             // trailing: Text(cubit.busModel[index].bustime,
                             // ),
                           ),
