@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/apiKey.dart';
+import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 
 import '../../../../core/utils/manger/method.dart';
 import '../../data/model/routes_model/routes_model.dart';
@@ -32,6 +33,8 @@ class MapCubit extends Cubit<MapState> {
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
   List<StationModel> stationModel = [];
+  List<BusModel> busModel = [];
+
   PolylinePoints polylinePoints = PolylinePoints();
 
   Dio dio = Dio();
@@ -50,6 +53,7 @@ class MapCubit extends Cubit<MapState> {
       });
       await getStationFromFireBase();
       setStation();
+      await getBusFromFireBase();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
       // TODO
@@ -71,6 +75,19 @@ class MapCubit extends Cubit<MapState> {
     if (polylineCoordinates.isNotEmpty) {
       //routesService.destans(userDestnationData, userLocationData);
     }
+  }
+
+  Future<void> getBusFromFireBase() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('bus')
+        .where('isActeve', isEqualTo: true)
+        .get();
+
+    var buses = querySnapshot.docs;
+    var busData = buses
+        .map((doc) => BusModel.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+    busModel.addAll(busData);
   }
 
   Future<void> getStationFromFireBase() async {

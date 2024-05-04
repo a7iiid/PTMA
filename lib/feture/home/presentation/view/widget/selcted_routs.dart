@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
+import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
 
@@ -29,64 +30,92 @@ class SelectRouts extends StatelessWidget {
   StationModel? distnationStation;
   @override
   Widget build(BuildContext context) {
+    var cubit = MapCubit.get(context);
+    List<BusModel> listbus =
+        cubit.busModel.where((element) => element.isActive == true).toList();
+
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
         return Scaffold(
           drawer: CustomeDrawer(),
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      const HeadHomePage(),
-                      Row(
-                        children: [
-                          Builder(builder: (context) {
-                            return GestureDetector(
-                              onTap: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 50,
-                                ),
-                                child: Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    SvgPicture.asset(Assets.imagesMenuIcon),
-                                  ],
-                                ),
+            child: Column(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    const HeadHomePage(),
+                    Row(
+                      children: [
+                        Builder(builder: (context) {
+                          return GestureDetector(
+                            onTap: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 50,
                               ),
-                            );
-                          }),
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  SvgPicture.asset(Assets.imagesMenuIcon),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
 
-                          //const Greetingslogin(),
-                        ],
-                      ),
-                      Positioned(
-                        top: MediaQuery.sizeOf(context).height * .1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              DropMenuItem(location: sourseStation),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              DropMenuItem(location: distnationStation),
-                            ],
-                          ),
+                        //const Greetingslogin(),
+                      ],
+                    ),
+                    Positioned(
+                      top: MediaQuery.sizeOf(context).height * .1,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            DropMenuItem(location: cubit.stationModel.first),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            DropMenuItem(location: cubit.stationModel.last),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cubit.busModel.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            title: Text(
+                              cubit.busModel[index].busname,
+                            ),
+                            subtitle: Text(
+                              cubit.busModel[index].busnumber,
+                            ),
+                            // trailing: Text(cubit.busModel[index].bustime,
+                            // ),
+                          ),
+                          const Divider()
+                        ],
+                      );
+                    },
                   ),
-                ],
-              ),
+                )
+              ],
             ),
           ),
         );

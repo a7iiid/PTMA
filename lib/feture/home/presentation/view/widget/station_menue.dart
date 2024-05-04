@@ -37,6 +37,7 @@ class _DropMenuItemState extends State<DropMenuItem> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<StationModel>(
       items: stationModel,
+      value: widget.location,
       onChanged: (value) {
         setState(() {
           widget.location = value as StationModel;
