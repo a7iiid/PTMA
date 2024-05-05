@@ -59,7 +59,6 @@ class MapCubit extends Cubit<MapState> {
       });
       await getStationFromFireBase();
       setStation();
-      log("${stationModel}");
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
       // TODO

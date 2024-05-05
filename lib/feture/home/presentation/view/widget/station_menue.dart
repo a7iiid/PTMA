@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../../../google_map/data/model/station_model.dart';
@@ -18,7 +20,7 @@ class _DropMenuItemState extends State<DropMenuItem> {
   StationModel? _selectedStation;
 
   @override
-  void didChangeDependencies() async {
+  void initState() {
     var station = MapCubit.get(context).stationModel;
     stationModel = station
         .map((station) => DropdownMenuItem<StationModel>(
@@ -26,13 +28,16 @@ class _DropMenuItemState extends State<DropMenuItem> {
               child: Text(station.name),
             ))
         .toList();
-    super.didChangeDependencies();
+    log("$station");
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<StationModel>(
+      padding: EdgeInsets.zero,
       items: stationModel,
+      isDense: true,
       hint: Text("Select "),
       value: _selectedStation,
       onChanged: (newValue) {
@@ -44,12 +49,19 @@ class _DropMenuItemState extends State<DropMenuItem> {
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         constraints: BoxConstraints(
-            maxWidth: MediaQuery.sizeOf(context).width * .9, maxHeight: 40),
+            maxWidth: MediaQuery.sizeOf(context).width * .9, maxHeight: 50),
         filled: true,
         fillColor: Colors.white,
-        labelStyle: TextStyle(color: Colors.black, fontSize: 25),
-        hintStyle: TextStyle(color: Colors.black, fontSize: 25),
+        labelStyle: TextStyle(
+          color: Colors.black,
+        ),
+        hintStyle: TextStyle(
+          color: Colors.black,
+        ),
         hoverColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
       ),
     );
   }

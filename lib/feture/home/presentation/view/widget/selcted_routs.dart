@@ -22,17 +22,27 @@ import 'body_selecte_rout.dart';
 import 'head_home_page.dart';
 import 'station_menue.dart';
 
-class SelectRouts extends StatelessWidget {
+class SelectRouts extends StatefulWidget {
   SelectRouts({super.key});
+
+  @override
+  State<SelectRouts> createState() => _SelectRoutsState();
+}
+
+class _SelectRoutsState extends State<SelectRouts> {
   final TextEditingController iconController = TextEditingController();
+
   StationModel? sourseStation;
+
   StationModel? distnationStation;
+
+  List<DropdownMenuItem<StationModel>>? stationModel;
+
   @override
   Widget build(BuildContext context) {
     var cubit = SelectRoutCubit.get(context);
-
-    return BlocConsumer<SelectRoutCubit, SelectRoutState>(
-      listener: (context, state) => log("$state"),
+    log("${MapCubit.get(context).stationModel}");
+    return BlocBuilder<SelectRoutCubit, SelectRoutState>(
       builder: (context, state) {
         return Scaffold(
           drawer: CustomeDrawer(),
