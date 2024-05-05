@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -62,6 +64,7 @@ class MapCubit extends Cubit<MapState> {
       });
       await getStationFromFireBase();
       setStation();
+      log("${stationModel}");
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
       // TODO

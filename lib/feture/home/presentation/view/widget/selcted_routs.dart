@@ -23,6 +23,7 @@ import '../../../../../core/utils/rout.dart';
 import '../../../../../core/widget/custom_button.dart';
 import '../../../../google_map/data/model/station_model.dart';
 import '../../../../google_map/view/homemap.dart';
+import 'body_selecte_rout.dart';
 import 'head_home_page.dart';
 import 'station_menue.dart';
 
@@ -48,15 +49,19 @@ class SelectRouts extends StatelessWidget {
                     .where('isActive', isEqualTo: true)
                     .snapshots(),
                 builder: (context, snapshot) {
+                  ///error loding datat
                   if (snapshot.hasError) {
-                    return Center(
+                    return const Center(
                       child: Text('Error'),
                     );
-                  } else if (snapshot.hasData) {
-                    SelectRoutCubit.get(context).busModel = snapshot.data!.docs
-                        .map((doc) => BusModel.fromJson(
-                            doc.data() as Map<String, dynamic>))
-                        .toList();
+                  } else {
+                    if (snapshot.hasData) {
+                      SelectRoutCubit.get(context).busModel = snapshot
+                          .data!.docs
+                          .map((doc) => BusModel.fromJson(
+                              doc.data() as Map<String, dynamic>))
+                          .toList();
+                    }
 
                     return Column(
                       children: [
@@ -102,47 +107,11 @@ class SelectRouts extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: cubit.listBusFilter.isEmpty
-                                ? cubit.busModel.length
-                                : cubit.listBusFilter.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTile(
-                                    title: Text(cubit.listBusFilter.isEmpty
-                                        ? cubit.busModel[index].busname
-                                        : cubit.listBusFilter[index].busname),
-                                    subtitle: Text(cubit.listBusFilter.isEmpty
-                                        ? cubit.busModel[index].busnumber
-                                        : cubit.listBusFilter[index].busnumber),
-                                    // trailing: Text(cubit.busModel[index].bustime,
-                                    // ),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MapRouteBus(
-                                                busModel: cubit
-                                                        .listBusFilter.isEmpty
-                                                    ? cubit.busModel[index]
-                                                    : cubit
-                                                        .listBusFilter[index])),
-                                      );
-                                    },
-                                  ),
-                                  const Divider()
-                                ],
-                              );
-                            },
-                          ),
-                        )
+                        snapshot.hasData
+                            ? bodySelecteRout(cubit: cubit)
+                            : CircularProgressIndicator()
                       ],
                     );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
                   }
                 }),
           ),

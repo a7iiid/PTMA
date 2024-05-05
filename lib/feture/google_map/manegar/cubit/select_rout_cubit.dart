@@ -25,12 +25,16 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
 
 ////////////////////////////////////
   ///
-  Future<QuerySnapshot> getDataFromFireBase() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>>
+      getDataFromFireBase() async {
+    emit(LodingBus());
+    var query = await FirebaseFirestore.instance
         .collection('bus')
         .where('isActive', isEqualTo: true)
-        .get();
-    return querySnapshot;
+        .snapshots();
+    emit(LodingBusSuccess());
+
+    return query;
   }
 
   Future<void> MapDataToBusModel() async {
