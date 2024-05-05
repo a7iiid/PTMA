@@ -15,6 +15,7 @@ class DropMenuItem extends StatefulWidget {
 
 class _DropMenuItemState extends State<DropMenuItem> {
   List<DropdownMenuItem<StationModel>>? stationModel;
+  StationModel? _selectedStation;
 
   @override
   void didChangeDependencies() async {
@@ -32,16 +33,22 @@ class _DropMenuItemState extends State<DropMenuItem> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<StationModel>(
       items: stationModel,
-      value: widget.location,
-      onChanged: widget.onChanged,
+      hint: Text("Select "),
+      value: _selectedStation,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedStation = newValue;
+          widget.onChanged(newValue);
+        });
+      },
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * .9,
-        ),
+            maxWidth: MediaQuery.sizeOf(context).width * .9, maxHeight: 40),
         filled: true,
         fillColor: Colors.white,
         labelStyle: TextStyle(color: Colors.black, fontSize: 25),
+        hintStyle: TextStyle(color: Colors.black, fontSize: 25),
         hoverColor: Colors.white,
       ),
     );

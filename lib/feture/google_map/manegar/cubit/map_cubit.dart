@@ -38,17 +38,12 @@ class MapCubit extends Cubit<MapState> {
   Set<Marker> markers = {};
   List<StationModel> stationModel = [];
   LatLng? startStation, endStation;
-  List<BusModel> busModels = [];
 
   PolylinePoints polylinePoints = PolylinePoints();
+  BusModel? selectedBus;
 
   Dio dio = Dio();
 /////////////////////////////////////////////
-
-  void updateBusModels(List<BusModel> newBusModels) {
-    busModels = newBusModels;
-    emit(BusModelsUpdated());
-  }
 
   void mapServiceApp() async {
     try {
@@ -122,8 +117,9 @@ class MapCubit extends Cubit<MapState> {
     emit(SuccessSetStation());
   }
 
-  Future<void> clearPolyLine() async {
+  Future<void> clearPolyLineOnTap() async {
     polylineCoordinates.clear();
+
     polylines.clear();
     if (startStation != null && endStation != null) {
       displayBusPoint(await getRouteBusData());
@@ -131,18 +127,20 @@ class MapCubit extends Cubit<MapState> {
     emit(MapClear());
   }
 
-  void clear() {
+  Future<void> clear() async {
     polylineCoordinates.clear();
     polylines.clear();
     if (startStation != null && endStation != null) {
       startStation = null;
       endStation = null;
+      List<Marker> mark = markers.toList();
+      mark.removeLast();
+      markers = mark.toSet();
       emit(MapClear());
     }
   }
 
-  Future<List<LatLng>> getRouteUserData(
-      {LatLng? startStation, LatLng? endStation}) async {
+  Future<List<LatLng>> getRouteUserData() async {
     RoutesModel route = await routesService.fetchRoutes(
         origindata: userLocationData!, destinationData: userDestnationData!);
 
@@ -163,8 +161,6 @@ class MapCubit extends Cubit<MapState> {
     polylines.add(route);
     emit(MapSetLine());
   }
-
-  BusModel? selectedBus;
 
   void setSelectedBus(BusModel busModel) {
     selectedBus = busModel;

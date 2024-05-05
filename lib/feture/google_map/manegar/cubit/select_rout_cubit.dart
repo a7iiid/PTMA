@@ -47,7 +47,8 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
 
       var buses = querySnapshot.docs;
       var busData = buses
-          .map((doc) => BusModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) =>
+              BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
       busModel.addAll(busData);
       emit(LodingBusSuccess());
@@ -58,6 +59,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   }
 
   void updateSourceStation(StationModel? station) {
+    emit(ChangeSourceStation());
     if (station != null) {
       sourceStation = station;
       emit(UpdateStation());
@@ -65,6 +67,8 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   }
 
   void updateDistnationStation(StationModel? station) {
+    emit(ChangeDistnationStation());
+
     if (station != null) {
       distnationStation = station;
       feltaringBus(
@@ -88,7 +92,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
         listBusFilter.add(element);
       }
     });
-    print(listBusFilter);
+    emit(SuccessFiltringBus());
   }
 
   Future<void> destans(LatLng destination, LatLng start) async {

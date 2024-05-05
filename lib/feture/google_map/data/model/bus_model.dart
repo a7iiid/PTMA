@@ -12,6 +12,7 @@ class BusModel {
 
   final String busnumber;
   final bool isActive;
+  final String id;
 
   BusModel({
     required this.startlatitude,
@@ -23,10 +24,12 @@ class BusModel {
     required this.isActive,
     required this.buslatitude,
     required this.buslongitude,
+    required this.id,
   });
 
-  factory BusModel.fromJson(Map<String, dynamic> json) {
+  factory BusModel.fromJson(Map<String, dynamic> json, String id) {
     return BusModel(
+        id: id,
         busname: json['busname'],
         busnumber: json['busnumber'],
         endlatitude: json['endlatitude'].toDouble(),

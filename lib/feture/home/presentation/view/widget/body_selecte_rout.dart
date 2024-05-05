@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/home/presentation/view/widget/map_route_bus.dart';
 
@@ -32,13 +33,15 @@ class bodySelecteRout extends StatelessWidget {
                 // trailing: Text(cubit.busModel[index].bustime,
                 // ),
                 onTap: () {
+                  MapCubit.get(context).setSelectedBus(
+                      cubit.listBusFilter.isEmpty
+                          ? cubit.busModel[index]
+                          : cubit.listBusFilter[index]);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => MapRouteBus(
-                            busModel: cubit.listBusFilter.isEmpty
-                                ? cubit.busModel[index]
-                                : cubit.listBusFilter[index])),
+                            busModel: MapCubit.get(context).selectedBus)),
                   );
                 },
               ),

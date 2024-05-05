@@ -55,7 +55,7 @@ class HomeBody extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MapRouteBus(),
+                  builder: (context) => MapPage(),
                 ),
               );
             }),
