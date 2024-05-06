@@ -11,7 +11,7 @@ class Greetingslogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 120),
+      padding: const EdgeInsets.only(top: 40),
       child: Row(
         children: [
           const SizedBox(

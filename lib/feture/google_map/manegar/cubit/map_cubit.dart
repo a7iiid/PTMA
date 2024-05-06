@@ -132,9 +132,8 @@ class MapCubit extends Cubit<MapState> {
     if (startStation != null && endStation != null) {
       startStation = null;
       endStation = null;
-      List<Marker> mark = markers.toList();
-      mark.removeLast();
-      markers = mark.toSet();
+      markers = {};
+      setStation();
       emit(MapClear());
     }
   }

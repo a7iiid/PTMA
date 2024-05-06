@@ -19,7 +19,7 @@ class DrawerBottom extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 50,
+              top: 0,
             ),
             child: Row(
               children: [

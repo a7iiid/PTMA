@@ -28,7 +28,6 @@ class _DropMenuItemState extends State<DropMenuItem> {
               child: Text(station.name),
             ))
         .toList();
-    log("$station");
     super.initState();
   }
 
@@ -47,15 +46,15 @@ class _DropMenuItemState extends State<DropMenuItem> {
         });
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        border:const OutlineInputBorder(),
         constraints: BoxConstraints(
             maxWidth: MediaQuery.sizeOf(context).width * .9, maxHeight: 50),
         filled: true,
         fillColor: Colors.white,
-        labelStyle: TextStyle(
+        labelStyle:const TextStyle(
           color: Colors.black,
         ),
-        hintStyle: TextStyle(
+        hintStyle:const TextStyle(
           color: Colors.black,
         ),
         hoverColor: Colors.white,

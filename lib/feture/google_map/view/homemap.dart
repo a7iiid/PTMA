@@ -55,20 +55,6 @@ class _MapPageState extends State<MapPage> {
         },
         markers: MapCubit.get(context).markers,
         polylines: MapCubit.get(context).polylines,
-        //busModel != null
-        //     ? [
-        //         Polyline(
-        //           polylineId: PolylineId('bus_route'),
-        //           color: Colors.blue,
-        //           width: 5,
-        //           points: [
-        //             LatLng(
-        //                 busModel!.startlatitude, busModel!.startlongitude),
-        //             LatLng(busModel!.endlatitude, busModel!.endlongitude),
-        //           ],
-        //         ),
-        //       ].toSet()
-        //     : MapCubit.get(context).polylines,
       );
     });
   }

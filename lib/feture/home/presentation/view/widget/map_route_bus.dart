@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/google_map/view/homemap.dart';
-import 'package:ptma/feture/home/presentation/view/widget/head_home_page.dart';
 import 'package:ptma/feture/home/presentation/view/widget/station_menue.dart';
 
 import '../../../../google_map/data/model/station_model.dart';
-import '../../../../google_map/manegar/cubit/select_rout_cubit.dart';
-import 'drawer_bottom.dart';
 
 class MapRouteBus extends StatefulWidget {
   MapRouteBus({super.key, this.busModel});
@@ -44,13 +43,29 @@ class _MapRouteBusState extends State<MapRouteBus> {
         child: Scaffold(
             body: Stack(
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height,
-              child: MapPage(
-                busModel: widget.busModel,
-              ),
-            ),
+            StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("bus")
+                    .doc(widget.busModel!.id)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    widget.busModel = BusModel.fromJson(
+                        snapshot.data!.data() as Map<String, dynamic>,
+                        widget.busModel!.id);
+                    MapCubit.get(context).setSelectedBus(widget.busModel!);
+
+                    MapCubit.get(context).displaySelectedBusLocation();
+                  }
+                  log("${widget.busModel!.buslatitude}");
+                  return SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.sizeOf(context).height,
+                    child: MapPage(
+                      busModel: widget.busModel,
+                    ),
+                  );
+                }),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [

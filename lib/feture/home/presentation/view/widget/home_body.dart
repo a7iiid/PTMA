@@ -31,19 +31,11 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(
+        const Stack(
           clipBehavior: Clip.none,
           children: [
-            const HeadHomePage(),
-            const DrawerBottom(),
-            // Positioned(
-            //   bottom: -MediaQuery.sizeOf(context).height * .29,
-            //   left: 40,
-            //   right: 40,
-            //   child: MapPage(
-            //     initialCameraPosition: const LatLng(32.409161, 35.279642),
-            //   ),
-            // ),
+            HeadHomePage(),
+            DrawerBottom(),
           ],
         ),
         SizedBox(
