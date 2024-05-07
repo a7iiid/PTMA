@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
+import 'package:ptma/core/utils/image_picker/image_picer.dart';
 import 'package:ptma/core/utils/rout.dart';
 
 part 'auth_state.dart';
@@ -9,13 +10,38 @@ part 'auth_state.dart';
 class AuthAppCubit extends Cubit<AuthState> {
   AuthAppCubit() : super(changstat());
 
-  static get(context) => BlocProvider.of<AuthAppCubit>(context);
+  static AuthAppCubit get(context) => BlocProvider.of<AuthAppCubit>(context);
 
-  void creatAcaunte(email, pass, ctx) {
+  PickImageServes pickImageServes = PickImageServes.get();
+
+  Future<void> SetUserPictur() async {
+    emit(ChangeUserPictiurLoding());
+
+    try {
+      await pickImageServes.getImageFromGallery();
+      emit(ChangeUserPictiurSuccess());
+    } catch (e) {
+      emit(ChangeUserPictiurFilur());
+    }
+  }
+
+  void creatAcaunte(String email, String pass, String name, ctx) async {
     emit(createAcunte());
     try {
-      FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
+      User? user = userCredential.user;
+
+      if (pickImageServes.file != null) {
+        await pickImageServes.uplode();
+
+        await user?.updatePhotoURL(pickImageServes.url);
+      }
+      await user?.updateDisplayName(name);
+
       emit(success());
 
       GoRouter.of(ctx).pushReplacement(Routes.kSigninScreen);
@@ -46,9 +72,5 @@ class AuthAppCubit extends Cubit<AuthState> {
     } catch (e) {
       print(e);
     }
-  }
-
-  void inputfilde() {
-    emit(changstat());
   }
 }

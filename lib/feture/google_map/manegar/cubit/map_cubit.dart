@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/apiKey.dart';
+import 'package:ptma/feture/google_map/data/model/bus_model.dart';
 
 import '../../../../core/utils/manger/method.dart';
 import '../../data/model/routes_model/routes_model.dart';
@@ -17,36 +20,45 @@ import 'package:dio/dio.dart';
 
 import '../../data/model/station_model.dart';
 
-part 'map_cubit_state.dart';
+part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
   MapCubit() : super(MapInitial());
-  static get(context) => BlocProvider.of<MapCubit>(context);
+  static MapCubit get(context) => BlocProvider.of<MapCubit>(context);
+
+  /////////////////////////////
   GoogleMapController? googleMapController;
 
   List<LatLng> polylineCoordinates = [];
   Set<Polyline> polylines = {};
   MapService mapService = MapService();
-  late LatLng userLocationData;
-  late LatLng userDestnationData;
+  LatLng? userLocationData;
+  LatLng? userDestnationData;
   RoutesService routesService = RoutesService();
   Set<Marker> markers = {};
+  List<StationModel> stationModel = [];
+  LatLng? startStation, endStation;
+
   PolylinePoints polylinePoints = PolylinePoints();
+  BusModel? selectedBus;
 
   Dio dio = Dio();
+/////////////////////////////////////////////
 
   void mapServiceApp() async {
     try {
+      log("run google map service=======================");
       emit(MapCheckService());
       mapService.getUserRealTimeLocation((position) {
         userLocationData = LatLng(position.latitude!, position.longitude!);
         googleMapController?.animateCamera(
           CameraUpdate.newLatLng(
-            userLocationData,
+            userLocationData!,
           ),
         );
-        setUserMarker(position);
+        // setUserMarker(position);
       });
+      await getStationFromFireBase();
       setStation();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
@@ -71,15 +83,29 @@ class MapCubit extends Cubit<MapState> {
     }
   }
 
-  void setStation() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('station').get();
+  Future<void> getStationFromFireBase() async {
+    emit(LodeingStation());
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('station').get();
 
+      var station = querySnapshot.docs;
+      var stationdata = station
+          .map((doc) =>
+              StationModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      stationModel.addAll(stationdata);
+      emit(SuccessLoding());
+    } on Exception catch (e) {
+      emit(FiluerLoding());
+    }
+  }
+
+  void setStation() async {
+    emit(SetStationOnMap());
     var customMarkerIcone = BitmapDescriptor.fromBytes(
         await getImageFromRowData('assets/images/marker.jpg', 50));
-
-    var myMarker = querySnapshot.docs
-        .map((doc) => StationModel.fromJson(doc.data() as Map<String, dynamic>))
+    var myMarker = stationModel
         .map((station) => Marker(
               icon: customMarkerIcone,
               markerId: MarkerId(station.name),
@@ -88,22 +114,34 @@ class MapCubit extends Cubit<MapState> {
             ))
         .toSet();
     markers.addAll(myMarker);
+    emit(SuccessSetStation());
   }
 
-  Future<void> destans(LatLng destination, LatLng start) async {
-    String baseUrlDistanceMatrix =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=${ApiKey.mapApiKey}';
-    try {
-      Response response = await dio.get(baseUrlDistanceMatrix);
-      print(response);
-    } on Exception catch (e) {
-      // TODO
+  Future<void> clearPolyLineOnTap() async {
+    polylineCoordinates.clear();
+
+    polylines.clear();
+    if (startStation != null && endStation != null) {
+      displayBusPoint(await getRouteBusData());
     }
+    emit(MapClear());
   }
 
-  Future<List<LatLng>> getRouteData() async {
+  Future<void> clear() async {
+    polylineCoordinates.clear();
+    polylines.clear();
+    if (startStation != null && endStation != null) {
+      selectedBus = null;
+      startStation = null;
+      endStation = null;
+    }
+    markers.removeWhere((marker) => marker.markerId.value == 'selected_bus');
+    emit(MapClear());
+  }
+
+  Future<List<LatLng>> getRouteUserData() async {
     RoutesModel route = await routesService.fetchRoutes(
-        origindata: userLocationData, destinationData: userDestnationData);
+        origindata: userLocationData!, destinationData: userDestnationData!);
 
     List<PointLatLng> result = polylinePoints
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
@@ -112,9 +150,61 @@ class MapCubit extends Cubit<MapState> {
     return pointes;
   }
 
-  void displayPoint(List<LatLng> point) {
+  void displayUserPoint(List<LatLng> point) {
     Polyline route = Polyline(
-        polylineId: PolylineId('route'),
+        polylineId: PolylineId('userRoute'),
+        points: point,
+        color: Colors.green,
+        startCap: Cap.roundCap,
+        width: 4);
+    polylines.add(route);
+    emit(MapSetLine());
+  }
+
+  void setSelectedBus(BusModel busModel) {
+    selectedBus = busModel;
+    emit(SetSelectedBus());
+  }
+
+  Future<void> displaySelectedBusLocation() async {
+    if (selectedBus != null) {
+      log("${markers.length}");
+      log("${markers.map((e) => e.mapsId.value)}");
+      LatLng busLocation =
+          LatLng(selectedBus!.buslatitude, selectedBus!.buslongitude);
+      Marker busMarker = Marker(
+        markerId: MarkerId('selected_bus'),
+        position: busLocation,
+        icon: BitmapDescriptor.fromBytes(
+          await getImageFromRowData('assets/images/marker.jpg', 50),
+        ),
+      );
+      markers.removeWhere((marker) => marker.markerId.value == 'selected_bus');
+
+      markers.add(busMarker);
+      emit(MapSetMarker());
+    }
+  }
+
+  Future<List<LatLng>> getRouteBusData() async {
+    await displaySelectedBusLocation();
+    startStation =
+        LatLng(selectedBus!.startlatitude, selectedBus!.startlongitude);
+
+    endStation = LatLng(selectedBus!.endlatitude, selectedBus!.endlongitude);
+    RoutesModel route = await routesService.fetchRoutes(
+        origindata: startStation!, destinationData: endStation!);
+
+    List<PointLatLng> result = polylinePoints
+        .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
+    List<LatLng> pointes =
+        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return pointes;
+  }
+
+  void displayBusPoint(List<LatLng> point) {
+    Polyline route = Polyline(
+        polylineId: PolylineId('busRoute'),
         points: point,
         color: Colors.green,
         startCap: Cap.roundCap,

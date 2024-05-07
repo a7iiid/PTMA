@@ -16,3 +16,11 @@ final class PaymentFailuer extends PaymentState {
 final class PaymentSuccess extends PaymentState {}
 
 final class ChangePaymentMethod extends PaymentState {}
+
+final class ScanneQRCodeInit extends PaymentState {}
+
+final class ScanQRLoding extends PaymentState {}
+
+final class ScanQRFailuer extends PaymentState {}
+
+final class ScanQRSuccess extends PaymentState {}

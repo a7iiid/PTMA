@@ -1,43 +1,69 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'package:ptma/feture/google_map/manegar/cubit/map_cubit_cubit.dart';
+import '../data/model/bus_model.dart';
+import '../manegar/cubit/map_cubit.dart';
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   MapPage({super.key});
 
   @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  @override
+  void didChangeDependencies() async {
+    // log('${MapCubit.get(context).markers}=============================');
+
+    if (MapCubit.get(context).selectedBus != null) {
+      log('${MapCubit.get(context).selectedBus!.buslatitude}=============================');
+      MapCubit.get(context).displayBusPoint(
+        await MapCubit.get(context).getRouteBusData(),
+      );
+    }
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MapCubit()..mapServiceApp(),
-      child: BlocConsumer<MapCubit, MapState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
-        builder: (context, state) {
-          return GoogleMap(
+    var cubit = MapCubit.get(context);
+    return BlocBuilder<MapCubit, MapState>(builder: (context, state) {
+      return PopScope(
+          canPop: true,
+          onPopInvoked: (didPop) {
+            MapCubit.get(context).clear();
+          },
+          child: GoogleMap(
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapType: MapType.normal,
-            initialCameraPosition: const CameraPosition(
-                target: LatLng(32.409161, 35.279642), zoom: 15),
+            initialCameraPosition: CameraPosition(
+              target:
+                  cubit.userLocationData ?? const LatLng(32.409161, 31.279642),
+              zoom: 15,
+            ),
             onMapCreated: (controller) {
-              MapCubit.get(context).googleMapController = controller;
+              cubit.googleMapController = controller;
             },
             onTap: (destnation) async {
-              MapCubit.get(context).polylines.clear();
-              MapCubit.get(context).polylineCoordinates.clear();
-
-              MapCubit.get(context).userDestnationData =
-                  LatLng(destnation.latitude, destnation.longitude);
-              MapCubit.get(context)
-                  .displayPoint(await MapCubit.get(context).getRouteData());
+              try {
+                cubit.userDestnationData =
+                    LatLng(destnation.latitude, destnation.longitude);
+                cubit.displayUserPoint(await cubit.getRouteUserData());
+              } catch (e) {
+                log('Error: $e');
+              }
             },
-            markers: MapCubit.get(context).markers,
-            polylines: MapCubit.get(context).polylines,
-          );
-        },
-      ),
-    );
+            markers: cubit.markers,
+            polylines: cubit.polylines,
+          ));
+    });
   }
 }

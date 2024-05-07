@@ -5,7 +5,9 @@ import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 
+import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../../manger/cubit/auth_cubit.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -74,94 +76,63 @@ class form extends StatelessWidget {
   bool isPass = false;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthAppCubit, AuthState>(builder: (context, state) {
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              Assets.imagesSignup,
+    return BlocProvider(
+      create: (context) => AuthAppCubit(),
+      child: BlocBuilder<AuthAppCubit, AuthState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  Assets.imagesSignup,
+                ),
+                const SizedBox(
+                  height: 130,
+                ),
+                Text("Login".tr(context), style: AppStyle.bold28blak),
+                const SizedBox(
+                  height: 33,
+                ),
+                CustomTeaxtFormField(
+                  controlar: emailControlar,
+                  validatText: 'pleas Enter email'.tr(context),
+                  hintText: 'Email'.tr(context),
+                  labelText: 'Email'.tr(context),
+                ),
+                CustomTeaxtFormField(
+                  controlar: pasControlar,
+                  validatText: "pleas Enter Passwored".tr(context),
+                  hintText: 'Password'.tr(context),
+                  labelText: 'Password'.tr(context),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                CustomButton(
+                  title: 'Login'.tr(context),
+                  backgraondColor: const Color(0xFF2743FB),
+                  textStyle: AppStyle.reguler20white,
+                  iconcolor: Colors.white,
+                  function: () {
+                    if (formKey.currentState!.validate()) {
+                      AuthAppCubit.get(context).login(
+                          emailControlar.text, pasControlar.text, context);
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text('or using social '.tr(context)))
+              ],
             ),
-            const SizedBox(
-              height: 130,
-            ),
-            const Text('Login', style: AppStyle.bold28blak),
-            const SizedBox(
-              height: 33,
-            ),
-            TextFormField(
-              controller: emailControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter email';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  hintText: 'Email Address',
-                  suffix: isEmail ? preficon : null,
-                  label: const Text('Email'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-                  isEmail = true;
-                } else {
-                  isEmail = false;
-                }
-                print(isEmail);
-                AuthAppCubit.get(context).inputfilde();
-              },
-            ),
-            TextFormField(
-              controller: pasControlar,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'pleas Enter Passwored';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                  hintText: 'Passwored',
-                  suffix: isPass == true ? preficon : null,
-                  label: const Text('Passwored'),
-                  enabledBorder: const UnderlineInputBorder()),
-              onChanged: (value) {
-                if (value.length >= 8) {
-                  isPass = true;
-                } else {
-                  isPass = false;
-                }
-
-                AuthAppCubit.get(context).inputfilde();
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CustomButton(
-              title: 'Login',
-              backgraondColor: const Color(0xFF2743FB),
-              textStyle: AppStyle.reguler20white,
-              iconcolor: Colors.white,
-              function: () {
-                if (formKey.currentState!.validate()) {
-                  AuthAppCubit.get(context)
-                      .login(emailControlar.text, pasControlar.text, context);
-                }
-              },
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            const Align(
-                alignment: Alignment.center, child: Text('or using social '))
-          ],
-        ),
-      );
-    });
+          );
+        },
+      ),
+    );
   }
 }

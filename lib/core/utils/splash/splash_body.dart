@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/rout.dart';
@@ -64,9 +63,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
       // Get.to(const HomeView(),
       // transition: Transition.downToUp, duration: TransitionDuretion);
       if (FirebaseAuth.instance.currentUser == null) {
-        GoRouter.of(context).push(Routes.kMainScreen);
+        GoRouter.of(context).pushReplacement(Routes.kMainScreen);
       } else {
-        GoRouter.of(context).push(Routes.kHomePage);
+        GoRouter.of(context).pushReplacement(Routes.kHomePage);
       }
     });
   }

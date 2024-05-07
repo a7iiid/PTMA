@@ -1,79 +1,124 @@
+import 'dart:collection';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ptma/feture/google_map/manegar/cubit/map_cubit_cubit.dart';
-import 'package:ptma/feture/home/presentation/view/widget/dropdowne.dart';
+import 'package:ptma/core/utils/drawer/drawer.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
+import 'package:ptma/feture/google_map/data/model/bus_model.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 
-import '../../../../../core/utils/images.dart';
-import '../../../../../core/utils/rout.dart';
-import '../../../../../core/widget/custom_button.dart';
 import '../../../../google_map/data/model/station_model.dart';
+import '../../../../google_map/view/homemap.dart';
+import 'body_selecte_rout.dart';
 import 'head_home_page.dart';
+import 'station_menue.dart';
 
-enum IconLabel {
-  smile('Smile', Icons.sentiment_satisfied_outlined),
-  cloud(
-    'Cloud',
-    Icons.cloud_outlined,
-  ),
-  brush('Brush', Icons.brush_outlined),
-  heart('Heart', Icons.favorite);
+class SelectRouts extends StatefulWidget {
+  SelectRouts({super.key});
 
-  const IconLabel(this.label, this.icon);
-  final String label;
-  final IconData icon;
+  @override
+  State<SelectRouts> createState() => _SelectRoutsState();
 }
 
-class SelectRouts extends StatelessWidget {
-  SelectRouts({super.key});
+class _SelectRoutsState extends State<SelectRouts> {
   final TextEditingController iconController = TextEditingController();
-  IconLabel? selectedIcon;
+
+  StationModel? sourseStation;
+
+  StationModel? distnationStation;
+
+  List<DropdownMenuItem<StationModel>>? stationModel;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  const HeadHomePage(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, left: 20),
-                    child: SvgPicture.asset(Assets.imagesMenuIcon),
-                  ),
-                  Positioned(
-                    bottom: -MediaQuery.sizeOf(context).height * .22,
-                    left: 40,
-                    right: 40,
-                    child: Container(
-                      decoration: const ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          color: Colors.amber),
-                      height: MediaQuery.sizeOf(context).height * .45,
-                      width: MediaQuery.sizeOf(context).width * .7,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * .30,
-              ),
-              StationDropdown(
-                stations: MapCubit().markers.toList(),
-                onChanged: (Marker station) {
-                  // Do something with the selected station
-                },
-              )
-            ],
+    var cubit = SelectRoutCubit.get(context);
+    return BlocBuilder<SelectRoutCubit, SelectRoutState>(
+      builder: (context, state) {
+        return Scaffold(
+          drawer: CustomeDrawer(),
+          body: SafeArea(
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('bus')
+                    .where('isActive', isEqualTo: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  ///error loding datat
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error'),
+                    );
+                  } else {
+                    if (snapshot.hasData) {
+                      SelectRoutCubit.get(context).busModel = snapshot
+                          .data!.docs
+                          .map((doc) => BusModel.fromJson(
+                              doc.data() as Map<String, dynamic>, doc.id))
+                          .toList();
+                    }
+
+                    return Column(
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            const HeadHomePage(),
+                            Positioned(
+                              top: MediaQuery.sizeOf(context).height * .1,
+                              child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      DropMenuItem(
+                                        location: sourseStation,
+                                        onChanged: (value) {
+                                          sourseStation = value;
+
+                                          SelectRoutCubit.get(context)
+                                              .updateSourceStation(value);
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      DropMenuItem(
+                                        location: distnationStation,
+                                        onChanged: (value) {
+                                          distnationStation = value;
+
+                                          SelectRoutCubit.get(context)
+                                              .updateDistnationStation(value);
+                                        },
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        snapshot.hasData
+                            ? const bodySelecteRout()
+                            : const CircularProgressIndicator()
+                      ],
+                    );
+                  }
+                }),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
