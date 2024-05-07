@@ -42,83 +42,68 @@ class _SelectRoutsState extends State<SelectRouts> {
   Widget build(BuildContext context) {
     var cubit = SelectRoutCubit.get(context);
     return BlocBuilder<SelectRoutCubit, SelectRoutState>(
-      builder: (context, state) {
-        return Scaffold(
+        builder: (context, state) {
+      return Scaffold(
           drawer: CustomeDrawer(),
           body: SafeArea(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('bus')
-                    .where('isActive', isEqualTo: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  ///error loding datat
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Error'),
-                    );
-                  } else {
-                    if (snapshot.hasData) {
-                      SelectRoutCubit.get(context).busModel = snapshot
-                          .data!.docs
-                          .map((doc) => BusModel.fromJson(
-                              doc.data() as Map<String, dynamic>, doc.id))
-                          .toList();
-                    }
-
-                    return Column(
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
+              child: Column(
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  const HeadHomePage(),
+                  Positioned(
+                    top: MediaQuery.sizeOf(context).height * .1,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            const HeadHomePage(),
-                            Positioned(
-                              top: MediaQuery.sizeOf(context).height * .1,
-                              child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      DropMenuItem(
-                                        location: sourseStation,
-                                        onChanged: (value) {
-                                          sourseStation = value;
+                            DropMenuItem(
+                              location: sourseStation,
+                              onChanged: (value) {
+                                sourseStation = value;
 
-                                          SelectRoutCubit.get(context)
-                                              .updateSourceStation(value);
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      DropMenuItem(
-                                        location: distnationStation,
-                                        onChanged: (value) {
-                                          distnationStation = value;
+                                SelectRoutCubit.get(context)
+                                    .updateSourceStation(value);
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            DropMenuItem(
+                              location: distnationStation,
+                              onChanged: (value) {
+                                distnationStation = value;
 
-                                          SelectRoutCubit.get(context)
-                                              .updateDistnationStation(value);
-                                        },
-                                      ),
-                                    ],
-                                  )),
+                                SelectRoutCubit.get(context)
+                                    .updateDistnationStation(value);
+                              },
                             ),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        snapshot.hasData
-                            ? const bodySelecteRout()
-                            : const CircularProgressIndicator()
-                      ],
-                    );
-                  }
-                }),
-          ),
-        );
-      },
-    );
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('bus')
+                      .where('isActive', isEqualTo: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      SelectRoutCubit.get(context)
+                          .MapDataToBusModel(snapshot.data!.docs);
+                      return const bodySelecteRout();
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  })
+            ],
+          )));
+    });
   }
 }

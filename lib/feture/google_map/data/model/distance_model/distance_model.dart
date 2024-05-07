@@ -1,31 +1,31 @@
-import 'dart:convert';
-
-import 'element.dart';
+import 'row.dart';
 
 class DistanceModel {
-  List<Element>? elements;
+  List<String>? destinationAddresses;
+  List<String>? originAddresses;
+  List<Row>? rows;
+  String? status;
 
-  DistanceModel({this.elements});
+  DistanceModel({
+    this.destinationAddresses,
+    this.originAddresses,
+    this.rows,
+    this.status,
+  });
 
-  factory DistanceModel.fromMap(Map<String, dynamic> data) => DistanceModel(
-        elements: (data['elements'] as List<dynamic>?)
-            ?.map((e) => Element.fromMap(e as Map<String, dynamic>))
+  factory DistanceModel.fromJson(Map<String, dynamic> json) => DistanceModel(
+        destinationAddresses: json['destination_addresses'] as List<String>?,
+        originAddresses: json['origin_addresses'] as List<String>?,
+        rows: (json['rows'] as List<dynamic>?)
+            ?.map((e) => Row.fromJson(e as Map<String, dynamic>))
             .toList(),
+        status: json['status'] as String?,
       );
 
-  Map<String, dynamic> toMap() => {
-        'elements': elements?.map((e) => e.toMap()).toList(),
+  Map<String, dynamic> toJson() => {
+        'destination_addresses': destinationAddresses,
+        'origin_addresses': originAddresses,
+        'rows': rows?.map((e) => e.toJson()).toList(),
+        'status': status,
       };
-
-  /// `dart:convert`
-  ///
-  /// Parses the string and returns the resulting Json object as [DistanceModel].
-  factory DistanceModel.fromJson(String data) {
-    return DistanceModel.fromMap(json.decode(data) as Map<String, dynamic>);
-  }
-
-  /// `dart:convert`
-  ///
-  /// Converts [DistanceModel] to a JSON string.
-  String toJson() => json.encode(toMap());
 }

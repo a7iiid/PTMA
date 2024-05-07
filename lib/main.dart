@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
             create: (context) => MapCubit()..mapServiceApp(),
           ),
           BlocProvider(
-            create: (context) => SelectRoutCubit()..MapDataToBusModel(),
+            create: (context) => SelectRoutCubit(),
           ),
         ],
         child: BlocBuilder<LoclaizationCubit, LoclaizationState>(

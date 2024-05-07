@@ -37,20 +37,19 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     return query;
   }
 
-  Future<void> MapDataToBusModel() async {
+  void streamActiveBus() {
+    emit(LodingBus());
+  }
+
+  Future<void> MapDataToBusModel(List<QueryDocumentSnapshot> query) async {
     try {
       emit(LodingBus());
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('bus')
-          .where('isActive', isEqualTo: true)
-          .get();
 
-      var buses = querySnapshot.docs;
-      var busData = buses
+      busModel = query
           .map((doc) =>
               BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
-      busModel.addAll(busData);
+      //busModel.addAll(busData);
       emit(LodingBusSuccess());
     } on Exception catch (e) {
       emit(LodingBusFiluer());
@@ -95,9 +94,9 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     emit(SuccessFiltringBus());
   }
 
-  Future<void> destans(LatLng destination, LatLng start) async {
+  Future<void> destans(LatLng destination, LatLng source) async {
     String baseUrlDistanceMatrix =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=${ApiKey.mapApiKey}';
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${source.latitude},${source.longitude}&key=${ApiKey.mapApiKey}';
     try {
       Response response = await dio.get(baseUrlDistanceMatrix);
       print(response);

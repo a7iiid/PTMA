@@ -1,3 +1,5 @@
+import 'distance_model/distance_model.dart';
+
 class BusModel {
   final double buslatitude;
   final double buslongitude;
@@ -13,19 +15,20 @@ class BusModel {
   final String busnumber;
   final bool isActive;
   final String id;
+  DistanceModel? duration;
 
-  BusModel({
-    required this.startlatitude,
-    required this.startlongitude,
-    required this.endlatitude,
-    required this.endlongitude,
-    required this.busname,
-    required this.busnumber,
-    required this.isActive,
-    required this.buslatitude,
-    required this.buslongitude,
-    required this.id,
-  });
+  BusModel(
+      {required this.startlatitude,
+      required this.startlongitude,
+      required this.endlatitude,
+      required this.endlongitude,
+      required this.busname,
+      required this.busnumber,
+      required this.isActive,
+      required this.buslatitude,
+      required this.buslongitude,
+      required this.id,
+      this.duration});
 
   factory BusModel.fromJson(Map<String, dynamic> json, String id) {
     return BusModel(
