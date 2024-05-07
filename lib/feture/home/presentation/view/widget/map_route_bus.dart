@@ -67,8 +67,9 @@ class _MapRouteBusState extends State<MapRouteBus> {
                   location: distnationStation,
                   onChanged: (value) async {
                     distnationStation = value;
-                    cubit.userDestnationData =
-                        LatLng(value!.latitude, value.longitude);
+                    cubit.userDestnationData = LatLng(
+                        value!.stationLocation.latitude,
+                        value.stationLocation.longitude);
                     cubit.displayUserPoint(await cubit.getRouteUserData());
                   },
                 ),

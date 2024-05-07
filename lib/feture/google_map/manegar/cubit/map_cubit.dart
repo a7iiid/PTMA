@@ -109,7 +109,8 @@ class MapCubit extends Cubit<MapState> {
         .map((station) => Marker(
               icon: customMarkerIcone,
               markerId: MarkerId(station.name),
-              position: LatLng(station.latitude, station.longitude),
+              position: LatLng(station.stationLocation.latitude,
+                  station.stationLocation.longitude),
               infoWindow: InfoWindow(title: station.name),
             ))
         .toSet();
@@ -163,15 +164,14 @@ class MapCubit extends Cubit<MapState> {
 
   void setSelectedBus(BusModel busModel) {
     selectedBus = busModel;
+    log("${selectedBus}");
     emit(SetSelectedBus());
   }
 
   Future<void> displaySelectedBusLocation() async {
     if (selectedBus != null) {
-      log("${markers.length}");
-      log("${markers.map((e) => e.mapsId.value)}");
-      LatLng busLocation =
-          LatLng(selectedBus!.buslatitude, selectedBus!.buslongitude);
+      LatLng busLocation = LatLng(selectedBus!.busLocation.latitude,
+          selectedBus!.busLocation.longitude);
       Marker busMarker = Marker(
         markerId: MarkerId('selected_bus'),
         position: busLocation,
@@ -188,13 +188,17 @@ class MapCubit extends Cubit<MapState> {
 
   Future<List<LatLng>> getRouteBusData() async {
     await displaySelectedBusLocation();
-    startStation =
-        LatLng(selectedBus!.startlatitude, selectedBus!.startlongitude);
+    startStation = LatLng(selectedBus!.startStation.latitude,
+        selectedBus!.startStation.longitude);
 
-    endStation = LatLng(selectedBus!.endlatitude, selectedBus!.endlongitude);
+    endStation = LatLng(
+        selectedBus!.endStation.latitude, selectedBus!.endStation.longitude);
+    log("${endStation}");
+    log("${startStation}");
+
     RoutesModel route = await routesService.fetchRoutes(
         origindata: startStation!, destinationData: endStation!);
-
+    log("${route.routes}");
     List<PointLatLng> result = polylinePoints
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
     List<LatLng> pointes =

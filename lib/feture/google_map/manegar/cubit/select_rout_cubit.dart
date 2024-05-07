@@ -71,8 +71,10 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     if (station != null) {
       distnationStation = station;
       feltaringBus(
-          LatLng(distnationStation!.latitude, distnationStation!.longitude),
-          LatLng(sourceStation!.latitude, sourceStation!.longitude));
+          LatLng(distnationStation!.stationLocation.latitude,
+              distnationStation!.stationLocation.longitude),
+          LatLng(sourceStation!.stationLocation.latitude,
+              sourceStation!.stationLocation.longitude));
       emit(UpdateStation());
     }
   }
@@ -81,8 +83,10 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     listBusFilter = [];
     emit(FiltringBus());
     busModel.forEach((element) {
-      LatLng busStart = LatLng(element.startlatitude, element.startlongitude);
-      LatLng busEnd = LatLng(element.endlatitude, element.endlongitude);
+      LatLng busStart =
+          LatLng(element.startStation.latitude, element.startStation.longitude);
+      LatLng busEnd =
+          LatLng(element.endStation.latitude, element.endStation.longitude);
 
       if (busStart.latitude == startStation.latitude &&
           busStart.longitude == startStation.longitude &&

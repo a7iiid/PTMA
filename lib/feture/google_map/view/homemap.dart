@@ -21,7 +21,6 @@ class _MapPageState extends State<MapPage> {
     // log('${MapCubit.get(context).markers}=============================');
 
     if (MapCubit.get(context).selectedBus != null) {
-      log('${MapCubit.get(context).selectedBus!.buslatitude}=============================');
       MapCubit.get(context).displayBusPoint(
         await MapCubit.get(context).getRouteBusData(),
       );
