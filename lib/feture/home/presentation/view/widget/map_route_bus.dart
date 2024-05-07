@@ -15,8 +15,7 @@ import 'package:ptma/feture/home/presentation/view/widget/station_menue.dart';
 import '../../../../google_map/data/model/station_model.dart';
 
 class MapRouteBus extends StatefulWidget {
-  MapRouteBus({super.key, this.busModel});
-  BusModel? busModel;
+  MapRouteBus({super.key});
 
   @override
   State<MapRouteBus> createState() => _MapRouteBusState();
@@ -24,70 +23,60 @@ class MapRouteBus extends StatefulWidget {
 
 class _MapRouteBusState extends State<MapRouteBus> {
   @override
-  void initState() {
-    if (widget.busModel != null) {
-      MapCubit.get(context).setSelectedBus(widget.busModel!);
-    }
-
-    super.initState();
-  }
-
   StationModel? distnationStation;
 
   Widget build(BuildContext context) {
+    var cubit = MapCubit.get(context);
     return PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) async {
-          await MapCubit.get(context).clear();
-        },
-        child: Scaffold(
-            body: Stack(
-          children: [
-            StreamBuilder<DocumentSnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("bus")
-                    .doc(widget.busModel!.id)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    widget.busModel = BusModel.fromJson(
-                        snapshot.data!.data() as Map<String, dynamic>,
-                        widget.busModel!.id);
-                    MapCubit.get(context).setSelectedBus(widget.busModel!);
+      onPopInvoked: (didPop) {
+        cubit.clear();
+      },
+      child: Scaffold(
+          body: Stack(
+        children: [
+          StreamBuilder<DocumentSnapshot>(
+              stream: cubit.selectedBus != null
+                  ? FirebaseFirestore.instance
+                      .collection("bus")
+                      .doc(cubit.selectedBus!.id)
+                      .snapshots()
+                  : null,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && cubit.selectedBus != null) {
+                  cubit.setSelectedBus(BusModel.fromJson(
+                      snapshot.data!.data() as Map<String, dynamic>,
+                      cubit.selectedBus!.id));
 
-                    MapCubit.get(context).displaySelectedBusLocation();
-                  }
-                  log("${widget.busModel!.buslatitude}");
-                  return SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.sizeOf(context).height,
-                    child: MapPage(
-                      busModel: widget.busModel,
-                    ),
-                  );
-                }),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  height: 40,
+                  cubit.displaySelectedBusLocation();
+                }
+                return SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height,
+                  child: MapPage(),
+                );
+              }),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 40,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: DropMenuItem(
+                  location: distnationStation,
+                  onChanged: (value) async {
+                    distnationStation = value;
+                    cubit.userDestnationData =
+                        LatLng(value!.latitude, value.longitude);
+                    cubit.displayUserPoint(await cubit.getRouteUserData());
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                  child: DropMenuItem(
-                    location: distnationStation,
-                    onChanged: (value) async {
-                      distnationStation = value;
-                      MapCubit.get(context).userDestnationData =
-                          LatLng(value!.latitude, value.longitude);
-                      MapCubit.get(context).displayUserPoint(
-                          await MapCubit.get(context).getRouteUserData());
-                    },
-                  ),
-                ),
-              ],
-            )
-          ],
-        )));
+              ),
+            ],
+          )
+        ],
+      )),
+    );
   }
 }

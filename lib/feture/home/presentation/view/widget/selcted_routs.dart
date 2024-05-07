@@ -41,7 +41,6 @@ class _SelectRoutsState extends State<SelectRouts> {
   @override
   Widget build(BuildContext context) {
     var cubit = SelectRoutCubit.get(context);
-    log("${MapCubit.get(context).stationModel}");
     return BlocBuilder<SelectRoutCubit, SelectRoutState>(
       builder: (context, state) {
         return Scaffold(
@@ -111,8 +110,8 @@ class _SelectRoutsState extends State<SelectRouts> {
                           height: 20,
                         ),
                         snapshot.hasData
-                            ? bodySelecteRout(cubit: cubit)
-                            : CircularProgressIndicator()
+                            ? const bodySelecteRout()
+                            : const CircularProgressIndicator()
                       ],
                     );
                   }

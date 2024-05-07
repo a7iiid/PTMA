@@ -47,6 +47,7 @@ class MapCubit extends Cubit<MapState> {
 
   void mapServiceApp() async {
     try {
+      log("run google map service=======================");
       emit(MapCheckService());
       mapService.getUserRealTimeLocation((position) {
         userLocationData = LatLng(position.latitude!, position.longitude!);
@@ -55,7 +56,7 @@ class MapCubit extends Cubit<MapState> {
             userLocationData!,
           ),
         );
-        setUserMarker(position);
+        // setUserMarker(position);
       });
       await getStationFromFireBase();
       setStation();
@@ -130,12 +131,12 @@ class MapCubit extends Cubit<MapState> {
     polylineCoordinates.clear();
     polylines.clear();
     if (startStation != null && endStation != null) {
+      selectedBus = null;
       startStation = null;
       endStation = null;
-      markers = {};
-      setStation();
-      emit(MapClear());
     }
+    markers.removeWhere((marker) => marker.markerId.value == 'selected_bus');
+    emit(MapClear());
   }
 
   Future<List<LatLng>> getRouteUserData() async {
@@ -167,6 +168,8 @@ class MapCubit extends Cubit<MapState> {
 
   Future<void> displaySelectedBusLocation() async {
     if (selectedBus != null) {
+      log("${markers.length}");
+      log("${markers.map((e) => e.mapsId.value)}");
       LatLng busLocation =
           LatLng(selectedBus!.buslatitude, selectedBus!.buslongitude);
       Marker busMarker = Marker(
@@ -176,6 +179,8 @@ class MapCubit extends Cubit<MapState> {
           await getImageFromRowData('assets/images/marker.jpg', 50),
         ),
       );
+      markers.removeWhere((marker) => marker.markerId.value == 'selected_bus');
+
       markers.add(busMarker);
       emit(MapSetMarker());
     }

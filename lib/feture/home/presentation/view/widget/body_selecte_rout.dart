@@ -7,13 +7,11 @@ import 'package:ptma/feture/home/presentation/view/widget/map_route_bus.dart';
 class bodySelecteRout extends StatelessWidget {
   const bodySelecteRout({
     super.key,
-    required this.cubit,
   });
-
-  final SelectRoutCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    var cubit = SelectRoutCubit.get(context);
     return Expanded(
       child: ListView.builder(
         itemCount: cubit.listBusFilter.isEmpty
@@ -27,21 +25,21 @@ class bodySelecteRout extends StatelessWidget {
                 title: Text(cubit.listBusFilter.isEmpty
                     ? cubit.busModel[index].busname
                     : cubit.listBusFilter[index].busname),
+                ////
                 subtitle: Text(cubit.listBusFilter.isEmpty
                     ? cubit.busModel[index].busnumber
                     : cubit.listBusFilter[index].busnumber),
                 // trailing: Text(cubit.busModel[index].bustime,
                 // ),
                 onTap: () {
-                  MapCubit.get(context).setSelectedBus(
-                      cubit.listBusFilter.isEmpty
-                          ? cubit.busModel[index]
-                          : cubit.listBusFilter[index]);
+                  var select = cubit.listBusFilter.isEmpty
+                      ? cubit.busModel[index]
+                      : cubit.listBusFilter[index];
+
+                  MapCubit.get(context).setSelectedBus(select);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => MapRouteBus(
-                            busModel: MapCubit.get(context).selectedBus)),
+                    MaterialPageRoute(builder: (context) => MapRouteBus()),
                   );
                 },
               ),
