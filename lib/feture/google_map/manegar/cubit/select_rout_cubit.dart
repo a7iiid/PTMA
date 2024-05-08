@@ -44,14 +44,11 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
       try {
         busModel = fetchedBusModels;
         for (var busModel in fetchedBusModels) {
-          log("${busModel.duration}");
-
           final busLocation = LatLng(
               busModel.busLocation.latitude, busModel.busLocation.longitude);
           final destinationLocation = LatLng(
               busModel.endStation.latitude, busModel.endStation.longitude);
           busModel.duration = await destans(busLocation, destinationLocation);
-          log("${busModel.duration}");
         }
         emit(StreamBusModel(busModel: fetchedBusModels));
       } catch (e) {
@@ -109,7 +106,6 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
       Response response = await dio.get(baseUrlDistanceMatrix);
       DistanceModel result =
           DistanceModel.fromJson(response.data as Map<String, dynamic>);
-      log("${result.durationValue}");
       return result;
     } on Exception catch (e) {
       throw Exception(e);

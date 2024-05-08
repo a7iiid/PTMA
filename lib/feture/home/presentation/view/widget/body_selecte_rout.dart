@@ -14,7 +14,6 @@ class bodySelecteRout extends StatelessWidget {
   });
 
   @override
-  @override
   Widget build(BuildContext context) {
     var cubit = SelectRoutCubit.get(context);
     return BlocBuilder<SelectRoutCubit, SelectRoutState>(
@@ -25,13 +24,6 @@ class bodySelecteRout extends StatelessWidget {
                     ? cubit.busModel.length
                     : cubit.listBusFilter.length,
                 itemBuilder: (context, index) {
-                  LatLng busLocation = LatLng(
-                      cubit.busModel[index].busLocation.latitude,
-                      cubit.busModel[index].busLocation.longitude);
-                  LatLng distnationLocation = LatLng(
-                      cubit.busModel[index].endStation.latitude,
-                      cubit.busModel[index].endStation.longitude);
-
                   return Column(mainAxisSize: MainAxisSize.min, children: [
                     ListTile(
                       title: Text(cubit.listBusFilter.isEmpty

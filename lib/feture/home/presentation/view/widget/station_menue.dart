@@ -17,6 +17,17 @@ class DropMenuItem extends StatefulWidget {
 }
 
 class _DropMenuItemState extends State<DropMenuItem> {
+  void initState() {
+    var station = MapCubit.get(context).stationModel;
+    stationModel = station
+        .map((station) => DropdownMenuItem<StationModel>(
+              value: station,
+              child: Text(station.name),
+            ))
+        .toList();
+    super.initState();
+  }
+
   List<DropdownMenuItem<StationModel>>? stationModel;
   StationModel? _selectedStation;
 
