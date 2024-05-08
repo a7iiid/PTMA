@@ -42,8 +42,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
               }
               if (state is PaymentFailuer) {
                 log(state.messageError);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(state.messageError)));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Unsuccess".tr(context))));
               }
             },
             builder: (context, state) => CustomScrollView(

@@ -20,3 +20,9 @@ final class UpdateStation extends SelectRoutState {}
 final class ChangeSourceStation extends SelectRoutState {}
 
 final class ChangeDistnationStation extends SelectRoutState {}
+
+final class StreamBusModel extends SelectRoutState {
+  final List<BusModel> busModel;
+
+  StreamBusModel({required this.busModel});
+}

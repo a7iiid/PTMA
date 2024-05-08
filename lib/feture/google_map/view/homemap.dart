@@ -56,9 +56,7 @@ class _MapPageState extends State<MapPage> {
                 cubit.userDestnationData =
                     LatLng(destnation.latitude, destnation.longitude);
                 cubit.displayUserPoint(await cubit.getRouteUserData());
-              } catch (e) {
-                log('Error: $e');
-              }
+              } catch (e) {}
             },
             markers: cubit.markers,
             polylines: cubit.polylines,

@@ -58,7 +58,7 @@ class MapCubit extends Cubit<MapState> {
         );
         // setUserMarker(position);
       });
-      await getStationFromFireBase();
+      // await getStationFromFireBase();
       setStation();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
@@ -97,6 +97,7 @@ class MapCubit extends Cubit<MapState> {
       stationModel.addAll(stationdata);
       emit(SuccessLoding());
     } on Exception catch (e) {
+      log("error");
       emit(FiluerLoding());
     }
   }
@@ -164,7 +165,6 @@ class MapCubit extends Cubit<MapState> {
 
   void setSelectedBus(BusModel busModel) {
     selectedBus = busModel;
-    log("${selectedBus}");
     emit(SetSelectedBus());
   }
 
@@ -193,12 +193,9 @@ class MapCubit extends Cubit<MapState> {
 
     endStation = LatLng(
         selectedBus!.endStation.latitude, selectedBus!.endStation.longitude);
-    log("${endStation}");
-    log("${startStation}");
 
     RoutesModel route = await routesService.fetchRoutes(
         origindata: startStation!, destinationData: endStation!);
-    log("${route.routes}");
     List<PointLatLng> result = polylinePoints
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
     List<LatLng> pointes =

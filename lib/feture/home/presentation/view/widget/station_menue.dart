@@ -21,19 +21,6 @@ class _DropMenuItemState extends State<DropMenuItem> {
   StationModel? _selectedStation;
 
   @override
-  void initState() {
-    var station = MapCubit.get(context).stationModel;
-    log("${station}");
-    stationModel = station
-        .map((station) => DropdownMenuItem<StationModel>(
-              value: station,
-              child: Text(station.name),
-            ))
-        .toList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
@@ -62,7 +49,7 @@ class _DropMenuItemState extends State<DropMenuItem> {
               color: Colors.black,
             ),
             hoverColor: Colors.white,
-            contentPadding: EdgeInsets.symmetric(
+            contentPadding: const EdgeInsets.symmetric(
               horizontal: 10,
             ),
           ),
