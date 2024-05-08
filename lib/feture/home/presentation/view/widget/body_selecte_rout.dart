@@ -40,12 +40,8 @@ class bodySelecteRout extends StatelessWidget {
                       subtitle: Text(cubit.listBusFilter.isEmpty
                           ? cubit.busModel[index].busnumber
                           : cubit.listBusFilter[index].busnumber),
-                      // trailing: BlocConsumer(
-                      //   listener: (context, state) {},
-                      //   builder: (context, snapshot) {
-                      //     return Text("{snapshot.data!.durationText}");
-                      //   },
-                      // ),
+                      trailing: Text(
+                          "${cubit.busModel[index].duration?.durationText}"),
                       onTap: () async {
                         try {
                           // var result = await cubit.destans(

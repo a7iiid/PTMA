@@ -28,8 +28,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
 
 ////////////////////////////////////
 
-  Stream<List<BusModel>> streamBusModel() async* {
-    emit(LodingBus());
+  Stream<List<BusModel>> streamBusModels() async* {
     yield* FirebaseFirestore.instance
         .collection('bus')
         .where('isActive', isEqualTo: true)
@@ -38,45 +37,29 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
             .map((doc) =>
                 BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
             .toList());
-    emit(LodingBusSuccess());
   }
 
   void loadBusModels() async {
-    streamBusModel().listen((busModels) {
-      busModel = busModels;
-      log("${busModel.length}");
-      log("${busModels.length}");
-      emit(StreamBusModel(busModel: busModels));
+    streamBusModels().listen((fetchedBusModels) async {
+      try {
+        busModel = fetchedBusModels;
+        for (var busModel in fetchedBusModels) {
+          log("${busModel.duration}");
+
+          final busLocation = LatLng(
+              busModel.busLocation.latitude, busModel.busLocation.longitude);
+          final destinationLocation = LatLng(
+              busModel.endStation.latitude, busModel.endStation.longitude);
+          busModel.duration = await destans(busLocation, destinationLocation);
+          log("${busModel.duration}");
+        }
+        emit(StreamBusModel(busModel: fetchedBusModels));
+      } catch (e) {
+        // Handle error
+        log("Error loading bus models: $e");
+      }
     });
   }
-
-  // Future<Stream<QuerySnapshot<Map<String, dynamic>>>>
-  //     getDataFromFireBase() async {
-  //   emit(LodingBus());
-  //   var query = await FirebaseFirestore.instance
-  //       .collection('bus')
-  //       .where('isActive', isEqualTo: true)
-  //       .snapshots();
-  //   emit(LodingBusSuccess());
-
-  //   return query;
-  // }
-
-  // Future<void> MapDataToBusModel(List<QueryDocumentSnapshot> query) async {
-  //   try {
-  //     emit(LodingBus());
-
-  //     busModel = query
-  //         .map((doc) =>
-  //             BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
-  //         .toList();
-  //     //busModel.addAll(busData);
-  //     emit(LodingBusSuccess());
-  //   } on Exception catch (e) {
-  //     emit(LodingBusFiluer());
-  //     // TODO
-  //   }
-  // }
 
   void updateSourceStation(StationModel? station) {
     emit(ChangeSourceStation());
