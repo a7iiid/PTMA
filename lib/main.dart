@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:ptma/core/manger/cubit/loclaization_cubit.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
@@ -25,6 +27,7 @@ void main() async {
   );
   await CachHelper.init();
   bool isArabic = CachHelper.langGetData('isArabic');
+  await Hive.initFlutter();
 
   runApp(MyApp(
     isArabic: isArabic,
