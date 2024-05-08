@@ -23,6 +23,16 @@ class MapRouteBus extends StatefulWidget {
 
 class _MapRouteBusState extends State<MapRouteBus> {
   @override
+  void didChangeDependencies() async {
+    log("message");
+    MapCubit.get(context)
+        .displayUserPoint(await MapCubit.get(context).getRouteBusData());
+    log("================================");
+
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
   StationModel? distnationStation;
 
   Widget build(BuildContext context) {
@@ -67,8 +77,9 @@ class _MapRouteBusState extends State<MapRouteBus> {
                   location: distnationStation,
                   onChanged: (value) async {
                     distnationStation = value;
-                    cubit.userDestnationData =
-                        LatLng(value!.latitude, value.longitude);
+                    cubit.userDestnationData = LatLng(
+                        value!.stationLocation.latitude,
+                        value.stationLocation.longitude);
                     cubit.displayUserPoint(await cubit.getRouteUserData());
                   },
                 ),

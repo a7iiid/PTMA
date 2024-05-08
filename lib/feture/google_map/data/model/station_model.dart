@@ -1,22 +1,17 @@
-class StationModel {
-  final double latitude;
-  final double longitude;
-  final String name;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  StationModel(
-      {required this.latitude, required this.longitude, required this.name});
+class StationModel {
+  final String name;
+  final GeoPoint stationLocation;
+
+  StationModel({required this.stationLocation, required this.name});
   factory StationModel.fromJson(Map<String, dynamic> json) {
     return StationModel(
       name: json['name'],
-      latitude: json['latitude'].toDouble(),
-      longitude: json['longitude'].toDouble(),
+      stationLocation: json['stationLocation'],
     );
   }
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'latitude': latitude,
-      'longitude': longitude,
-    };
+    return {'name': name, 'stationLocation': stationLocation};
   }
 }

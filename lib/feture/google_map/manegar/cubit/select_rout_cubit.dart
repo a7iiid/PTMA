@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:ptma/feture/google_map/data/model/distance_model/distance_model.dart';
 
 import '../../../../core/utils/apiKey.dart';
 import '../../data/model/bus_model.dart';
@@ -24,38 +27,35 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   Dio dio = Dio();
 
 ////////////////////////////////////
-  ///
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>>
-      getDataFromFireBase() async {
-    emit(LodingBus());
-    var query = await FirebaseFirestore.instance
+
+  Stream<List<BusModel>> streamBusModels() async* {
+    yield* FirebaseFirestore.instance
         .collection('bus')
         .where('isActive', isEqualTo: true)
-        .snapshots();
-    emit(LodingBusSuccess());
-
-    return query;
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) =>
+                BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
+            .toList());
   }
 
-  Future<void> MapDataToBusModel() async {
-    try {
-      emit(LodingBus());
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('bus')
-          .where('isActive', isEqualTo: true)
-          .get();
-
-      var buses = querySnapshot.docs;
-      var busData = buses
-          .map((doc) =>
-              BusModel.fromJson(doc.data() as Map<String, dynamic>, doc.id))
-          .toList();
-      busModel.addAll(busData);
-      emit(LodingBusSuccess());
-    } on Exception catch (e) {
-      emit(LodingBusFiluer());
-      // TODO
-    }
+  void loadBusModels() async {
+    streamBusModels().listen((fetchedBusModels) async {
+      try {
+        busModel = fetchedBusModels;
+        for (var busModel in fetchedBusModels) {
+          final busLocation = LatLng(
+              busModel.busLocation.latitude, busModel.busLocation.longitude);
+          final destinationLocation = LatLng(
+              busModel.endStation.latitude, busModel.endStation.longitude);
+          busModel.duration = await destans(busLocation, destinationLocation);
+        }
+        emit(StreamBusModel(busModel: fetchedBusModels));
+      } catch (e) {
+        // Handle error
+        log("Error loading bus models: $e");
+      }
+    });
   }
 
   void updateSourceStation(StationModel? station) {
@@ -72,8 +72,10 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     if (station != null) {
       distnationStation = station;
       feltaringBus(
-          LatLng(distnationStation!.latitude, distnationStation!.longitude),
-          LatLng(sourceStation!.latitude, sourceStation!.longitude));
+          LatLng(distnationStation!.stationLocation.latitude,
+              distnationStation!.stationLocation.longitude),
+          LatLng(sourceStation!.stationLocation.latitude,
+              sourceStation!.stationLocation.longitude));
       emit(UpdateStation());
     }
   }
@@ -82,8 +84,10 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     listBusFilter = [];
     emit(FiltringBus());
     busModel.forEach((element) {
-      LatLng busStart = LatLng(element.startlatitude, element.startlongitude);
-      LatLng busEnd = LatLng(element.endlatitude, element.endlongitude);
+      LatLng busStart =
+          LatLng(element.startStation.latitude, element.startStation.longitude);
+      LatLng busEnd =
+          LatLng(element.endStation.latitude, element.endStation.longitude);
 
       if (busStart.latitude == startStation.latitude &&
           busStart.longitude == startStation.longitude &&
@@ -95,14 +99,16 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     emit(SuccessFiltringBus());
   }
 
-  Future<void> destans(LatLng destination, LatLng start) async {
+  Future<DistanceModel> destans(LatLng destination, LatLng source) async {
     String baseUrlDistanceMatrix =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${start.latitude},${start.longitude}&key=${ApiKey.mapApiKey}';
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${source.latitude},${source.longitude}&key=${ApiKey.mapApiKey}';
     try {
       Response response = await dio.get(baseUrlDistanceMatrix);
-      print(response);
+      DistanceModel result =
+          DistanceModel.fromJson(response.data as Map<String, dynamic>);
+      return result;
     } on Exception catch (e) {
-      // TODO
+      throw Exception(e);
     }
   }
 }

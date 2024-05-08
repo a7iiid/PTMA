@@ -21,7 +21,6 @@ class _MapPageState extends State<MapPage> {
     // log('${MapCubit.get(context).markers}=============================');
 
     if (MapCubit.get(context).selectedBus != null) {
-      log('${MapCubit.get(context).selectedBus!.buslatitude}=============================');
       MapCubit.get(context).displayBusPoint(
         await MapCubit.get(context).getRouteBusData(),
       );
@@ -57,9 +56,7 @@ class _MapPageState extends State<MapPage> {
                 cubit.userDestnationData =
                     LatLng(destnation.latitude, destnation.longitude);
                 cubit.displayUserPoint(await cubit.getRouteUserData());
-              } catch (e) {
-                log('Error: $e');
-              }
+              } catch (e) {}
             },
             markers: cubit.markers,
             polylines: cubit.polylines,

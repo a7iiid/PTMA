@@ -1,43 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'distance_model/distance_model.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class BusModel {
-  final double buslatitude;
-  final double buslongitude;
-  final double startlatitude;
-  final double startlongitude;
+  final GeoPoint busLocation;
+  final GeoPoint startStation;
 
-  final double endlatitude;
-
-  final double endlongitude;
+  final GeoPoint endStation;
 
   final String busname;
 
   final String busnumber;
   final bool isActive;
   final String id;
+  DistanceModel? duration;
 
-  BusModel({
-    required this.startlatitude,
-    required this.startlongitude,
-    required this.endlatitude,
-    required this.endlongitude,
-    required this.busname,
-    required this.busnumber,
-    required this.isActive,
-    required this.buslatitude,
-    required this.buslongitude,
-    required this.id,
-  });
+  BusModel(
+      {required this.busname,
+      required this.busnumber,
+      required this.isActive,
+      required this.busLocation,
+      required this.endStation,
+      required this.startStation,
+      required this.id,
+      this.duration});
 
   factory BusModel.fromJson(Map<String, dynamic> json, String id) {
     return BusModel(
-        id: id,
-        busname: json['busname'],
-        busnumber: json['busnumber'],
-        endlatitude: json['endlatitude'].toDouble(),
-        endlongitude: json['endlongitude'].toDouble(),
-        startlatitude: json['startlatitude'].toDouble(),
-        startlongitude: json['startlongitude'].toDouble(),
-        isActive: json['isActive'],
-        buslatitude: json['buslatitude'].toDouble(),
-        buslongitude: json['buslongitude'].toDouble());
+      id: id,
+      busname: json['busname'],
+      busnumber: json['busnumber'],
+      busLocation: json['busLocation'],
+      endStation: json['endStation'],
+      startStation: json['startStation'],
+      isActive: json['isActive'],
+    );
   }
 }

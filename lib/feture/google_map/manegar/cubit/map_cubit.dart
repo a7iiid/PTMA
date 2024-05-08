@@ -47,7 +47,6 @@ class MapCubit extends Cubit<MapState> {
 
   void mapServiceApp() async {
     try {
-      log("run google map service=======================");
       emit(MapCheckService());
       mapService.getUserRealTimeLocation((position) {
         userLocationData = LatLng(position.latitude!, position.longitude!);
@@ -58,7 +57,6 @@ class MapCubit extends Cubit<MapState> {
         );
         // setUserMarker(position);
       });
-      await getStationFromFireBase();
       setStation();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
@@ -78,9 +76,9 @@ class MapCubit extends Cubit<MapState> {
         position: LatLng(position.latitude!, position.longitude!),
       ),
     );
-    if (polylineCoordinates.isNotEmpty) {
-      //routesService.destans(userDestnationData, userLocationData);
-    }
+    // if (polylineCoordinates.isNotEmpty) {
+    //routesService.destans(userDestnationData, userLocationData);
+    // }
   }
 
   Future<void> getStationFromFireBase() async {
@@ -109,7 +107,8 @@ class MapCubit extends Cubit<MapState> {
         .map((station) => Marker(
               icon: customMarkerIcone,
               markerId: MarkerId(station.name),
-              position: LatLng(station.latitude, station.longitude),
+              position: LatLng(station.stationLocation.latitude,
+                  station.stationLocation.longitude),
               infoWindow: InfoWindow(title: station.name),
             ))
         .toSet();
@@ -147,6 +146,8 @@ class MapCubit extends Cubit<MapState> {
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
     List<LatLng> pointes =
         result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    log("${pointes}");
+
     return pointes;
   }
 
@@ -163,15 +164,14 @@ class MapCubit extends Cubit<MapState> {
 
   void setSelectedBus(BusModel busModel) {
     selectedBus = busModel;
+    log("${selectedBus!.startStation.latitude} ${selectedBus!.endStation.latitude}");
     emit(SetSelectedBus());
   }
 
   Future<void> displaySelectedBusLocation() async {
     if (selectedBus != null) {
-      log("${markers.length}");
-      log("${markers.map((e) => e.mapsId.value)}");
-      LatLng busLocation =
-          LatLng(selectedBus!.buslatitude, selectedBus!.buslongitude);
+      LatLng busLocation = LatLng(selectedBus!.busLocation.latitude,
+          selectedBus!.busLocation.longitude);
       Marker busMarker = Marker(
         markerId: MarkerId('selected_bus'),
         position: busLocation,
@@ -187,11 +187,12 @@ class MapCubit extends Cubit<MapState> {
   }
 
   Future<List<LatLng>> getRouteBusData() async {
-    await displaySelectedBusLocation();
-    startStation =
-        LatLng(selectedBus!.startlatitude, selectedBus!.startlongitude);
+    // await displaySelectedBusLocation();
+    startStation = LatLng(selectedBus!.startStation.latitude,
+        selectedBus!.startStation.longitude);
 
-    endStation = LatLng(selectedBus!.endlatitude, selectedBus!.endlongitude);
+    endStation = LatLng(
+        selectedBus!.endStation.latitude, selectedBus!.endStation.longitude);
     RoutesModel route = await routesService.fetchRoutes(
         origindata: startStation!, destinationData: endStation!);
 
@@ -199,6 +200,10 @@ class MapCubit extends Cubit<MapState> {
         .decodePolyline(route.routes!.first.polyline!.encodedPolyline!);
     List<LatLng> pointes =
         result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    log("${startStation}start");
+    log("===================");
+    log("${endStation}end");
+
     return pointes;
   }
 
@@ -210,6 +215,7 @@ class MapCubit extends Cubit<MapState> {
         startCap: Cap.roundCap,
         width: 4);
     polylines.add(route);
+
     emit(MapSetLine());
   }
 }
