@@ -12,12 +12,12 @@ class HistoryService {
     box.add(note);
   }
 
-  Future<List<HistoryModel>> getAllNote() async {
+  Future<List<HistoryModel>> getAllHistory() async {
     var box = await _box;
     return box.values.toList();
   }
 
-  Future<void> deleteNote(int index) async {
+  Future<void> deleteHistory(int index) async {
     var box = await _box;
     await box.deleteAt(index);
   }
