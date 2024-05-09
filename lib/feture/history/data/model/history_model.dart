@@ -9,7 +9,7 @@ class HistoryModel extends HiveObject {
   @HiveField(1)
   final String price;
   @HiveField(2)
-  final DateTime dateTrip;
+  final String dateTrip;
 
   HistoryModel(
       {required this.tripNam, required this.price, required this.dateTrip});

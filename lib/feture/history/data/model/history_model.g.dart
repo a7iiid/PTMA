@@ -19,7 +19,7 @@ class HistoryModelAdapter extends TypeAdapter<HistoryModel> {
     return HistoryModel(
       tripNam: fields[0] as String,
       price: fields[1] as String,
-      dateTrip: fields[2] as DateTime,
+      dateTrip: fields[2] as String,
     );
   }
 

@@ -10,12 +10,12 @@ import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/them_app.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
+import 'package:ptma/feture/history/data/model/history_model.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'core/utils/cach/cach_helpar.dart';
 import 'feture/google_map/manegar/cubit/map_cubit.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:localization/localization.dart';
 import 'core/utils/rout.dart';
 
 void main() async {
@@ -27,8 +27,10 @@ void main() async {
   );
   await CachHelper.init();
   bool isArabic = CachHelper.langGetData('isArabic');
-  await Hive.initFlutter();
+  Hive.registerAdapter(ColorAdapter());
 
+  await Hive.initFlutter();
+  Hive.registerAdapter(HistoryModelAdapter());
   runApp(MyApp(
     isArabic: isArabic,
   ));

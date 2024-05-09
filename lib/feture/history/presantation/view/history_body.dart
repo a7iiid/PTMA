@@ -1,32 +1,64 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ptma/feture/history/data/repo/history_repo_implemant.dart';
+import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 
 import '../../data/model/history_model.dart';
 
 class HistoryBody extends StatelessWidget {
   HistoryBody({super.key});
-  List<HistoryModel> history = [
-    HistoryModel(
-        tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-    HistoryModel(
-        tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-    HistoryModel(
-        tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-  ];
+  // List<HistoryModel> history = [
+  //   HistoryModel(
+  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
+  //   HistoryModel(
+  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
+  //   HistoryModel(
+  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
+  // ];
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverList.builder(
-          itemCount: history.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(history[index].tripNam),
-              subtitle: Text(history[index].price),
-              trailing: Text(history[index].dateTrip.toString()),
+    return BlocProvider(
+      create: (context) =>
+          HistoryCubit(historyRepo: HistoryRepoImplemant())..getHistory(),
+      child: BlocBuilder<HistoryCubit, HistoryState>(
+        builder: (context, state) {
+          var cubit = HistoryCubit.get(context);
+
+          if (state is HistorySuccess) {
+            return CustomScrollView(
+              slivers: [
+                SliverList.builder(
+                  itemCount: cubit.history.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          title: Text(cubit.history[index].tripNam),
+                          subtitle: Text(cubit.history[index].price),
+                          trailing:
+                              Text(cubit.history[index].dateTrip.toString()),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                      ],
+                    );
+                  },
+                )
+              ],
             );
-          },
-        )
-      ],
+          } else if (state is HistoryFiluer) {
+            return state.error;
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }

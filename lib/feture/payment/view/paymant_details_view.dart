@@ -7,7 +7,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
+import 'package:ptma/feture/history/data/model/history_model.dart';
+import 'package:ptma/feture/history/data/model/history_service.dart';
 import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
 
 import '../../../core/utils/images.dart';
@@ -133,6 +136,13 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                         .getCusomerId(),
                               ),
                             );
+                            final now = new DateTime.now();
+                            String formatter = DateFormat('yMd').format(now);
+                            HistoryModel historyModel = HistoryModel(
+                                tripNam: qrCodeModel.trip!,
+                                price: qrCodeModel.prise!,
+                                dateTrip: formatter);
+                            HistoryService.get().addItem(historyModel);
                             qrCodeModel = QrCodeModel();
                           }
                         },
