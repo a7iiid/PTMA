@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
 
 class HistoryService {
-  static get(context) => HistoryService();
+  static HistoryService get() => HistoryService();
   final String _boxname = 'notetable';
   Future<Box<HistoryModel>> get _box async =>
       await Hive.openBox<HistoryModel>(_boxname);
