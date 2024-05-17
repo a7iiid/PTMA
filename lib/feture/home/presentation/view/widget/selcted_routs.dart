@@ -1,24 +1,16 @@
 import 'dart:collection';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ptma/core/utils/drawer/drawer.dart';
-import 'package:ptma/core/utils/localization/app_localaization.dart';
-import 'package:ptma/feture/google_map/data/model/bus_model.dart';
-import 'package:ptma/feture/google_map/manegar/cubit/map_cubit.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 
 import '../../../../google_map/data/model/station_model.dart';
-import '../../../../google_map/view/homemap.dart';
 import 'body_selecte_rout.dart';
+import 'drawer_bottom.dart';
 import 'head_home_page.dart';
 import 'station_menue.dart';
 
@@ -51,6 +43,10 @@ class _SelectRoutsState extends State<SelectRouts> {
               clipBehavior: Clip.none,
               children: [
                 const HeadHomePage(),
+                Positioned(
+                  top: MediaQuery.sizeOf(context).height * .05,
+                  child: const DrawerBottom(),
+                ),
                 Positioned(
                   top: MediaQuery.sizeOf(context).height * .1,
                   child: Padding(

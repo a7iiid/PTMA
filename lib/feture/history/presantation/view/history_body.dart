@@ -5,18 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptma/feture/history/data/repo/history_repo_implemant.dart';
 import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 
-import '../../data/model/history_model.dart';
-
 class HistoryBody extends StatelessWidget {
   HistoryBody({super.key});
-  // List<HistoryModel> history = [
-  //   HistoryModel(
-  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-  //   HistoryModel(
-  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-  //   HistoryModel(
-  //       tripNam: "Qabatia-jenin", price: "5 ILS", dateTrip: DateTime.now()),
-  // ];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

@@ -12,16 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late AppCubit cubit;
+  late MapCubit mapCubit;
+
   @override
-  void initState() {
-    MapCubit.get(context).getStationFromFireBase();
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    cubit = AppCubit.get(context);
+    mapCubit = MapCubit.get(context);
+    cubit.init(context);
+    mapCubit.getStationFromFireBase();
   }
 
   @override
   Widget build(BuildContext context) {
-    var cubit = AppCubit.get(context);
-
     return SafeArea(
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
@@ -31,11 +35,11 @@ class _HomePageState extends State<HomePage> {
               items: cubit.bottomItems,
               currentIndex: cubit.selectedPage,
               onTap: (index) {
-                cubit.onTapNav(index);
+                cubit.onTapNav(index, context);
               },
               selectedItemColor: Colors.blue,
             ),
-            drawer: CustomeDrawer(),
+            drawer: const CustomeDrawer(),
           );
         },
       ),

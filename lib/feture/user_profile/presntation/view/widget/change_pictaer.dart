@@ -13,7 +13,7 @@ class ChangePicturs extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await AppCubit.get(context).SetUserPictur();
+        await AppCubit.get(context).setUserPictur();
       },
       child: Stack(
         alignment: Alignment.center, // Add this line

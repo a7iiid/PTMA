@@ -31,7 +31,7 @@ class DrawerBottom extends StatelessWidget {
             ),
           ),
         ),
-        const Greetingslogin(),
+        // const Greetingslogin(),
       ],
     );
   }

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/ApiServes/map_service.dart';
-
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 import '../../../../../core/utils/image_picker/image_picer.dart';
+import '../../../../google_map/view/homemap.dart';
 import '../../../../history/presantation/history_page.dart';
 import '../../../../payment/view/paymant_details_view.dart';
-import '../../../../user_profile/presntation/view/profile_page.dart';
-import '../../view/widget/home_body.dart';
-
+import '../../view/widget/selcted_routs.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -21,8 +20,10 @@ class AppCubit extends Cubit<AppState> {
   bool isArabic = false;
   late AuthCredential credential;
   PickImageServes pickImageServes = PickImageServes.get();
+  List<BottomNavigationBarItem> bottomItems = [];
+//////////////////////////
 
-  Future<void> SetUserPictur() async {
+  Future<void> setUserPictur() async {
     emit(ChangeUserPictiurLoding());
 
     try {
@@ -33,41 +34,44 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
+//list screen
   List<Widget> pages = [
-    HomeBody(),
-    PaymentDetails(),
-    TripHistoryPage(),
-    ProfilePage()
+    SelectRouts(),
+    MapPage(),
+    const PaymentDetails(),
+    const TripHistoryPage(),
   ];
 
-  List<BottomNavigationBarItem> bottomItems = const [
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.home,
-          color: Colors.blue,
-        ),
-        label: 'Home'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.qr_code_scanner_outlined,
-          color: Colors.black,
-        ),
-        label: 'Pey'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.history,
-          color: Colors.black,
-        ),
-        label: 'History'),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.person,
-          color: Colors.black,
-        ),
-        label: 'Profile'),
-  ];
+  void init(context) {
+    bottomItems = [
+      BottomNavigationBarItem(
+          icon: const Icon(
+            Icons.home,
+            color: Colors.blue,
+          ),
+          label: 'Home'.tr(context)),
+      BottomNavigationBarItem(
+          icon: const Icon(
+            Icons.map_outlined,
+            color: Colors.black,
+          ),
+          label: 'Map'.tr(context)),
+      BottomNavigationBarItem(
+          icon: const Icon(
+            Icons.qr_code_scanner_outlined,
+            color: Colors.black,
+          ),
+          label: 'Pay'.tr(context)),
+      BottomNavigationBarItem(
+          icon: const Icon(
+            Icons.history,
+            color: Colors.black,
+          ),
+          label: 'History'.tr(context)),
+    ];
+  }
 
-  Widget onTapNav(int index) {
+  Widget onTapNav(int index, context) {
     if (index != 0 && !isDisposed) {
       MapService.positionStream?.cancel();
       isDisposed = !isDisposed;
@@ -82,25 +86,25 @@ class AppCubit extends Cubit<AppState> {
             Icons.home,
             color: selectedPage == 0 ? Colors.blue : Colors.black,
           ),
-          label: 'Home'),
+          label: 'Home'.tr(context)),
+      BottomNavigationBarItem(
+          icon: Icon(
+            Icons.map_outlined,
+            color: selectedPage == 1 ? Colors.blue : Colors.black,
+          ),
+          label: 'Map'.tr(context)),
       BottomNavigationBarItem(
           icon: Icon(
             Icons.qr_code_scanner_outlined,
-            color: selectedPage == 1 ? Colors.blue : Colors.black,
+            color: selectedPage == 2 ? Colors.blue : Colors.black,
           ),
-          label: 'Pey'),
+          label: 'Pay'.tr(context)),
       BottomNavigationBarItem(
           icon: Icon(
             Icons.history,
-            color: selectedPage == 2 ? Colors.blue : Colors.black,
-          ),
-          label: 'History'),
-      BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
             color: selectedPage == 3 ? Colors.blue : Colors.black,
           ),
-          label: 'Profile'),
+          label: 'History'.tr(context)),
     ];
 
     emit(AppChangeScreen(activeTab: index));

@@ -10,7 +10,7 @@ class ShapeOfDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(MediaQuery.sizeOf(context).width * .697,
-          (MediaQuery.sizeOf(context).height * 0.7).toDouble()),
+          (MediaQuery.sizeOf(context).height * 0.65).toDouble()),
       painter: RPSCustomPainter(),
     );
   }

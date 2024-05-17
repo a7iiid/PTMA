@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/rout.dart';
 
+import '../../../feture/home/presentation/manger/cubit/app_cubit.dart';
+
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({Key? key}) : super(key: key);
 
@@ -18,6 +20,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
   @override
   void initState() {
     super.initState();
+
     initSlideAnimated();
     NavToHome();
   }
