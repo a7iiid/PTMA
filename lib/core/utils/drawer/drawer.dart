@@ -47,7 +47,9 @@ class CustomeDrawer extends StatelessWidget {
                     ),
                     const UserImage(),
                     ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        GoRouter.of(context).push(Routes.kEditProfilePage);
+                      },
                       leading: const Icon(Icons.account_circle_rounded),
                       title: Text('Profile'.tr(context)),
                     ),

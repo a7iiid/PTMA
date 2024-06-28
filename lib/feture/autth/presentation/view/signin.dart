@@ -86,10 +86,7 @@ class form extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SvgPicture.asset(
-                  Assets.imagesSignup,
-                ),
-                const SizedBox(
-                  height: 130,
+                  Assets.imagesLogin,
                 ),
                 Text("Login".tr(context), style: AppStyle.bold28blak),
                 const SizedBox(

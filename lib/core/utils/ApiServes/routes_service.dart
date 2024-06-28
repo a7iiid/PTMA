@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ptma/core/utils/apiKey.dart';
 
 import '../../../feture/google_map/data/model/route_configers.dart';
 import 'package:http/http.dart' as http;
@@ -12,8 +13,6 @@ class RoutesService {
 
   final String baseUrldirections =
       'https://maps.googleapis.com/maps/api/directions/json';
-
-  final String apiKey = 'AIzaSyBA9z9yyAAM6us9MlZtuPkcFgXMOBzozSo';
 
   // Future<void> destans(LatLng destination, LatLng start) async {
   //   String baseUrlDistanceMatrix =
@@ -37,7 +36,7 @@ class RoutesService {
     Uri url = Uri.parse(baseUrl);
     Map<String, String> heder = {
       'Content-Type': 'application/json',
-      'X-Goog-Api-Key': apiKey,
+      'X-Goog-Api-Key': ApiKey.mapApiKey,
       'X-Goog-FieldMask':
           'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline'
     };

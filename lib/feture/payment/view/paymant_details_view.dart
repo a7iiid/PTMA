@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
 import 'package:ptma/feture/history/data/model/history_service.dart';
-import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
+import 'package:ptma/feture/payment/stripe/model/BusTrip.dart';
 
 import '../../../core/utils/images.dart';
 import '../stripe/data/models/payment_input_intint_model.dart';
@@ -30,7 +30,7 @@ class PaymentDetails extends StatefulWidget {
 
 class _PaymentDetailsState extends State<PaymentDetails> {
   GlobalKey<FormState> formKey = GlobalKey();
-  QrCodeModel qrCodeModel = QrCodeModel();
+  BusTrip qrCodeModel = BusTrip();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,11 +139,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                             final now = new DateTime.now();
                             String formatter = DateFormat('yMd').format(now);
                             HistoryModel historyModel = HistoryModel(
-                                tripNam: qrCodeModel.trip!,
+                                tripNam: qrCodeModel.tripid!,
                                 price: qrCodeModel.prise!,
                                 dateTrip: formatter);
                             HistoryService.get().addItem(historyModel);
-                            qrCodeModel = QrCodeModel();
+                            qrCodeModel = BusTrip();
                           }
                         },
                       ),

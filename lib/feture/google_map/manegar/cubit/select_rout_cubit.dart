@@ -42,6 +42,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   void loadBusModels() async {
     streamBusModels().listen((fetchedBusModels) async {
       try {
+        log(fetchedBusModels.toString());
         busModel = fetchedBusModels;
         for (var busModel in fetchedBusModels) {
           final busLocation = LatLng(

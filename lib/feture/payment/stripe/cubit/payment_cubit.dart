@@ -7,7 +7,7 @@ import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/StripeSeirves.dart';
-import 'package:ptma/feture/payment/stripe/model/qr_code_model.dart';
+import 'package:ptma/feture/payment/stripe/model/BusTrip.dart';
 
 import '../../../../core/utils/cach/cach_helpar.dart';
 import '../data/models/payment_input_intint_model.dart';
@@ -49,23 +49,32 @@ class PaymentCubit extends Cubit<PaymentState> {
     selectindex = index;
   }
 
-  QrCodeModel scanQRData(String data) {
+  BusTrip scanQRData(String data) {
     emit(ScanneQRCodeInit());
     try {
-      List<String> barcodeScanRes = data.split(',');
+      var barcodeScanRes = data.split(',');
 
-      if (barcodeScanRes.length == 2) {
+      if (barcodeScanRes.length == 5) {
         emit(ScanQRSuccess());
-        return QrCodeModel(
-            prise: barcodeScanRes[0],
-            trip: barcodeScanRes[1],
-            dateTime: DateTime.now());
+        return BusTrip.fromQrCode(data);
       }
       emit(ScanQRFailuer());
-      return QrCodeModel(prise: '0', trip: '0', dateTime: DateTime.now());
+      return BusTrip(
+          prise: '0',
+          busnum: 0,
+          from: "0",
+          to: "0",
+          tripid: "0",
+          dateTime: DateTime.now());
     } catch (e) {
       emit(ScanQRFailuer());
-      return QrCodeModel(prise: '0', trip: '0', dateTime: DateTime.now());
+      return BusTrip(
+          prise: '0',
+          busnum: 0,
+          from: "0",
+          to: "0",
+          tripid: "0",
+          dateTime: DateTime.now());
     }
   }
 }
