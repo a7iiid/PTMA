@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,13 +12,13 @@ import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
 import 'package:ptma/feture/history/data/model/history_service.dart';
+import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 import 'package:ptma/feture/payment/stripe/model/BusTrip.dart';
 
 import '../../../core/utils/images.dart';
 import '../stripe/data/models/payment_input_intint_model.dart';
 import '../stripe/data/repo/checkout_repo_implemantation.dart';
 import '../stripe/cubit/payment_cubit.dart';
-import 'thank_you_view.dart';
 import 'widget/custom_bottom.dart';
 import 'widget/paymant details/paymantSelected.dart';
 
@@ -142,7 +143,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                 tripNam: qrCodeModel.tripid!,
                                 price: qrCodeModel.prise!,
                                 dateTrip: formatter);
-                            HistoryService.get().addItem(historyModel);
+
+                            HistoryCubit.get(context).addPassengerToTrip(
+                                qrCodeModel,
+                                FirebaseAuth.instance.currentUser!.displayName!,
+                                FirebaseAuth.instance.currentUser!.email!);
                             qrCodeModel = BusTrip();
                           }
                         },

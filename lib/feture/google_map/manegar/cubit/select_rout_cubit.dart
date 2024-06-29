@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/feture/google_map/data/model/distance_model/distance_model.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/driver_cubit.dart';
 
 import '../../../../core/utils/apiKey.dart';
 import '../../data/model/bus_model.dart';
@@ -43,6 +44,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     streamBusModels().listen((fetchedBusModels) async {
       try {
         log(fetchedBusModels.toString());
+
         busModel = fetchedBusModels;
         for (var busModel in fetchedBusModels) {
           final busLocation = LatLng(

@@ -9,8 +9,11 @@ import 'package:ptma/core/manger/cubit/loclaization_cubit.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/them_app.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/driver_cubit.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
+import 'package:ptma/feture/history/data/repo/history_repo_implemant_hive.dart';
+import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'core/utils/cach/cach_helpar.dart';
 import 'feture/google_map/manegar/cubit/map_cubit.dart';
@@ -58,6 +61,13 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => SelectRoutCubit(),
+          ),
+          BlocProvider(
+            create: (context) => DriverCubit(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                HistoryCubit(historyRepo: HistoryRepoImplemantHive()),
           ),
         ],
         child: BlocBuilder<LoclaizationCubit, LoclaizationState>(

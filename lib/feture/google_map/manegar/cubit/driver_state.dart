@@ -3,10 +3,16 @@ part of 'driver_cubit.dart';
 @immutable
 sealed class DriverState {}
 
-final class DriverInitial extends DriverState {}
+class DriverInitial extends DriverState {}
 
-final class DriverLoding extends DriverState {}
+class DriverLoading extends DriverState {}
 
-final class DriverSuccess extends DriverState {}
+class DriverLoaded extends DriverState {
+  final List<Driver> drivers;
+  DriverLoaded({required this.drivers});
+}
 
-final class DriverFiluer extends DriverState {}
+class DriverFailure extends DriverState {
+  final String error;
+  DriverFailure({required this.error});
+}
