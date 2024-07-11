@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:ptma/feture/google_map/data/model/distance_model/distance_model.dart';
-import 'package:ptma/feture/google_map/manegar/cubit/driver_cubit.dart';
 
 import '../../../../core/utils/apiKey.dart';
 import '../../data/model/bus_model.dart';
@@ -21,7 +20,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
       BlocProvider.of<SelectRoutCubit>(context);
 
 ////////////////////////////////////////
-  List<BusModel> busModel = [];
+  List<BusModel> busModels = [];
   List<BusModel> listBusFilter = [];
   StationModel? sourceStation;
   StationModel? distnationStation;
@@ -45,13 +44,16 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
       try {
         log(fetchedBusModels.toString());
 
-        busModel = fetchedBusModels;
+        busModels = fetchedBusModels;
         for (var busModel in fetchedBusModels) {
           final busLocation = LatLng(
               busModel.busLocation.latitude, busModel.busLocation.longitude);
           final destinationLocation = LatLng(
               busModel.endStation.latitude, busModel.endStation.longitude);
+
           busModel.duration = await destans(busLocation, destinationLocation);
+          log(busModel.duration.toString());
+          log(busModel.duration.toString());
         }
         emit(StreamBusModel(busModel: fetchedBusModels));
       } catch (e) {
@@ -86,7 +88,7 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
   void feltaringBus(LatLng startStation, LatLng endStation) {
     listBusFilter = [];
     emit(FiltringBus());
-    busModel.forEach((element) {
+    busModels.forEach((element) {
       LatLng busStart =
           LatLng(element.startStation.latitude, element.startStation.longitude);
       LatLng busEnd =
@@ -107,11 +109,14 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
         'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${source.latitude},${source.longitude}&key=${ApiKey.mapApiKey}';
     try {
       Response response = await dio.get(baseUrlDistanceMatrix);
+      log(response.data.toString()); // Log the response data for debugging
       DistanceModel result =
           DistanceModel.fromJson(response.data as Map<String, dynamic>);
+      log(result.toString());
       return result;
     } on Exception catch (e) {
-      throw Exception(e);
+      log("Error fetching distance: $e");
+      throw Exception("Error fetching distance: $e");
     }
   }
 }

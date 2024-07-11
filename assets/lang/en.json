@@ -33,7 +33,10 @@
     "Home":"Home",
     "Map":"Map",
     "Pay":"Pay",
-    "History":"History"
+    "History":"History",
+    "Price":"Price",
+    "Date":"Date",
+    "Trip":"Trip"
 
 
 

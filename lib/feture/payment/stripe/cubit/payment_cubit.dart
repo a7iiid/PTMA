@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 
 import 'package:meta/meta.dart';
 import 'package:ptma/core/utils/StripeSeirves.dart';

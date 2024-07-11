@@ -8,15 +8,15 @@ final class HistoryInitial extends HistoryState {}
 final class HistoryLoading extends HistoryState {}
 
 final class HistorySuccess extends HistoryState {
-  final List<HistoryModel> history;
+  final List<History> history;
 
   HistorySuccess({required this.history});
 }
 
 final class HistoryNull extends HistoryState {}
 
-final class HistoryFiluer extends HistoryState {
+final class HistoryFailure extends HistoryState {
   final Widget error;
 
-  HistoryFiluer({required this.error});
+  HistoryFailure({required this.error});
 }

@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
 import 'package:ptma/feture/history/data/model/history_service.dart';
 import 'package:ptma/feture/history/data/repo/history_repo.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HistoryRepoImplemantHive extends HistoryRepo {
   @override

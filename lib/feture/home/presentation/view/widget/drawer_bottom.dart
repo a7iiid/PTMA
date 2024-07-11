@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ptma/core/utils/images.dart';
-import 'package:ptma/feture/home/presentation/view/widget/greetingslogin.dart';
 
 class DrawerBottom extends StatelessWidget {
   const DrawerBottom({

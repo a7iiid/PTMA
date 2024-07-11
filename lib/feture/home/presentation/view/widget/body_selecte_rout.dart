@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,26 +18,26 @@ class bodySelecteRout extends StatelessWidget {
         return Expanded(
             child: ListView.builder(
                 itemCount: cubit.listBusFilter.isEmpty
-                    ? cubit.busModel.length
+                    ? cubit.busModels.length
                     : cubit.listBusFilter.length,
                 itemBuilder: (context, index) {
                   return Column(mainAxisSize: MainAxisSize.min, children: [
                     ListTile(
                       title: Text(cubit.listBusFilter.isEmpty
-                          ? cubit.busModel[index].busname
+                          ? cubit.busModels[index].busname
                           : cubit.listBusFilter[index].busname),
                       subtitle: Text(cubit.listBusFilter.isEmpty
-                          ? cubit.busModel[index].busnumber
+                          ? cubit.busModels[index].busnumber
                           : cubit.listBusFilter[index].busnumber),
                       trailing: Text(
-                          "${cubit.busModel[index].duration?.durationText}"),
+                          "${cubit.busModels[index].duration?.durationText}"),
                       onTap: () async {
                         try {
                           // var result = await cubit.destans(
                           //     distnationLocation, busLocation);
                           // cubit.busModel[index].duration = result;
                           var select = cubit.listBusFilter.isEmpty
-                              ? cubit.busModel[index]
+                              ? cubit.busModels[index]
                               : cubit.listBusFilter[index];
 
                           MapCubit.get(context).setSelectedBus(select);

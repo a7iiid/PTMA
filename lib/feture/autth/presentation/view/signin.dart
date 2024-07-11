@@ -65,7 +65,6 @@ class form extends StatelessWidget {
       this.pasControlar,
       required this.formKey});
 
-  @override
   final emailControlar;
 
   final pasControlar;

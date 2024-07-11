@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/utils/rout.dart';
 import 'package:ptma/core/utils/shapes/main_screen_shape.dart';
-import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 
 import '../../core/widget/custom_button.dart';
 

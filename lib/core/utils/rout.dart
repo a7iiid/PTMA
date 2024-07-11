@@ -4,7 +4,6 @@ import 'package:ptma/feture/autth/presentation/view/signin.dart';
 import 'package:ptma/feture/autth/presentation/view/signup.dart';
 import 'package:ptma/feture/home/presentation/view/home_page.dart';
 import 'package:ptma/core/utils/splash/splash.dart';
-import 'package:ptma/feture/home/presentation/view/widget/map_route_bus.dart';
 import 'package:ptma/feture/settings/view/settings.dart';
 import 'package:ptma/feture/user_profile/presntation/view/widget/edit_profile_page.dart';
 

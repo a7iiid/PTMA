@@ -11,7 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
-import 'package:ptma/feture/history/data/model/history_service.dart';
 import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 import 'package:ptma/feture/payment/stripe/model/BusTrip.dart';
 
@@ -146,7 +145,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
                             HistoryCubit.get(context).addPassengerToTrip(
                                 qrCodeModel,
-                                FirebaseAuth.instance.currentUser!.displayName!,
                                 FirebaseAuth.instance.currentUser!.email!);
                             qrCodeModel = BusTrip();
                           }

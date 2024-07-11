@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,11 +7,9 @@ import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/feture/autth/manger/cubit/auth_cubit.dart';
-import '../../../../core/utils/image_picker/image_picer.dart';
 import '../../../../core/widget/custom_button.dart';
 import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../widget/set_user_image.dart';
-import '../widget/user_name_input.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

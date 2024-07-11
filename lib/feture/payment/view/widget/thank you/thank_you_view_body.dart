@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../core/utils/images.dart';
 import 'dash_widget.dart';
 import 'info_payment.dart';
-import 'ordar_info.dart';
 
 class ThankYouViewBody extends StatelessWidget {
   const ThankYouViewBody({super.key});

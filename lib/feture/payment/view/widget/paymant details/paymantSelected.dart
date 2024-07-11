@@ -4,7 +4,6 @@ import 'package:ptma/feture/payment/stripe/cubit/payment_cubit.dart';
 
 import '../../../../../core/utils/images.dart';
 import '../../../stripe/model/paymant_model.dart';
-import '../../paymant_details_view.dart';
 import 'pymant_item_selected.dart';
 
 class PymantSelected extends StatelessWidget {

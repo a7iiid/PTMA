@@ -1,17 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 import 'package:ptma/core/widget/custom_teaxt_form_field.dart';
-import 'package:ptma/core/widget/user_image.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'package:ptma/feture/user_profile/presntation/view/widget/change_pictaer.dart';
 
 import '../../../../../core/utils/Style.dart';
 import '../../../../../core/widget/custom_button.dart';
-import '../../../../autth/manger/cubit/auth_cubit.dart';
-import '../../../../autth/presentation/widget/set_user_image.dart';
 import '../../../../home/presentation/view/widget/head_home_page.dart';
 import 'build_dialog.dart';
 
