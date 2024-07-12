@@ -1,6 +1,10 @@
 class Assets {
   Assets._();
   
+  /// Assets for imagesAppleLogo
+  /// assets/images/apple_logo.svg
+  static const String imagesAppleLogo = "assets/images/apple_logo.svg";
+
   /// Assets for imagesApplePay
   /// assets/images/applePay.svg
   static const String imagesApplePay = "assets/images/applePay.svg";
@@ -12,6 +16,14 @@ class Assets {
   /// Assets for imagesCard
   /// assets/images/card.svg
   static const String imagesCard = "assets/images/card.svg";
+
+  /// Assets for imagesFacebookLogo
+  /// assets/images/facebook_logo.svg
+  static const String imagesFacebookLogo = "assets/images/facebook_logo.svg";
+
+  /// Assets for imagesGoogleLogo
+  /// assets/images/google_logo.svg
+  static const String imagesGoogleLogo = "assets/images/google_logo.svg";
 
   /// Assets for imagesIsTrue
   /// assets/images/isTrue.svg
@@ -64,6 +76,10 @@ class Assets {
   /// Assets for imagesSplash
   /// assets/images/splash.jpg
   static const String imagesSplash = "assets/images/splash.jpg";
+
+  /// Assets for imagesStationBus
+  /// assets/images/station_bus.png
+  static const String imagesStationBus = "assets/images/station_bus.png";
 
   /// Assets for imagesSuccess
   /// assets/images/success.svg

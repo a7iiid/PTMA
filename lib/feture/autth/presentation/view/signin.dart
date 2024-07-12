@@ -9,6 +9,8 @@ import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../../manger/cubit/auth_cubit.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
 
+import '../widget/social_log_in.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -57,9 +59,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 33,
                     ),
                     Text(
-                      'Login here',
+                      'Login here'.tr(context),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF1F41BB),
                         fontSize: 30,
                         fontFamily: 'Poppins',
@@ -71,9 +73,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 26,
                     ),
                     Text(
-                      'Welcome back you’ve\nbeen missed!',
+                      'Welcome back to\nPTMA'.tr(context),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                         fontFamily: 'Poppins',
@@ -81,13 +83,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 0,
                       ),
                     ),
-                    SizedBox(heigt:74)
+                    const SizedBox(height: 74),
                     CustomTeaxtFormField(
                       controlar: emailControlar,
                       validatText: 'pleas Enter email'.tr(context),
                       hintText: 'Email'.tr(context),
                       labelText: 'Email'.tr(context),
                     ),
+                    const SizedBox(height: 29),
                     CustomTeaxtFormField(
                       controlar: pasControlar,
                       validatText: "pleas Enter Passwored".tr(context),
@@ -97,12 +100,63 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    CustomButton(
-                      title: 'Login'.tr(context),
-                      backgraondColor: const Color(0xFF2743FB),
-                      textStyle: AppStyle.reguler20white,
-                      iconcolor: Colors.white,
-                      function: () {
+                    Row(
+                      children: [
+                        Text(
+                          'Forgot your password?'.tr(context),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Color(0xFF1F41BB),
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            height: 0,
+                          ),
+                        ),
+                        const Spacer()
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    GestureDetector(
+                      child: Container(
+                        width: 357,
+                        height: 60,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFF1F41BB),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0xFFCAD6FF),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sign in'.tr(context),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
                         if (key.currentState!.validate()) {
                           AuthAppCubit.get(context).login(
                               emailControlar.text, pasControlar.text, context);
@@ -110,11 +164,23 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 60,
+                      height: 30,
                     ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: Text('or using social '.tr(context)))
+                    Text(
+                      'Create new account'.tr(context),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Color(0xFF494949),
+                        fontSize: 14,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        height: 0,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SocialLogIn()
                   ],
                 ),
               );
