@@ -35,7 +35,9 @@
     "History":"السجل",
     "Price":"السعر",
     "Date":"التاريخ",
-    "Trip":"الرحلة"
+    "Trip":"الرحلة",
+    "Not Have Data":"السجل فارغ",
+    "Trip History":"سجل الرحلات"
 
 
 

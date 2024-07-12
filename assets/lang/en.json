@@ -36,7 +36,9 @@
     "History":"History",
     "Price":"Price",
     "Date":"Date",
-    "Trip":"Trip"
+    "Trip":"Trip",
+    "Not Have Data":"Not Have Data",
+    "Trip History":"Trip History"
 
 
 

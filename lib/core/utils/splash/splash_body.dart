@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/rout.dart';
 
-
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({Key? key}) : super(key: key);
 
@@ -65,7 +64,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
       // Get.to(const HomeView(),
       // transition: Transition.downToUp, duration: TransitionDuretion);
       if (FirebaseAuth.instance.currentUser == null) {
-        GoRouter.of(context).pushReplacement(Routes.kMainScreen);
+        GoRouter.of(context).pushReplacement(Routes.kSigninScreen);
       } else {
         GoRouter.of(context).pushReplacement(Routes.kHomePage);
       }

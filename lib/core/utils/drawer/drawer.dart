@@ -43,7 +43,7 @@ class CustomeDrawer extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
-                      height: MediaQuery.sizeOf(context).height * .1,
+                      height: MediaQuery.sizeOf(context).height * .14,
                     ),
                     const UserImage(),
                     ListTile(
@@ -66,7 +66,7 @@ class CustomeDrawer extends StatelessWidget {
                       onTap: () async {
                         await FirebaseAuth.instance.signOut().then((value) =>
                             GoRouter.of(context)
-                                .pushReplacement(Routes.kMainScreen));
+                                .pushReplacement(Routes.kSigninScreen));
                       },
                     ),
                     Spacer(),
