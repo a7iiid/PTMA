@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
             },
           ),
           BlocProvider(
-            create: (context) => SelectRoutCubit(),
+            create: (context) => SelectRoutCubit()..loadBusModels(),
           ),
           BlocProvider(
             create: (context) => DriverCubit(),

@@ -100,7 +100,7 @@ class MapCubit extends Cubit<MapState> {
   void setStation() async {
     emit(SetStationOnMap());
     var customMarkerIcone = BitmapDescriptor.fromBytes(
-        await getImageFromRowData('assets/images/marker.jpg', 50));
+        await getImageFromRowData('assets/images/station_bus.png', 50));
     var myMarker = stationModel
         .map((station) => Marker(
               icon: customMarkerIcone,

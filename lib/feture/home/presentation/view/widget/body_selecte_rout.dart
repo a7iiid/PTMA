@@ -21,8 +21,9 @@ class bodySelecteRout extends StatelessWidget {
                     ? cubit.busModels.length
                     : cubit.listBusFilter.length,
                 itemBuilder: (context, index) {
-                  return Column(mainAxisSize: MainAxisSize.min, children: [
-                    ListTile(
+                  return Card(
+                    color: Colors.lightBlue[50],
+                    child: ListTile(
                       title: Text(cubit.listBusFilter.isEmpty
                           ? cubit.busModels[index].busname
                           : cubit.listBusFilter[index].busname),
@@ -51,7 +52,7 @@ class bodySelecteRout extends StatelessWidget {
                         }
                       },
                     ),
-                  ]);
+                  );
                 }));
       },
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -90,7 +89,6 @@ class _SelectRoutsState extends State<SelectRouts> {
               } else if (state is StreamBusModel) {
                 return const bodySelecteRout();
               } else {
-                SelectRoutCubit.get(context).loadBusModels();
                 return const Center(child: CircularProgressIndicator());
               }
             }),
