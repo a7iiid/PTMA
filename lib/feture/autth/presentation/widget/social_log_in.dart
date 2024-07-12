@@ -31,42 +31,51 @@ class SocialLogIn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  height: 44,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFEBEBEB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFEBEBEB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: SvgPicture.asset(Assets.imagesGoogleLogo)),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  height: 44,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFEBEBEB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    child: SvgPicture.asset(Assets.imagesGoogleLogo)),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFEBEBEB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: SvgPicture.asset(Assets.imagesFacebookLogo)),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  height: 44,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFEBEBEB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    child: SvgPicture.asset(Assets.imagesFacebookLogo)),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFEBEBEB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: SvgPicture.asset(Assets.imagesAppleLogo)),
+                    child: SvgPicture.asset(Assets.imagesAppleLogo)),
+              ),
             ],
           ),
         ],

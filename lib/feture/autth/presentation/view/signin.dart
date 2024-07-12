@@ -1,10 +1,13 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/Style.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/widget/custom_button.dart';
 
+import '../../../../core/utils/rout.dart';
 import '../../../../core/widget/custom_teaxt_form_field.dart';
 import '../../manger/cubit/auth_cubit.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
@@ -102,15 +105,43 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Forgot your password?'.tr(context),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Color(0xFF1F41BB),
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
+                        InkWell(
+                          onTap: () async {
+                            if (emailControlar.text != '' &&
+                                emailControlar.text.isNotEmpty) {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.info,
+                                animType: AnimType.rightSlide,
+                                title: 'Reset Password'.tr(context),
+                                desc: 'Please check your email'.tr(context),
+                                btnOkOnPress: () {},
+                              )..show();
+                              await AuthAppCubit.get(context)
+                                  .forgetPassword(emailControlar.text);
+                            } else {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.warning,
+                                animType: AnimType.rightSlide,
+                                title: 'Enter Email'.tr(context),
+                                desc: 'Enter your email'.tr(context),
+                                btnOkOnPress: () {
+                                  //  Navigator.of(context).pop();
+                                },
+                              )..show();
+                            }
+                          },
+                          child: Text(
+                            'Forgot your password?'.tr(context),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Color(0xFF1F41BB),
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                              height: 0,
+                            ),
                           ),
                         ),
                         const Spacer()
@@ -166,15 +197,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Text(
-                      'Create new account'.tr(context),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Color(0xFF494949),
-                        fontSize: 14,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        height: 0,
+                    InkWell(
+                      onTap: () {
+                        GoRouter.of(context).push(Routes.kSignUpScreen);
+                      },
+                      child: Text(
+                        'Create new account'.tr(context),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Color(0xFF494949),
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
                       ),
                     ),
                     const SizedBox(
