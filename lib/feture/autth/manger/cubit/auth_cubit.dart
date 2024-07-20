@@ -63,7 +63,7 @@ class AuthAppCubit extends Cubit<AuthState> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: passwored);
 
-      GoRouter.of(ctx).push(Routes.kHomePage);
+      GoRouter.of(ctx).pushReplacement(Routes.kHomePage);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

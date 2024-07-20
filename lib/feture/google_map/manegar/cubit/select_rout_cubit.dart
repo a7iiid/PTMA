@@ -52,13 +52,10 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
               busModel.endStation.latitude, busModel.endStation.longitude);
 
           busModel.duration = await destans(busLocation, destinationLocation);
-          log(busModel.duration.toString());
-          log(busModel.duration.toString());
         }
         emit(StreamBusModel(busModel: fetchedBusModels));
       } catch (e) {
         // Handle error
-        log("Error loading bus models: $e");
       }
     });
   }
@@ -67,7 +64,6 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
     emit(ChangeSourceStation());
     if (station != null) {
       sourceStation = station;
-      emit(UpdateStation());
     }
   }
 
@@ -109,10 +105,8 @@ class SelectRoutCubit extends Cubit<SelectRoutState> {
         'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.latitude},${destination.longitude}&origins=${source.latitude},${source.longitude}&key=${ApiKey.mapApiKey}';
     try {
       Response response = await dio.get(baseUrlDistanceMatrix);
-      log(response.data.toString()); // Log the response data for debugging
       DistanceModel result =
           DistanceModel.fromJson(response.data as Map<String, dynamic>);
-      log(result.toString());
       return result;
     } on Exception catch (e) {
       log("Error fetching distance: $e");

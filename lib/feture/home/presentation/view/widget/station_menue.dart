@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ptma/core/utils/localization/app_localaization.dart';
 
 import '../../../../google_map/data/model/station_model.dart';
 import '../../../../google_map/manegar/cubit/map_cubit.dart';
@@ -38,7 +38,7 @@ class _DropMenuItemState extends State<DropMenuItem> {
           padding: EdgeInsets.zero,
           items: stationModel,
           isDense: true,
-          hint: Text("Select "),
+          hint: Text("Select station".tr(context)),
           value: _selectedStation,
           onChanged: (newValue) {
             setState(() {

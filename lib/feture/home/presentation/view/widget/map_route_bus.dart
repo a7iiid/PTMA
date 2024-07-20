@@ -24,10 +24,8 @@ class MapRouteBus extends StatefulWidget {
 class _MapRouteBusState extends State<MapRouteBus> {
   @override
   void didChangeDependencies() async {
-    log("message");
     MapCubit.get(context)
         .displayUserPoint(await MapCubit.get(context).getRouteBusData());
-    log("================================");
 
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();

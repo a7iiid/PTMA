@@ -86,11 +86,8 @@ class _SelectRoutsState extends State<SelectRouts> {
             }, builder: (context, state) {
               if (state is LodingBus) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is StreamBusModel) {
-                return const bodySelecteRout();
-              } else {
-                return const Center(child: CircularProgressIndicator());
               }
+              return const bodySelecteRout();
             }),
           ],
         )));
