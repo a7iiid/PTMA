@@ -14,6 +14,7 @@ import 'package:ptma/feture/history/data/model/history_model.dart';
 import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 import 'package:ptma/feture/payment/stripe/model/BusTrip.dart';
 
+import '../../../core/utils/drawer/drawer.dart';
 import '../../../core/utils/images.dart';
 import '../stripe/data/models/payment_input_intint_model.dart';
 import '../stripe/data/repo/checkout_repo_implemantation.dart';
@@ -34,6 +35,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlue[50],
+        title: Text('Payment'.tr(context)),
+      ),
+      drawer: CustomeDrawer(),
       body: SafeArea(
         child: BlocProvider(
           create: (context) => PaymentCubit(checkoutRepo: checkoutRepoImpl()),

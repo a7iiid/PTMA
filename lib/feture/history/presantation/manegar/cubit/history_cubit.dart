@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:ptma/feture/history/data/repo/history_repo.dart';
 
 import '../../../../payment/stripe/model/BusTrip.dart';
 import '../../../data/history.dart';
@@ -14,8 +13,7 @@ import '../../../data/history.dart';
 part 'history_state.dart';
 
 class HistoryCubit extends Cubit<HistoryState> {
-  final HistoryRepo historyRepo;
-  HistoryCubit({required this.historyRepo}) : super(HistoryInitial());
+  HistoryCubit() : super(HistoryInitial());
   static HistoryCubit get(context) => BlocProvider.of<HistoryCubit>(context);
   List<History> history = [];
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

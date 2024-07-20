@@ -2,6 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptma/core/utils/rout.dart';
+import 'package:ptma/feture/google_map/manegar/cubit/driver_cubit.dart';
+
+import '../../../feture/google_map/manegar/cubit/map_cubit.dart';
+import '../../../feture/home/presentation/manger/cubit/app_cubit.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({Key? key}) : super(key: key);
@@ -14,6 +18,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<Offset> sliderAnimation;
+  late AppCubit cubit;
+  late MapCubit mapCubit;
 
   @override
   void initState() {
@@ -21,6 +27,16 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
     initSlideAnimated();
     NavToHome();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    cubit = AppCubit.get(context);
+    mapCubit = MapCubit.get(context);
+    cubit.init(context);
+    await mapCubit.getStationFromFireBase();
+    await DriverCubit.get(context).loadDriver();
   }
 
   @override

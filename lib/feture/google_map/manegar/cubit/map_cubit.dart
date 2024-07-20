@@ -53,9 +53,9 @@ class MapCubit extends Cubit<MapState> {
             userLocationData!,
           ),
         );
-        // setUserMarker(position);
+
+        setUserMarker(position);
       });
-      setStation();
       emit(MapSuccess());
     } on ServiceEnabelExption catch (e) {
       // TODO
@@ -91,6 +91,7 @@ class MapCubit extends Cubit<MapState> {
               StationModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
       stationModel.addAll(stationdata);
+      setStation();
       emit(SuccessLoding());
     } on Exception catch (e) {
       emit(FiluerLoding());
@@ -162,7 +163,6 @@ class MapCubit extends Cubit<MapState> {
 
   void setSelectedBus(BusModel busModel) {
     selectedBus = busModel;
-    log("${selectedBus!.startStation.latitude} ${selectedBus!.endStation.latitude}");
     emit(SetSelectedBus());
   }
 

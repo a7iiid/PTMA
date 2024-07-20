@@ -13,21 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late AppCubit cubit;
-  late MapCubit mapCubit;
-
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    cubit = AppCubit.get(context);
-    mapCubit = MapCubit.get(context);
-    cubit.init(context);
-    mapCubit.getStationFromFireBase();
-    await DriverCubit.get(context).loadDriver();
   }
 
   @override
   Widget build(BuildContext context) {
+    AppCubit cubit = AppCubit.get(context);
+    MapCubit mapCubit = MapCubit.get(context);
     return SafeArea(
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

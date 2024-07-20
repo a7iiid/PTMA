@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ptma/core/utils/images.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
+import 'package:ptma/feture/autth/manger/cubit/auth_cubit.dart';
 
 class SocialLogIn extends StatelessWidget {
   const SocialLogIn({super.key});
@@ -32,7 +33,9 @@ class SocialLogIn extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await AuthAppCubit.get(context).signInWithGoogle(context);
+                },
                 child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     height: 44,

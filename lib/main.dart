@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:ptma/core/manger/cubit/loclaization_cubit.dart';
 import 'package:ptma/core/utils/apiKey.dart';
 import 'package:ptma/core/utils/localization/app_localaization.dart';
@@ -11,7 +10,6 @@ import 'package:ptma/core/utils/them_app.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/driver_cubit.dart';
 import 'package:ptma/feture/google_map/manegar/cubit/select_rout_cubit.dart';
 import 'package:ptma/feture/history/data/model/history_model.dart';
-import 'package:ptma/feture/history/data/repo/history_repo_implemant_hive.dart';
 import 'package:ptma/feture/history/presantation/manegar/cubit/history_cubit.dart';
 import 'package:ptma/feture/home/presentation/manger/cubit/app_cubit.dart';
 import 'core/utils/cach/cach_helpar.dart';
@@ -29,10 +27,7 @@ void main() async {
   );
   await CachHelper.init();
   bool isArabic = CachHelper.langGetData('isArabic');
-  Hive.registerAdapter(ColorAdapter());
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(HistoryModelAdapter());
   runApp(MyApp(
     isArabic: isArabic,
   ));
@@ -65,8 +60,7 @@ class MyApp extends StatelessWidget {
             create: (context) => DriverCubit(),
           ),
           BlocProvider(
-            create: (context) =>
-                HistoryCubit(historyRepo: HistoryRepoImplemantHive()),
+            create: (context) => HistoryCubit(),
           ),
         ],
         child: BlocBuilder<LoclaizationCubit, LoclaizationState>(
