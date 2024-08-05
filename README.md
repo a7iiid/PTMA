@@ -44,6 +44,13 @@ Firebase Configuration: Add your Firebase configuration files (google-services.j
 Stripe & PayPal Integration: Ensure you have your API keys set up for Stripe and PayPal in the application.
 
 Screenshots
+![Screenshot_1722854764](https://github.com/user-attachments/assets/e8c41eac-c647-44cc-9915-e4cb5e179140)
+![Screenshot_1722853459](https://github.com/user-attachments/assets/70d3320c-7e6e-44b3-82e6-ff0484d7c719)
+![Screenshot_1722853015](https://github.com/user-attachments/assets/a080a2f2-da3d-4435-8e67-8b6f6cccaa70)
+![Screenshot_1722853008](https://github.com/user-attachments/assets/cf74daa7-6a01-49bb-9f94-d85925192709)
+![Screenshot_1722855155](https://github.com/user-attachments/assets/4d2457c6-dab7-4b99-956c-5140f6f701db)
+![Screenshot_1722854839](https://github.com/user-attachments/assets/17c36614-d8c3-48f3-b12a-aaa1e790129a)
+![Screenshot_1722854829](https://github.com/user-attachments/assets/3e095ba1-5450-4d99-aaeb-97fc96578f30)
 
 
 
